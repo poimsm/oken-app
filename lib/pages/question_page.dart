@@ -44,17 +44,17 @@ class _QuestionPageState extends State<QuestionPage> {
   SwiperController cont;
   bool isPristine = true;
   Map args;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     questions = Provider.of<QuestionProvider>(context);
     args = ModalRoute.of(context).settings.arguments;
     questions.setQuestions(args['question_type']);
     timer = Provider.of<TimerProvider>(context, listen: false);
     words = Provider.of<WordProvider>(context);
     cont = SwiperController();
+    size = MediaQuery.of(context).size;
 
     if (isPristine) {
       cont.startAutoplay();
@@ -76,16 +76,17 @@ class _QuestionPageState extends State<QuestionPage> {
           left: 0,
           child: Header(back: true),
         ),
-        Positioned(top: 50, left: 130, child: _bullets()),
+        Positioned(top: size.height * 0.07, left: 0, child: _bullets()),
         Positioned(
           top: 55,
           left: 0,
           child: Clock(),
         ),
-        Positioned(bottom: height * 0.02, left: 0, child: _switchers(context)),
         Positioned(
-            bottom: height * 0.16,
-            left: 50,
+            bottom: size.height * 0.02, left: 0, child: _switchers(context)),
+        Positioned(
+            bottom: size.height * 0.16,
+            left: size.height * 0.1,
             child: questions.isTalking ? Audiobar() : Container())
       ],
     )));
@@ -96,39 +97,43 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   Widget _bullets() {
-    return Row(
-      children: [
-        Container(
-          height: isPristine ? 20 : 15,
-          width: isPristine ? 20 : 15,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(isPristine ? 1 : 0.5),
-            borderRadius: BorderRadius.circular(50),
+    return Container(
+      width: size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            height: isPristine ? 20 : 15,
+            width: isPristine ? 20 : 15,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(isPristine ? 1 : 0.5),
+              borderRadius: BorderRadius.circular(50),
+            ),
           ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Container(
-          height: isPristine ? 15 : 20,
-          width: isPristine ? 15 : 20,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(isPristine ? 0.5 : 1),
-            borderRadius: BorderRadius.circular(50),
+          SizedBox(
+            width: 10,
           ),
-        ),
-        SizedBox(
-          width: 10,
-        ),
-        Container(
-          height: 15,
-          width: 15,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.5),
-            borderRadius: BorderRadius.circular(50),
+          Container(
+            height: isPristine ? 15 : 20,
+            width: isPristine ? 15 : 20,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(isPristine ? 0.5 : 1),
+              borderRadius: BorderRadius.circular(50),
+            ),
           ),
-        ),
-      ],
+          SizedBox(
+            width: 10,
+          ),
+          Container(
+            height: 15,
+            width: 15,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.5),
+              borderRadius: BorderRadius.circular(50),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -155,7 +160,8 @@ class _QuestionPageState extends State<QuestionPage> {
       elevation: 0,
       child: Stack(children: [
         Container(
-            padding: EdgeInsets.symmetric(vertical: 25, horizontal: 10),
+            padding: EdgeInsets.symmetric(
+                vertical: size.height * 0.02, horizontal: size.width * 0.03),
             child: _cardContent(index)),
       ]),
       shape: RoundedRectangleBorder(
@@ -173,22 +179,24 @@ class _QuestionPageState extends State<QuestionPage> {
           borderRadius: BorderRadius.circular(15),
           child: Image.network(
             args['cover'],
-            width: 300,
-            height: 150,
+            width: size.width * 0.8,
+            height: size.height * 0.21,
             fit: BoxFit.cover,
           )),
-      SizedBox(height: 15),
+      SizedBox(height: size.height * 0.03),
       Text(questions.oneQuestion(index),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: questions.oneQuestion(index).length > 60
+                ? size.width * 0.045
+                : size.width * 0.05,
           )),
-      SizedBox(height: 15),
+      SizedBox(height: size.height * 0.03),
       if (questions.showChallengingWords)
         Text('Answer combining these words:',
             textAlign: TextAlign.center,
             style: TextStyle(
-                fontSize: 25,
+                fontSize: size.width * 0.07,
                 fontWeight: FontWeight.bold,
                 fontFamily: 'Indi Flower')),
       SizedBox(height: 15),
@@ -197,20 +205,20 @@ class _QuestionPageState extends State<QuestionPage> {
   }
 
   Widget _switchers(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return Container(
-        width: MediaQuery.of(context).size.width,
-        child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          SizedBox(),
-          _toggleWords(width, context),
-          _mic(width),
-          _refreshWords(width),
-          SizedBox()
-        ]));
+        width: size.width,
+        child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              SizedBox(),
+              _toggleWords(),
+              _mic(),
+              _refreshWords(),
+              SizedBox()
+            ]));
   }
 
-  Widget _refreshWords(width) {
+  Widget _refreshWords() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(300.0),
       child: Material(
@@ -220,7 +228,7 @@ class _QuestionPageState extends State<QuestionPage> {
             child: Container(
               padding: EdgeInsets.all(5),
               child: Icon(Icons.autorenew,
-                  size: width * 0.1, color: Colors.white.withOpacity(0.8)),
+                  size: size.width * 0.1, color: Colors.white.withOpacity(0.8)),
             ),
             onTap: () => words.shuffle(),
             splashColor: Colors.white.withOpacity(0.2)),
@@ -228,7 +236,7 @@ class _QuestionPageState extends State<QuestionPage> {
     );
   }
 
-  Widget _toggleWords(width, context) {
+  Widget _toggleWords() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(300),
       child: Material(
@@ -238,7 +246,8 @@ class _QuestionPageState extends State<QuestionPage> {
             child: Container(
               padding: EdgeInsets.all(10),
               child: Icon(Icons.font_download_off_outlined,
-                  size: width * 0.09, color: Colors.white.withOpacity(0.8)),
+                  size: size.width * 0.09,
+                  color: Colors.white.withOpacity(0.8)),
             ),
             onTap: () => questions.toggleWords(),
             splashColor: Colors.white.withOpacity(0.2)),
@@ -246,7 +255,7 @@ class _QuestionPageState extends State<QuestionPage> {
     );
   }
 
-  Widget _mic(width) {
+  Widget _mic() {
     return Container(
       padding: EdgeInsets.only(bottom: 35),
       child: InkWell(
@@ -263,7 +272,8 @@ class _QuestionPageState extends State<QuestionPage> {
                 timer.stop();
               },
               child: Icon(Icons.mic_none,
-                  size: width * 0.135, color: Colors.white.withOpacity(0.8)),
+                  size: size.width * 0.135,
+                  color: Colors.white.withOpacity(0.8)),
             ),
           ),
           onLongPress: () {
@@ -286,11 +296,12 @@ class Clock extends StatelessWidget {
   Widget build(BuildContext context) {
     QuestionProvider question = Provider.of<QuestionProvider>(context);
     int time = Provider.of<TimerProvider>(context).time;
+    Size size = MediaQuery.of(context).size;
 
     if (!question.isTalking) return Container();
 
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: size.width,
       padding: EdgeInsets.symmetric(vertical: 10),
       color: Colors.black.withOpacity(0.6),
       child: Center(
@@ -301,7 +312,7 @@ class Clock extends StatelessWidget {
               border: Border.all(color: Colors.white)),
           child: Text(
             time.toString(),
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: TextStyle(color: Colors.white, fontSize: size.width * 0.05),
           ),
         ),
       ),

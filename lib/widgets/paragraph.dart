@@ -26,12 +26,14 @@ class _ParagraphState extends State<Paragraph> {
   ReadingProvider reading;
   WordProvider words;
   Timer timer;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
     words = Provider.of<WordProvider>(context, listen: false);
     reading = Provider.of<ReadingProvider>(context, listen: false);
     ui = Provider.of<UIProvider>(context, listen: false);
+    size = MediaQuery.of(context).size;
 
     if (widget.visible && widget.i == widget.maxLength - 1) {
       var rxLoader = RxLoader();
@@ -142,14 +144,12 @@ class _ParagraphState extends State<Paragraph> {
             border: Border(
               bottom: BorderSide(
                   width: 2, color: Colors.black.withOpacity(opacity)),
-
-              // width: 2, color: Color(0xff92D050).withOpacity(opacity)),
             ),
           ),
           child: Text(
             word['word'],
             style:
-                TextStyle(fontSize: 17.5, color: Colors.black.withOpacity(0.7)),
+                TextStyle(fontSize: size.width*0.0475, color: Colors.black.withOpacity(0.7)),
           )),
     );
   }

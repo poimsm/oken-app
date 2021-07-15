@@ -14,19 +14,20 @@ class ChatPage extends StatefulWidget {
   @override
   _ChatPageState createState() => _ChatPageState();
 }
-String asd = '';
 
 class _ChatPageState extends State<ChatPage> {
+  String asd = '';
   bool showMenu = false;
+  Size size;
+
   @override
   Widget build(BuildContext context) {
     final List<String> words = Provider.of<WordList>(context).wordlistAll;
-    double width = MediaQuery.of(context).size.width;
-    
+    size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: baseAppBar(title: 'My words', back: true, search: true),
+      appBar: baseAppBar(size, title: 'My words', back: true, search: true),
       body: Stack(children: [
-        // _background(),
         _chatMsg(words),
         Positioned(
           bottom: 0,
@@ -42,57 +43,65 @@ class _ChatPageState extends State<ChatPage> {
           ),
         if (showMenu)
           Positioned(
-            top: 195,
-            left: 20,
+            top: size.height * 0.2,
+            left: 0,
             child: _word(),
           ),
         if (showMenu)
           Positioned(
-            top: 270,
-            left: 20,
+            top: size.height * 0.3,
+            left: 0,
             child: _menu(),
           ),
       ]),
     );
   }
 
-  // Widget _
-
   Widget _word() {
     return Container(
-        width: 320,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
-        padding: EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-        child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8),
-            child: Row(
-              children: [
-                SizedBox(width: 10),
-                Text(asd,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.black.withOpacity(0.9),
-                    ))
-              ],
-            )));
+      width: size.width,
+      alignment: Alignment.center,
+      child: Container(
+          width: size.width * 0.9,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          padding: EdgeInsets.symmetric(
+              vertical: size.width * 0.043, horizontal: size.width * 0.04),
+          child: Container(
+              padding: EdgeInsets.symmetric(vertical: size.width * 0.02),
+              child: Row(
+                children: [
+                  SizedBox(width: 10),
+                  Text(asd,
+                      style: TextStyle(
+                        fontSize: size.width * 0.045,
+                        color: Colors.black.withOpacity(0.9),
+                      ))
+                ],
+              ))),
+    );
   }
 
   Widget _menu() {
     return Container(
-        width: 320,
-        decoration: BoxDecoration(
-            color: Colors.white, borderRadius: BorderRadius.circular(10)),
-        padding: EdgeInsets.symmetric(vertical: 25, horizontal: 20),
-        child: Column(
-          children: [
-            _menuItem(Icons.check, 'Known'),
-            Divider(),
-            _menuItem(Icons.sync, 'Relearn'),
-            Divider(),
-            _menuItem(Icons.delete_outline, 'Delete'),
-          ],
-        ));
+      width: size.width,
+      alignment: Alignment.center,
+      child: Container(
+          width: size.width * 0.9,
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10)),
+          padding: EdgeInsets.symmetric(
+              vertical: size.width * 0.065, horizontal: size.width * 0.045),
+          child: Column(
+            children: [
+              _menuItem(Icons.check, 'Known'),
+              Divider(),
+              _menuItem(Icons.sync, 'Relearn'),
+              Divider(),
+              _menuItem(Icons.delete_outline, 'Delete'),
+            ],
+          )),
+    );
   }
 
   Widget _menuItem(icon, text) {
@@ -115,30 +124,29 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _footer() {
-    double width = MediaQuery.of(context).size.width;
     return Container(
         decoration: BoxDecoration(
           border: Border(
             top: BorderSide(width: 1, color: Colors.grey.withOpacity(0.3)),
           ),
         ),
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 10),
-        width: MediaQuery.of(context).size.width,
-        // color: Colors.black.withOpacity(0.2),
+        padding: EdgeInsets.symmetric(
+            vertical: size.width * 0.03, horizontal: size.width * 0.03),
+        width: size.width,
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-          Icon(Icons.plus_one, color: Colors.grey),
-          // SizedBox(width: 5),
+          Icon(Icons.plus_one, color: Colors.grey, size: size.width * 0.07),
           IntrinsicWidth(
               child: Container(
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(20),
               color: Colors.grey.withOpacity(0.2),
             ),
-            width: 200,
+            width: size.width * 0.6,
             child: TextField(
               textCapitalization: TextCapitalization.sentences,
-              style: TextStyle(color: Colors.black, fontSize: 16.5),
+              style:
+                  TextStyle(color: Colors.black, fontSize: size.width * 0.047),
               decoration: InputDecoration(
                   border: InputBorder.none,
                   hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
@@ -155,11 +163,12 @@ class _ChatPageState extends State<ChatPage> {
               child: InkWell(
                   customBorder: CircleBorder(),
                   child: Container(
-                      height: 45,
-                      width: 60,
+                      height: size.width * 0.13,
+                      width: size.width * 0.18,
                       child: Icon(Icons.create_outlined,
-                          size: width * 0.1, color: Colors.white)),
+                          size: size.width * 0.1, color: Colors.white)),
                   onTap: () {
+                    FocusScope.of(context).unfocus();
                     context.read<WordList>().shuffle();
                   },
                   splashColor: Colors.black.withOpacity(0.2)),
@@ -175,7 +184,7 @@ class _ChatPageState extends State<ChatPage> {
         () => _controller.jumpTo(_controller.position.maxScrollExtent));
 
     return Container(
-      padding: EdgeInsets.only(bottom: 80),
+      padding: EdgeInsets.only(bottom: size.height * 0.1),
       child: ListView.builder(
           controller: _controller,
           shrinkWrap: true,
@@ -184,13 +193,6 @@ class _ChatPageState extends State<ChatPage> {
             return _item(words[index], index);
           }),
     );
-  }
-
-  Widget _background() {
-    return Container(
-        height: double.infinity,
-        width: double.infinity,
-        color: Color(0xff434157));
   }
 
   Widget _item(text, i) {
@@ -212,28 +214,28 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _itemBody(text, i) {
-    double width = MediaQuery.of(context).size.width;
     return Row(mainAxisAlignment: MainAxisAlignment.end, children: [
       Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
         Container(
             padding: EdgeInsets.all(10),
             decoration: BoxDecoration(
-                // color: Colors.red,
                 border: Border.all(
                   color: Colors.black.withOpacity(0.3),
                 ),
                 borderRadius: BorderRadius.all(Radius.circular(20))),
             child: Text(text,
                 style: TextStyle(
-                    fontSize: width * 0.043,
+                    fontSize: size.width * 0.043,
                     color: Colors.black.withOpacity(0.7)))),
         SizedBox(height: 5),
         if (i.isOdd)
           Row(
             children: [
-              Icon(LineIcons.check, color: Colors.black54, size: width * 0.055),
+              Icon(LineIcons.check,
+                  color: Colors.black54, size: size.width * 0.055),
               Text('Known',
-                  style: TextStyle(fontSize: 12, color: Colors.black54)),
+                  style: TextStyle(
+                      fontSize: size.width * 0.035, color: Colors.black54)),
               SizedBox(width: 10),
             ],
           ),
@@ -241,19 +243,22 @@ class _ChatPageState extends State<ChatPage> {
           Row(
             children: [
               Icon(LineIcons.alternateSync,
-                  color: Colors.black54, size: width * 0.055),
+                  color: Colors.black54, size: size.width * 0.055),
               Text('Relearn',
-                  style: TextStyle(fontSize: 12, color: Colors.black54)),
+                  style: TextStyle(
+                      fontSize: size.width * 0.035, color: Colors.black54)),
               SizedBox(width: 10),
-              Icon(LineIcons.clock, color: Colors.black54, size: width * 0.055),
+              Icon(LineIcons.clock,
+                  color: Colors.black54, size: size.width * 0.055),
               Text('New',
-                  style: TextStyle(fontSize: 12, color: Colors.black54)),
+                  style: TextStyle(
+                      fontSize: size.width * 0.035, color: Colors.black54)),
               SizedBox(width: 10),
             ],
           )
       ]),
       SizedBox(width: 10),
-      Image.asset('assets/pixel07.png', height: width * 0.09),
+      Image.asset('assets/pixel07.png', height: size.width * 0.09),
     ]);
   }
 

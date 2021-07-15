@@ -11,7 +11,7 @@ class ParagraphsBuilder {
   ParagraphsBuilder(this.jsonData, this.maxCharsPerLine,
       {this.decodeJSON = true});
 
-  build() {
+  build(fontSize) {
     // var data = JSON.jsonDecode(jsonData);
     var data;
 
@@ -33,7 +33,7 @@ class ParagraphsBuilder {
         double sizeCounterTemp = 0;
 
         if (data[i][j]['type'] == 'word') {
-          sizeCounterTemp = getSize(data[i][j]['word'] + ' ');
+          sizeCounterTemp = getSize(data[i][j]['word'] + ' ', fontSize);
           sizeCounter += sizeCounterTemp;
         } else {
           foundQuestion = true;
@@ -78,9 +78,9 @@ class ParagraphsBuilder {
     return paragraphs;
   }
 
-  double getSize(text) {
+  double getSize(text, size) {
     final TextStyle textStyle = TextStyle(
-      fontSize: 17.5,
+      fontSize: size,
       color: Colors.white,
     );
     final Size txtSize = _textSize(text, textStyle);

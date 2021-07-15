@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/themed_quiz_provider.dart';
@@ -18,15 +19,7 @@ class ThemedQuizPage extends StatefulWidget {
   _ThemedQuizPageState createState() => _ThemedQuizPageState();
 }
 
-  
-ThemedQuizProvider themedQuiz;
-TimerProvider timer;
-bool showToast = false;
-Map args;
-bool isPristine = true;
-
 class _ThemedQuizPageState extends State<ThemedQuizPage> {
-
   @override
   void dispose() {
     themedQuiz.dispose();
@@ -34,9 +27,17 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
     super.dispose();
   }
 
+  ThemedQuizProvider themedQuiz;
+  TimerProvider timer;
+  bool showToast = false;
+  Map args;
+  bool isPristine = true;
+  Size size;
+
   @override
   Widget build(BuildContext context) {
     themedQuiz = Provider.of<ThemedQuizProvider>(context);
+    size = MediaQuery.of(context).size;
 
     if (isPristine) {
       args = ModalRoute.of(context).settings.arguments;
@@ -50,25 +51,37 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
             body: Stack(children: [
       _background(),
       Header(color: args['header_color'], back: true),
-      Positioned(child: _imgClock(), top: 100, left: 120),
-      Positioned(child: _questionBox(), top: 300, left: 0),
-      Positioned(child: _buttons(), bottom: 150, left: 100),
-      Positioned(child: _example(), bottom: 50, left: 100),
-      if (themedQuiz.isTalking) Positioned(child: Clock(), top: 55, left: 0),
+      if(!args['isBrown']) Positioned(child: _imgClock(), top: size.height*0.13, left: 0),
+      Positioned(child: _questionBox(), top: size.height * 0.4, left: 0),
+      Positioned(
+          child: _buttons(),
+          bottom: size.height * (args['isBrown'] ? 0.16 : 0.2),
+          left: 0),
+      Positioned(child: _example(), bottom: size.height * 0.08, left: 0),
+      if (themedQuiz.isTalking) Positioned(child: Clock(), top: 52.5, left: 0),
       if (themedQuiz.isTalking)
-        Positioned(child: Audiobar(small: true), bottom: 230, left: 50),
-      if (showToast) Positioned(child: _mtoast(), bottom: 230, left: 50),
+        Positioned(
+            child: Audiobar(small: true),
+            bottom: size.height * (args['isBrown'] ? 0.26 : 0.3),
+            left: size.width * 0.12),
+      if (showToast)
+        Positioned(
+            child: _mtoast(),
+            bottom: size.height * 0.3,
+            left: size.width * 0.15),
     ])));
   }
 
   Widget _mtoast() {
     return Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+        padding: EdgeInsets.symmetric(
+            vertical: size.width * 0.02, horizontal: size.width * 0.04),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(50),
             color: Colors.black.withOpacity(0.8)),
         child: Text('Keep pressing',
-            style: TextStyle(color: Colors.white, fontSize: 16)));
+            style:
+                TextStyle(color: Colors.white, fontSize: size.width * 0.043)));
   }
 
   Widget _background() {
@@ -79,12 +92,16 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
 
   Widget _imgClock() {
     String imgURL = args['img_clock'];
-    return Image.network(imgURL, width: 170, fit: BoxFit.cover);
+    return Container(
+        width: size.width,
+        alignment: Alignment.center,
+        child:
+            Image.network(imgURL, width: size.width * 0.47, fit: BoxFit.cover));
   }
 
   Widget _questionBox() {
     return Container(
-      width: MediaQuery.of(context).size.width,
+      width: size.width,
       color: Colors.black.withOpacity(0.4),
       padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
       child: Center(child: themedQuiz.loading ? _loader() : _question()),
@@ -96,20 +113,30 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
       themedQuiz.question,
       textAlign: TextAlign.center,
       style: TextStyle(
-          color: Colors.white, fontSize: 17.5, fontWeight: FontWeight.bold),
+          color: Colors.white,
+          fontSize: size.width * 0.05,
+          fontWeight: FontWeight.bold),
     );
   }
 
   Widget _loader() {
     return SpinKitThreeBounce(
       color: Colors.white,
-      size: 50.0,
+      size: size.width * 0.16,
     );
   }
 
   Widget _buttons() {
-    return Row(
-      children: [_mic(), SizedBox(width: 70), _next()],
+    return Container(
+      width: size.width,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _mic(),
+          SizedBox(width: size.width * (args['isBrown'] ? 0.15 : 0.2)),
+          _next()
+        ],
+      ),
     );
   }
 
@@ -133,9 +160,16 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
         child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Colors.black.withOpacity(0.5)),
-            padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-            child: Icon(LineIcons.microphone, color: Colors.white, size: 45)),
+                color: args['isBrown']
+                    ? Colors.transparent
+                    : Colors.black.withOpacity(0.5)),
+            padding: EdgeInsets.symmetric(
+                vertical: size.width * 0.03, horizontal: size.width * 0.015),
+            child: Icon(LineIcons.microphone,
+                color: args['isBrown']
+                    ? Colors.black.withOpacity(0.7)
+                    : Colors.white,
+                size: size.width * (args['isBrown'] ? 0.13 : 0.12))),
       ),
     );
   }
@@ -146,26 +180,43 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
       child: Container(
           decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(5),
-              color: Colors.black.withOpacity(0.5)),
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
-          child: Icon(LineIcons.angleRight, color: Colors.white, size: 43)),
+              color: args['isBrown']
+                  ? Colors.transparent
+                  : Colors.black.withOpacity(0.5)),
+          padding: EdgeInsets.symmetric(
+              vertical: size.width * 0.03, horizontal: size.width * 0.015),
+          child: Icon(LineIcons.angleRight,
+              color: args['isBrown']
+                  ? Colors.black.withOpacity(0.7)
+                  : Colors.white,
+              size: size.width * (args['isBrown'] ? 0.13 : 0.12))),
     );
   }
 
   Widget _example() {
     return Container(
-        decoration: BoxDecoration(
-          border: Border.all(color: Colors.white),
-          borderRadius: BorderRadius.circular(6),
-          color: Color(0xff203864).withOpacity(0.5),
-        ),
-        width: 180,
-        padding: EdgeInsets.symmetric(vertical: 10),
-        child: Text(
-          'SEE EXAMPLE',
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.white),
-        ));
+      width: size.width,
+      alignment: Alignment.center,
+      child: Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+                color: args['isBrown'] ? Color(0xff843C0C) : Colors.white),
+            borderRadius: BorderRadius.circular(6),
+            color: args['isBrown']
+                ? Colors.transparent
+                : Color(0xff203864).withOpacity(0.5),
+          ),
+          width: size.width * 0.5,
+          padding: EdgeInsets.symmetric(vertical: 10),
+          child: Text(
+            'SEE EXAMPLE',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                fontWeight: args['isBrown']? FontWeight.bold : FontWeight.normal,
+                fontSize: size.width * 0.04,
+                color: args['isBrown'] ? Color(0xff843C0C) : Colors.white),
+          )),
+    );
   }
 
   void _toast([text = 'Comming soon']) {
@@ -178,12 +229,13 @@ class Clock extends StatelessWidget {
   Widget build(BuildContext context) {
     ThemedQuizProvider themedQuiz = Provider.of<ThemedQuizProvider>(context);
     int time = Provider.of<TimerProvider>(context).time;
+    Size size = MediaQuery.of(context).size;
 
     if (!themedQuiz.isTalking) return Container();
 
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 10),
+      width: size.width,
+      padding: EdgeInsets.symmetric(vertical: size.width * 0.03),
       color: Colors.black.withOpacity(0.6),
       child: Center(
         child: Container(
@@ -193,7 +245,7 @@ class Clock extends StatelessWidget {
               border: Border.all(color: Colors.white)),
           child: Text(
             time.toString(),
-            style: TextStyle(color: Colors.white, fontSize: 18),
+            style: TextStyle(color: Colors.white, fontSize: size.width * 0.06),
           ),
         ),
       ),

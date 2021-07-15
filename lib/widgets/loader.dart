@@ -14,6 +14,8 @@ class Loader extends StatefulWidget {
 class _LoaderState extends State<Loader> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return widget.isLoading == null || widget.isLoading
         ? Container(
             height: MediaQuery.of(context).size.height,
@@ -21,7 +23,7 @@ class _LoaderState extends State<Loader> {
             color: Colors.black.withOpacity(0.7),
             child: Center(
                 child: Text('Loading...',
-                    style: TextStyle(fontSize: 20, color: Colors.white))))
+                    style: TextStyle(fontSize: size.width*0.06, color: Colors.white))))
         : Container();
   }
 }

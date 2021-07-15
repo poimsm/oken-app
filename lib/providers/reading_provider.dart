@@ -13,16 +13,16 @@ class ReadingProvider with ChangeNotifier {
     return rootBundle.loadString('assets/books/' + path);
   }
 
-  Future getById(id, size, path, [chapters]) async {
+  Future getById(id, width, path, [chapters]) async {
     List data = await json.decode(await getJson(path));
-    _paragraphs = ParagraphsBuilder(data, size, decodeJSON: false).build();
+    _paragraphs = ParagraphsBuilder(data, width, decodeJSON: false).build(width*0.05);
     _chapters = chapters;
     notifyListeners();
   }
 
-  Future changeReadingText(size, path, index) async {
+  Future changeReadingText(width, path, index) async {
     List data = await json.decode(await getJson(path));
-    _paragraphs = ParagraphsBuilder(data, size, decodeJSON: false).build();
+    _paragraphs = ParagraphsBuilder(data, width, decodeJSON: false).build(width*0.05);
     _chapters = _chapters.map((chapter) => {...chapter, 'selected': false }).toList();
     _chapters[index]['selected'] = true;
     notifyListeners();

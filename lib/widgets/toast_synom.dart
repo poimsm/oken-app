@@ -13,21 +13,21 @@ class ToastSynonym extends StatefulWidget {
 
 class _ToastSynonymState extends State<ToastSynonym> {
   UIProvider ui;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
     ui = Provider.of<UIProvider>(context);
-
-    double width = MediaQuery.of(context).size.width;
-    return ui.showSynomToast ? _body(width) : Container();
+    size = MediaQuery.of(context).size;
+    return ui.showSynomToast ? _body() : Container();
   }
 
-  Widget _body(width) {
+  Widget _body() {
     return Container(
-      width: width,
+      width: size.width,
       child: Center(
         child: Container(
-            width: width * 0.95,
+            width: size.width * 0.95,
             padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
             decoration: BoxDecoration(
               border: Border.all(width: 1, color: Color(0xffD9D9D9)),
@@ -40,14 +40,14 @@ class _ToastSynonymState extends State<ToastSynonym> {
                 Row(
                   children: [
                     Image.asset('assets/coffee.png',
-                        width: 40, color: Colors.white.withOpacity(0.7)),
+                        width: size.width*0.1, color: Colors.white.withOpacity(0.7)),
                     SizedBox(width: 10),
                     ConstrainedBox(
                       constraints: BoxConstraints(
                           maxHeight: 110,
                           minHeight: 40,
-                          maxWidth: width * 0.55,
-                          minWidth: width * 0.4),
+                          maxWidth: size.width * 0.55,
+                          minWidth: size.width * 0.4),
                       child: Container(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -58,7 +58,7 @@ class _ToastSynonymState extends State<ToastSynonym> {
                     )
                   ],
                 ),
-                Icon(Icons.add, color: Colors.white, size: 26)
+                Icon(Icons.add, color: Colors.white, size: size.width*0.07)
               ],
             )),
       ),
@@ -69,7 +69,7 @@ class _ToastSynonymState extends State<ToastSynonym> {
     return Text(
       "${ui.word['word'][0].toUpperCase()}${ui.word['word'].substring(1)}",
       style: TextStyle(
-          fontSize: 17, fontWeight: FontWeight.bold, color: Colors.white),
+          fontSize: size.width*0.045, fontWeight: FontWeight.bold, color: Colors.white),
     );
   }
 
@@ -77,7 +77,7 @@ class _ToastSynonymState extends State<ToastSynonym> {
     return Flexible(
       child: Text(
         ui.word['synonym'],
-        style: TextStyle(fontSize: 16, color: Colors.white),
+        style: TextStyle(fontSize: size.width*0.043, color: Colors.white),
       ),
     );
   }

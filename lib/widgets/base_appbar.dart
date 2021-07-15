@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 
-AppBar baseAppBar({
+AppBar baseAppBar(
+  Size size, {
   String title = 'Oken',
   bool whiteBtn = false,
   bool coins = false,
@@ -11,10 +12,11 @@ AppBar baseAppBar({
 }) {
   return AppBar(
       elevation: shadow ? 3 : 0,
-      title: Text(title),
+      title: Text(title, style: TextStyle(fontSize: size.width * 0.06)),
       leading: Builder(builder: (BuildContext context) {
         return IconButton(
-          icon: Icon(back ? Icons.arrow_back : Icons.android),
+          icon: Icon(back ? Icons.arrow_back : Icons.android,
+              size: size.width * 0.07),
           onPressed: () {
             if (back) {
               return Navigator.pop(context);
@@ -59,13 +61,13 @@ AppBar baseAppBar({
                 onPressed: () => {},
                 child: Row(
                   children: [
-                    Image.asset('assets/coin01.png', width: 23),
+                    Image.asset('assets/coin01.png', width: size.width * 0.065),
                     SizedBox(width: 5),
                     Text(
                       '900',
                       style: TextStyle(
                           color: Colors.white,
-                          fontSize: 18,
+                          fontSize: size.width * 0.047,
                           fontWeight: FontWeight.bold),
                     )
                   ],

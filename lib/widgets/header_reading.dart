@@ -16,6 +16,7 @@ class HeaderReading extends StatefulWidget {
 
 class _HeaderReadingState extends State<HeaderReading> {
   UIProvider ui;
+  Size size;
 
   @override
   void dispose() {
@@ -26,9 +27,14 @@ class _HeaderReadingState extends State<HeaderReading> {
   @override
   Widget build(BuildContext context) {
     ui = Provider.of<UIProvider>(context);
+    size = MediaQuery.of(context).size;
 
     return Container(
-      padding: EdgeInsets.only(left: 10, right: 20, top: 35, bottom: 0),
+      padding: EdgeInsets.only(
+          left: size.width * 0.03,
+          right: size.width * 0.05,
+          top: size.height * 0.045,
+          bottom: 0),
       decoration: BoxDecoration(
         color: ui.changeColor ? Colors.white : Colors.transparent,
         border: Border(
@@ -37,7 +43,7 @@ class _HeaderReadingState extends State<HeaderReading> {
               color: Colors.grey.withOpacity(ui.changeColor ? 0.5 : 0)),
         ),
       ),
-      width: MediaQuery.of(context).size.width,
+      width: size.width,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -46,23 +52,29 @@ class _HeaderReadingState extends State<HeaderReading> {
               InkWell(
                   onTap: () => Navigator.of(context).pop(),
                   child: Container(
-                    height: 48,
-                    width: 45,
+                    height: size.height * 0.08,
+                    width: size.width * 0.08,
                     child: Icon(Icons.arrow_back,
-                        size: 27,
+                        size: size.width * 0.075,
                         color: ui.changeColor ? Colors.black54 : Colors.white),
                   )),
-              SizedBox(width: 5),
+              SizedBox(width: size.width * 0.015),
               if (ui.changeColor)
-                Text(
-                  widget.title,
-                  style: TextStyle(
-                      fontSize: 18.5, color: Colors.black.withOpacity(0.65)),
+                Container(
+                  width: size.width*0.7,
+                  child: Text(
+                    widget.title,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: size.width * 0.053,
+                        color: Colors.black.withOpacity(0.65)),
+                  ),
                 )
             ],
           ),
           Icon(Icons.settings,
-              size: 27, color: ui.changeColor ? Colors.black54 : Colors.white),
+              size: size.width * 0.075,
+              color: ui.changeColor ? Colors.black54 : Colors.white),
         ],
       ),
     );

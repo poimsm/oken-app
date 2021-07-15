@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/content_provider.dart';
@@ -12,14 +11,16 @@ class HomePage extends StatelessWidget {
   HomePage({Key key}) : super(key: key);
 
   ContentProvider contentInstance;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
     contentInstance = ContentProvider();
+    size = MediaQuery.of(context).size;
 
     return Scaffold(
       drawer: SafeArea(child: NavDrawer()),
-      appBar: baseAppBar(coins: true),
+      appBar: baseAppBar(size, coins: true),
       body: Container(
         color: Color(0xff92D050),
         child: SafeArea(
@@ -28,9 +29,8 @@ class HomePage extends StatelessWidget {
             child: Stack(
               children: [
                 _pinGrid(context),
-                if (true)
                   Positioned(
-                    bottom: 10,
+                    bottom: size.height*0.015,
                     left: 0,
                     child: _footerBar(context),
                   )
@@ -43,15 +43,13 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _footerBar(context) {
-    double width = MediaQuery.of(context).size.width;
     return Container(
-      width: width,
+      width: size.width,
       child: Center(
         child: Card(
-          // color: Colors.black.withOpacity(0.4)
           elevation: 3,
           child: Container(
-              width: width * 0.75,
+              width: size.width * 0.75,
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -80,7 +78,7 @@ class HomePage extends StatelessWidget {
             }
             Navigator.pushNamed(context, open);
           },
-          child: Icon(icon, color: Colors.black38, size: 30));
+          child: Icon(icon, color: Colors.black38, size: size.width*0.08));
     });
   }
 
@@ -94,8 +92,6 @@ class HomePage extends StatelessWidget {
     return StaggeredGridView.countBuilder(
       crossAxisCount: 2,
             itemCount: contentInstance.length(),
-
-      // itemCount: contentInstance != null ? contentInstance.length() : 0,
       itemBuilder: (BuildContext context, int index) => _cell(index, context),
       staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
       mainAxisSpacing: 10.0,
@@ -131,7 +127,7 @@ class HomePage extends StatelessWidget {
             style: TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.bold,
-                fontSize: 16),
+                fontSize: size.width*0.045),
           )
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,10 +142,11 @@ class HomePage extends StatelessWidget {
           color: Colors.black.withOpacity(0.3),
           child: Row(
             children: [
-              Icon(Icons.lock, color: Colors.white),
+              Icon(Icons.lock, color: Colors.white, size: size.width*0.06),
               SizedBox(width: 5),
               Text('200',
                   style: TextStyle(
+                    fontSize: size.width*0.04,
                       color: Colors.white, fontWeight: FontWeight.bold))
             ],
           )),
@@ -167,12 +164,11 @@ class HomePage extends StatelessWidget {
 
     return Stack(
       children: [
-        // Image.asset('assets/red_type.png', width: 45),
         Image.asset('assets/red_type.png',
-            width: 45, color: Colors.grey.withOpacity(0.5)),
+            width: size.width*0.13, color: Colors.grey.withOpacity(0.5)),
         Container(
             padding: EdgeInsets.only(top: 10, left: 10),
-            child: Icon(iconTypes[type], color: Colors.white, size: 25))
+            child: Icon(iconTypes[type], color: Colors.white, size: size.width*0.075))
       ],
     );
   }

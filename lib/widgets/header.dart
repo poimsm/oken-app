@@ -17,14 +17,16 @@ class Header extends StatefulWidget {
 }
 
 class _HeaderState extends State<Header> {
+  Size size;
+
   @override
   Widget build(BuildContext context) {
+    size = MediaQuery.of(context).size;
     return Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+        width: size.width,
+        padding: EdgeInsets.symmetric(
+            vertical: size.width * 0.03, horizontal: size.width * 0.027),
         color: Color(widget.color),
-        // color: Colors.black.withOpacity(0.3),
-
         child: Row(
           children: [_leftBox(), _rightBox()],
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,14 +40,14 @@ class _HeaderState extends State<Header> {
         child: Row(
           children: [
             Icon(widget.back ? Icons.arrow_back : Icons.menu,
-                color: Colors.white),
+                color: Colors.white, size: size.width*0.065),
             SizedBox(
               width: 8,
             ),
             Text(widget.title,
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 20,
+                    fontSize: size.width * 0.06,
                     fontWeight: FontWeight.bold))
           ],
         ),
@@ -57,18 +59,18 @@ class _HeaderState extends State<Header> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(5),
       child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
+          padding: EdgeInsets.symmetric(
+              horizontal: size.width * 0.023, vertical: size.width * 0.012),
           color: Colors.black.withOpacity(0.3),
           child: Row(
             children: [
-              // Icon(Icons.toll, color: Colors.white),
-              Image.asset('assets/coin01.png', width: 23),
+              Image.asset('assets/coin01.png', width: size.width * 0.065),
               SizedBox(width: 5),
               Text(
                 '900',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: size.width * 0.05,
                     fontWeight: FontWeight.bold),
               )
             ],

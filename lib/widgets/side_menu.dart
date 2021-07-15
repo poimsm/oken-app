@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 class NavDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return Drawer(
       child: ListView(
         padding: EdgeInsets.zero,
@@ -13,43 +15,43 @@ class NavDrawer extends StatelessWidget {
             children: [
               ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: Image.asset('assets/girl.jpg', width: 70)),
-              SizedBox(width: 20),
+                  child: Image.asset('assets/girl.jpg', width: size.width*0.2)),
+              SizedBox(width: size.width*0.06),
               Text(
                 '@poimsm32',
-                style: TextStyle(fontSize: 17),
+                style: TextStyle(fontSize: size.width*0.047),
               )
             ],
           ))),
           ListTile(
             title: Text('Sing In  /  Sign Up',
                 style: TextStyle(
-                    fontSize: 17, color: Colors.black.withOpacity(0.7))),
+                    fontSize: size.width*0.047, color: Colors.black.withOpacity(0.7))),
             onTap: () => {},
           ),
           ListTile(
             title: Text('Explore',
                 style: TextStyle(
-                    fontSize: 17, color: Colors.black.withOpacity(0.7))),
+                    fontSize: size.width*0.047, color: Colors.black.withOpacity(0.7))),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
             title: Text('Activity',
                 style: TextStyle(
-                    fontSize: 17, color: Colors.black.withOpacity(0.7))),
+                    fontSize: size.width*0.047, color: Colors.black.withOpacity(0.7))),
             onTap: () => {Navigator.of(context).pop()},
           ),
           ListTile(
             title: Text('Settings',
                 style: TextStyle(
-                    fontSize: 17, color: Colors.black.withOpacity(0.7))),
+                    fontSize: size.width*0.047, color: Colors.black.withOpacity(0.7))),
             onTap: () => {Navigator.of(context).pop()},
           ),
-          SizedBox(height: 200),
+          SizedBox(height: size.height*0.3),
           Center(
               child: Text('V1.0.0',
                   style: TextStyle(
-                      fontSize: 17, color: Colors.black.withOpacity(0.6)))),
+                      fontSize: size.width*0.047, color: Colors.black.withOpacity(0.6)))),
         ],
       ),
     );

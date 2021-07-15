@@ -147,6 +147,7 @@ List<Map> _content = [
     'question_type': 'morning',
     'id': '1',
     'isBlocked': false,
+    'isBrown': false,
     'price': 0,
     'nav': 'themed_quiz',
     'header_color': 0xff6F2927
@@ -160,6 +161,7 @@ List<Map> _content = [
     'question_type': 'lunch',
     'id': '1',
     'isBlocked': false,
+    'isBrown': true,
     'price': 0,
     'nav': 'themed_quiz',
     'header_color': 0xffC55A11
@@ -173,6 +175,7 @@ List<Map> _content = [
     'question_type': 'night',
     'id': '1',
     'isBlocked': false,
+    'isBrown': false,
     'price': 0,
     'nav': 'themed_quiz',
     'header_color': 0xff117D97

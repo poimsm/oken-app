@@ -65,6 +65,7 @@ class _ReadingPageState extends State<ReadingPage> {
   RxParagraph rxParagraph;
   RxLoader rxLoader;
   Map args;
+  Size size;
 
   @override
   Widget build(BuildContext context) {
@@ -72,12 +73,12 @@ class _ReadingPageState extends State<ReadingPage> {
     words = Provider.of<WordProvider>(context, listen: false);
     ui = Provider.of<UIProvider>(context, listen: false);
     rxLoader = RxLoader();
+    size = MediaQuery.of(context).size;
 
     if (isPristine) {
       args = ModalRoute.of(context).settings.arguments;
       rxLoader.start();
-      double width = MediaQuery.of(context).size.width;
-      initParagraphs(width, args);
+      initParagraphs(size.width, args);
       isPristine = false;
     }
 
@@ -90,7 +91,7 @@ class _ReadingPageState extends State<ReadingPage> {
 
     return Scaffold(
       body: Container(
-        height: MediaQuery.of(context).size.height,
+        height: size.height,
         child: Stack(
           children: [
             SingleChildScrollView(
@@ -106,7 +107,8 @@ class _ReadingPageState extends State<ReadingPage> {
             ),
             Positioned(
                 child: HeaderReading(title: args['title']), top: 0, left: 0),
-            Positioned(child: ToastSynonym(), bottom: 20, left: 0),
+            Positioned(
+                child: ToastSynonym(), bottom: size.height * 0.025, left: 0),
             StreamBuilder(
                 stream: rxLoader.isLoading,
                 builder: (context, snapshot) {
@@ -120,30 +122,34 @@ class _ReadingPageState extends State<ReadingPage> {
 
   Widget _chapterTitle() {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 28),
+      padding: EdgeInsets.symmetric(vertical: size.height * 0.045),
       child: Center(child: args['hasChapters'] ? _titleOne() : _titleTwo()),
     );
   }
 
   Widget _titleOne() {
-    return Column(
-      children: [ Text('CHAPTER ' + args['chapterNumber'].toString(),
-          style: TextStyle(fontSize: 22, color: Colors.black.withOpacity(0.7))),
-          SizedBox(height: 10),
-          if (args['author'].length > 0)Text(args['author'].toUpperCase(),
-          style: TextStyle(fontSize: 17, color: Colors.black.withOpacity(0.7))),
-      ]
-    );
+    return Column(children: [
+      Text('CHAPTER ' + args['chapterNumber'].toString(),
+          style: TextStyle(
+              fontSize: size.width * 0.07,
+              color: Colors.black.withOpacity(0.7))),
+      SizedBox(height: size.height * 0.015),
+      if (args['author'].length > 0)
+        Text(args['author'].toUpperCase(),
+            style: TextStyle(
+                fontSize: size.width * 0.045,
+                color: Colors.black.withOpacity(0.7))),
+    ]);
   }
 
   Widget _titleTwo() {
     return Text(args['title'],
-        style: TextStyle(fontSize: 22, color: Colors.black.withOpacity(0.7)));
+        style: TextStyle(
+            fontSize: size.width * 0.07, color: Colors.black.withOpacity(0.7)));
   }
 
   Widget _textBody() {
     return Container(
-      width: MediaQuery.of(context).size.width,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -169,21 +175,25 @@ class _ReadingPageState extends State<ReadingPage> {
     return Image.network(
       imageURL,
       fit: BoxFit.cover,
-      width: MediaQuery.of(context).size.width,
+      width: size.width,
       loadingBuilder: (BuildContext context, Widget child,
           ImageChunkEvent loadingProgress) {
         if (loadingProgress == null) return child;
         return Container(
             color: Colors.grey.withOpacity(0.4),
             height: 350,
-            width: MediaQuery.of(context).size.width);
+            width: size.width);
       },
     );
   }
 
   Widget _paginator() {
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 40),
+      padding: EdgeInsets.only(
+          left: size.width * 0.07,
+          right: size.width * 0.07,
+          top: size.width * 0.035,
+          bottom: size.width * 0.14),
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -192,7 +202,7 @@ class _ReadingPageState extends State<ReadingPage> {
               return Row(
                 children: [
                   _page(i, reading.chapters[i]),
-                  SizedBox(width: 13),
+                  SizedBox(width: size.width*0.04),
                 ],
               );
             })
@@ -221,7 +231,7 @@ class _ReadingPageState extends State<ReadingPage> {
               if (comingSoon) return _toast();
               if (isChapter) index++;
 
-              double width = MediaQuery.of(context).size.width;
+              double width = size.width;
               _scrollController.jumpTo(0);
               setParagraphs(width, path, index);
             },
@@ -230,8 +240,8 @@ class _ReadingPageState extends State<ReadingPage> {
 
   Widget _bullet(selected) {
     return Container(
-      height: 20,
-      width: 20,
+      height: size.width * 0.065,
+      width: size.width * 0.065,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
           color: selected ? Color(0xff595959) : Colors.white),
@@ -239,7 +249,9 @@ class _ReadingPageState extends State<ReadingPage> {
   }
 
   Widget _chapterBubble(text) {
-    return Text(text, style: TextStyle(color: Color(0xff595959), fontSize: 17));
+    return Text(text,
+        style:
+            TextStyle(color: Color(0xff595959), fontSize: size.width * 0.045));
   }
 
   void _toast([text = 'Coming soon']) {

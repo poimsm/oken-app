@@ -10,6 +10,7 @@ class NavDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: <Widget>[
           DrawerHeader(
+            decoration: BoxDecoration(border: Border.all(color: Colors.white)),
               child: Container(
                   child: Row(
             children: [
@@ -23,6 +24,35 @@ class NavDrawer extends StatelessWidget {
               )
             ],
           ))),
+          Container(
+            padding: EdgeInsets.only(bottom: 15),
+            alignment: Alignment.center,
+            child: InkWell(
+              onTap: () {
+                Navigator.of(context).pop();
+                Navigator.pushNamed(context, 'tutorial');
+              },
+              child: Container(
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Color(0xff8D35CF).withOpacity(0.9),
+                ),
+                width: 170,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                  Icon(Icons.campaign, color: Colors.white),
+                  SizedBox(width: 10),
+                  Text('Tutorial', style: TextStyle(
+                    color: Colors.white,
+                    // fontWeight: FontWeight.bold,
+                    fontSize: 19
+                  ),)
+                ],)
+              ),
+            )
+          ),
           ListTile(
             title: Text('Sing In  /  Sign Up',
                 style: TextStyle(
@@ -33,19 +63,19 @@ class NavDrawer extends StatelessWidget {
             title: Text('Explore',
                 style: TextStyle(
                     fontSize: size.width*0.047, color: Colors.black.withOpacity(0.7))),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => Navigator.of(context).pop(),
           ),
           ListTile(
             title: Text('Activity',
                 style: TextStyle(
                     fontSize: size.width*0.047, color: Colors.black.withOpacity(0.7))),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => Navigator.of(context).pop(),
           ),
           ListTile(
             title: Text('Settings',
                 style: TextStyle(
                     fontSize: size.width*0.047, color: Colors.black.withOpacity(0.7))),
-            onTap: () => {Navigator.of(context).pop()},
+            onTap: () => Navigator.of(context).pop(),
           ),
           SizedBox(height: size.height*0.3),
           Center(

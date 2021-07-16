@@ -56,7 +56,7 @@ class HomePage extends StatelessWidget {
                   children: [
                     _icon(context, LineIcons.bars, 'menu'),
                     _icon(context, LineIcons.home, '/'),
-                    _icon(context, LineIcons.edit, 'chat'),
+                    _icon(context, LineIcons.edit, 'vocabulary'),
                     _icon(context, LineIcons.user, 'user'),
                   ])),
           shape: RoundedRectangleBorder(

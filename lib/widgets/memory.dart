@@ -59,14 +59,14 @@ class _MemoryState extends State<Memory> {
                   Image.asset(widget.timelinePath, height: size.height * 0.26),
               top: 0,
               left: size.width * 0.29),
-        if (widget.showWords)
-          Positioned(
-              child: Image.asset('assets/chat01.png',
-                  width: size.width * 0.15,
-                  color: Color(0xff92D050).withOpacity(0.9),
-                  fit: BoxFit.fill),
-              top: size.height * 0.07,
-              left: size.width * 0.08),
+        // if (widget.showWords)
+        //   Positioned(
+        //       child: Image.asset('assets/chat01.png',
+        //           width: size.width * 0.15,
+        //           color: Color(0xff92D050).withOpacity(0.9),
+        //           fit: BoxFit.fill),
+        //       top: size.height * 0.07,
+        //       left: size.width * 0.08),
         if (!widget.showWords)
           Positioned(
               child: Image.asset('assets/chat01.png',

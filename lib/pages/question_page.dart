@@ -45,6 +45,7 @@ class _QuestionPageState extends State<QuestionPage> {
   bool isPristine = true;
   Map args;
   Size size;
+  bool offWords = false;
 
   @override
   Widget build(BuildContext context) {
@@ -245,11 +246,16 @@ class _QuestionPageState extends State<QuestionPage> {
             customBorder: CircleBorder(),
             child: Container(
               padding: EdgeInsets.all(10),
-              child: Icon(Icons.font_download_off_outlined,
+              child: Icon(                
+                offWords ? Icons.font_download_outlined  : Icons.font_download_off_outlined,
                   size: size.width * 0.09,
                   color: Colors.white.withOpacity(0.8)),
             ),
-            onTap: () => questions.toggleWords(),
+            onTap: () {
+              offWords = !offWords;
+              questions.toggleWords();
+              setState(() {});
+            },
             splashColor: Colors.white.withOpacity(0.2)),
       ),
     );

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:oken/providers/dummy/words.dart';
@@ -6,7 +7,9 @@ class VocabularyProvider with ChangeNotifier {
   Words wordsInstance;
   List _allWords = [];
   List _words = [];
+  List _questionWords = [];
   List _folders = [];
+  bool _loading = false;
 
   void load() {
     if (wordsInstance != null) return;
@@ -114,7 +117,7 @@ class VocabularyProvider with ChangeNotifier {
   void addWordFromBook(book, wordTxt) {
     int i = _folders.indexWhere((f) => f['id'] == book['id']);
     Map word = {
-      'title': wordTxt,
+      'title': '${wordTxt[0].toUpperCase()}${wordTxt.substring(1)}',
       'folder_name': book['folder_name'],
       'folder': book['id'],
       'liked': false,
@@ -140,4 +143,25 @@ class VocabularyProvider with ChangeNotifier {
     _folders[i]['total_words'] += 1;
     notifyListeners();
   }
+
+  get firstThreeWords => _questionWords.take(3).toList();
+
+  void setQuestionWords() {
+    _questionWords = _allWords.where((w) => w['relearn'] || w['new']).toList();
+  }
+
+  void shuffle() {
+    this._questionWords.shuffle();
+    notifyListeners();
+  }
+
+  void startLoading() {
+    _loading = true;
+    Timer(Duration(milliseconds: 500), () {
+      _loading = false;
+      notifyListeners();
+    });
+  }
+
+  get loading => _loading;
 }

@@ -2,10 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/question_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
-import 'package:oken/providers/word_provider.dart';
+import 'package:oken/providers/vocabulary_provider.dart';
 import 'package:oken/widgets/audiobar.dart';
 import 'package:oken/widgets/header.dart';
 import 'package:oken/widgets/memory.dart';
@@ -24,6 +23,9 @@ class _QuestionPageState extends State<QuestionPage> {
   void initState() {
     questions = Provider.of<QuestionProvider>(context, listen: false);
     questions.shuffle();
+    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
+    vocabulary.load();
+    vocabulary.setQuestionWords();
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     super.initState();
@@ -38,7 +40,6 @@ class _QuestionPageState extends State<QuestionPage> {
 
   QuestionProvider questions;
   TimerProvider timer;
-  WordProvider words;
   bool auto = true;
   int duration = 300;
   SwiperController cont;
@@ -46,6 +47,7 @@ class _QuestionPageState extends State<QuestionPage> {
   Map args;
   Size size;
   bool offWords = false;
+  VocabularyProvider vocabulary;
 
   @override
   Widget build(BuildContext context) {
@@ -53,9 +55,9 @@ class _QuestionPageState extends State<QuestionPage> {
     args = ModalRoute.of(context).settings.arguments;
     questions.setQuestions(args['question_type']);
     timer = Provider.of<TimerProvider>(context, listen: false);
-    words = Provider.of<WordProvider>(context);
     cont = SwiperController();
     size = MediaQuery.of(context).size;
+    Provider.of<VocabularyProvider>(context);
 
     if (isPristine) {
       cont.startAutoplay();
@@ -144,7 +146,7 @@ class _QuestionPageState extends State<QuestionPage> {
         onIndexChanged: (i) {
           cont.stopAutoplay();
           isPristine = false;
-          words.shuffle();
+          vocabulary.shuffle();
         },
         itemCount: questions.allQuestions.length,
         itemBuilder: (BuildContext context, int index) {
@@ -231,7 +233,7 @@ class _QuestionPageState extends State<QuestionPage> {
               child: Icon(Icons.autorenew,
                   size: size.width * 0.1, color: Colors.white.withOpacity(0.8)),
             ),
-            onTap: () => words.shuffle(),
+            onTap: () => vocabulary.shuffle(),
             splashColor: Colors.white.withOpacity(0.2)),
       ),
     );
@@ -246,8 +248,10 @@ class _QuestionPageState extends State<QuestionPage> {
             customBorder: CircleBorder(),
             child: Container(
               padding: EdgeInsets.all(10),
-              child: Icon(                
-                offWords ? Icons.font_download_outlined  : Icons.font_download_off_outlined,
+              child: Icon(
+                  offWords
+                      ? Icons.font_download_outlined
+                      : Icons.font_download_off_outlined,
                   size: size.width * 0.09,
                   color: Colors.white.withOpacity(0.8)),
             ),

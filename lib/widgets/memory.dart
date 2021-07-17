@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oken/providers/word_provider.dart';
+import 'package:oken/providers/vocabulary_provider.dart';
 import 'package:oken/utils/text_size.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -18,12 +18,12 @@ class Memory extends StatefulWidget {
 }
 
 class _MemoryState extends State<Memory> {
-  WordProvider words;
   Size size;
+  VocabularyProvider vocabulary;
 
   @override
   Widget build(BuildContext context) {
-    words = Provider.of<WordProvider>(context);
+    vocabulary = Provider.of<VocabularyProvider>(context);
     size = MediaQuery.of(context).size;
 
     widget.timelinePath =
@@ -41,7 +41,7 @@ class _MemoryState extends State<Memory> {
   }
 
   Widget _shifter() {
-    if (words.loading && widget.showWords) {
+    if (vocabulary.loading && widget.showWords) {
       return SpinKitRotatingCircle(
         color: widget.loaderColor,
         size: size.width * 0.16,
@@ -78,7 +78,7 @@ class _MemoryState extends State<Memory> {
         if (widget.showWords)
           Positioned(
               child: Text(
-                words.firstThreeWords[0],
+                vocabulary.firstThreeWords[0]['title'],
                 style: TextStyle(
                     fontSize: size.width * 0.05, color: widget.textColor),
               ),
@@ -89,7 +89,7 @@ class _MemoryState extends State<Memory> {
               child: Container(
                 width: 190,
                 child: Text(
-                  words.firstThreeWords[1],
+                  vocabulary.firstThreeWords[1]['title'],
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: size.width * 0.05, color: widget.textColor),
@@ -100,19 +100,19 @@ class _MemoryState extends State<Memory> {
         if (widget.showWords)
           Positioned(
               child: Container(
-                width: words.firstThreeWords[2].length < 10
+                width: vocabulary.firstThreeWords[2]['title'].length < 10
                     ? size.width * 0.35
-                    : words.firstThreeWords[2].length < 16
+                    : vocabulary.firstThreeWords[2]['title'].length < 16
                         ? size.width * 0.4
                         : size.width * 0.45,
                 child: Text(
-                  words.firstThreeWords[2],
+                  vocabulary.firstThreeWords[2]['title'],
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: size.width * 0.05, color: widget.textColor),
                 ),
               ),
-              top: TextSize(words.firstThreeWords[2])
+              top: TextSize(vocabulary.firstThreeWords[2]['title'])
                       .isGreaterThan(size.width * 0.45, 17.5)
                   ? size.height * 0.18
                   : size.height * 0.2,

@@ -16,6 +16,7 @@ import 'package:oken/providers/reading_provider.dart';
 import 'package:oken/providers/themed_quiz_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/providers/ui_provider.dart';
+import 'package:oken/providers/vocabulary_provider.dart';
 import 'package:oken/providers/word_list.dart';
 import 'package:oken/providers/word_provider.dart';
 import 'package:oken/providers/hint_img_provider.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HintImgProvider()),
         ChangeNotifierProvider(create: (context) => ThemedQuizProvider()),
         ChangeNotifierProvider(create: (context) => UIProvider()),
+        ChangeNotifierProvider(create: (context) => VocabularyProvider()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

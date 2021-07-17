@@ -10,13 +10,15 @@ class FolderPage extends StatefulWidget {
 
 class _FolderPageState extends State<FolderPage> {
   Size size;
+  Map args;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    args = ModalRoute.of(context).settings.arguments;
 
     return Scaffold(
-        appBar: baseAppBar(size, title: 'Dracula - Bram Robe', back: true, shadow: false),
+        appBar: baseAppBar(size, title: args['name'], back: true, shadow: false),
         body: _body()
     );
   }

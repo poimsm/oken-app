@@ -25,7 +25,7 @@ class NavDrawer extends StatelessWidget {
             ],
           ))),
           Container(
-            padding: EdgeInsets.only(bottom: 15),
+            padding: EdgeInsets.only(bottom: size.height*0.03),
             alignment: Alignment.center,
             child: InkWell(
               onTap: () {
@@ -33,21 +33,20 @@ class NavDrawer extends StatelessWidget {
                 Navigator.pushNamed(context, 'tutorial');
               },
               child: Container(
-                padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+                padding: EdgeInsets.symmetric(vertical: 8, horizontal: size.height*0.025),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10),
                   color: Color(0xff8D35CF).withOpacity(0.9),
                 ),
-                width: 170,
+                width: size.width*0.45,
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                  Icon(Icons.campaign, color: Colors.white),
+                  Icon(Icons.campaign, color: Colors.white, size: size.width*0.06),
                   SizedBox(width: 10),
                   Text('Tutorial', style: TextStyle(
                     color: Colors.white,
-                    // fontWeight: FontWeight.bold,
-                    fontSize: 19
+                    fontSize: size.width*0.055
                   ),)
                 ],)
               ),

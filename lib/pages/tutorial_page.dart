@@ -32,7 +32,6 @@ class _TutorialPageState extends State<TutorialPage> {
           SizedBox(height: 15),
           _text('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do.'),
           SizedBox(height: 15),
-          // _test(),
           _infographic('https://res.cloudinary.com/ddon9fx1n/image/upload/v1626324679/j04.png'),
           SizedBox(height: 15),
           _text('Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.'),
@@ -56,22 +55,16 @@ class _TutorialPageState extends State<TutorialPage> {
 
   Widget _title(String txt) {
     return Text(txt, textAlign: TextAlign.center, style: TextStyle(
-      fontSize: 24,
+      fontSize: size.width*0.075,
       color: Color(0xff404040)
     ),);
   }
 
   Widget _text(String txt) {
     return Text(txt, style: TextStyle(
-      fontSize: 16.5,
+      fontSize: size.width*0.047,
       color: Colors.black54
     ));
-  }
-
-  Widget _test() {
-    return InteractiveViewer(
-      child: Image.network('https://res.cloudinary.com/ddon9fx1n/image/upload/v1626324679/j04.png')
-    );
   }
 
   Widget _infographic(String imageURL) {
@@ -83,7 +76,7 @@ class _TutorialPageState extends State<TutorialPage> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
-            child: Image.network(imageURL, height: 420, width: 340, fit: BoxFit.cover)),
+            child: Image.network(imageURL, height: size.height*0.6, width: size.width*0.9, fit: BoxFit.cover)),
           Positioned(
             bottom: 10,
             right: 10,
@@ -93,7 +86,7 @@ class _TutorialPageState extends State<TutorialPage> {
                 color: Colors.black.withOpacity(0.6),
                 borderRadius: BorderRadius.circular(8)
               ),
-              child: Icon(Icons.fullscreen, color: Colors.white, size: 30)
+              child: Icon(Icons.fullscreen, color: Colors.white, size: size.width*0.085)
             ),
           )
         ]

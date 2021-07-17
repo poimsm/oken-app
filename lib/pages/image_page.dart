@@ -197,7 +197,7 @@ class _ImagePageState extends State<ImagePage> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   color: Colors.black.withOpacity(0.5),
                   child: Icon(LineIcons.angleLeft,
-                      color: Colors.white, size: size.height * 0.2),
+                      color: Colors.white, size: size.height * 0.19),
                 ),
               ),
             ),
@@ -210,7 +210,7 @@ class _ImagePageState extends State<ImagePage> {
                   padding: EdgeInsets.symmetric(vertical: 10),
                   color: Colors.black.withOpacity(0.5),
                   child: Icon(LineIcons.angleRight,
-                      color: Colors.white, size: size.height * 0.2),
+                      color: Colors.white, size: size.height * 0.19),
                 ),
               ),
             )

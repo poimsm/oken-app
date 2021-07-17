@@ -42,7 +42,7 @@ class _AddPageState extends State<AddPage> {
 
   Widget _header(txt) {
     return Container(
-      padding: EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 20),
+      padding: EdgeInsets.all(20),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -50,13 +50,14 @@ class _AddPageState extends State<AddPage> {
           Text(
             txt,
             style: TextStyle(
-              fontSize: 21,
+              fontSize: size.width * 0.06,
               color: Color(0xff92D050),
             ),
           ),
           InkWell(
               onTap: () => Navigator.pop(context),
-              child: Icon(LineIcons.times, color: Color(0xff92D050), size: 30))
+              child: Icon(LineIcons.times,
+                  color: Color(0xff92D050), size: size.width * 0.085))
         ],
       ),
     );
@@ -64,12 +65,17 @@ class _AddPageState extends State<AddPage> {
 
   Widget _title(txt) {
     return Container(
-        width: MediaQuery.of(context).size.width,
-        padding: EdgeInsets.only(top: 30, bottom: 60, left: 20, right: 70),
+        width: size.width,
+        padding: EdgeInsets.only(
+            top: size.width * 0.09,
+            bottom: size.width * 0.17,
+            left: 20,
+            right: size.width * 0.19),
         alignment: Alignment.center,
         child: Text(
           txt,
-          style: TextStyle(fontSize: 27, color: Color(0xff404040)),
+          style:
+              TextStyle(fontSize: size.width * 0.08, color: Color(0xff404040)),
         ));
   }
 
@@ -77,7 +83,7 @@ class _AddPageState extends State<AddPage> {
     return Container(
       alignment: Alignment.center,
       child: Container(
-          width: MediaQuery.of(context).size.width * 0.9,
+          width: size.width * 0.9,
           padding: EdgeInsets.only(bottom: 5),
           decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Colors.black26))),
@@ -115,11 +121,13 @@ class _AddPageState extends State<AddPage> {
         Navigator.pop(context);
       },
       child: Container(
-          padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+          padding: EdgeInsets.symmetric(
+              vertical: size.width * 0.02, horizontal: size.width * 0.04),
           decoration: BoxDecoration(
               color: Color(0xff92D050),
-              borderRadius: BorderRadius.circular(15)),
-          child: Icon(Icons.edit_outlined, color: Colors.white, size: 32)),
+              borderRadius: BorderRadius.circular(size.width * 0.04)),
+          child: Icon(Icons.edit_outlined,
+              color: Colors.white, size: size.width * 0.085)),
     );
   }
 }

@@ -50,17 +50,19 @@ class _UserPageState extends State<UserPage> {
             Divider(),
             SizedBox(height: size.width * 0.03),
             Text(
-              'MY WORDS (15)',
+              'MY WORDS (13)',
               style: TextStyle(
                   fontSize: size.width * 0.038,
                   color: Colors.black.withOpacity(0.6)),
             ),
             Container(
-                padding: EdgeInsets.only(right: size.width * 0.06),
+                padding: EdgeInsets.only(
+                    right: size.width * 0.06, top: size.width * 0.03),
                 width: size.width,
                 child: _words()),
+            SizedBox(height: size.width * 0.02),
             InkWell(
-              onTap: () => Navigator.pushNamed(context, 'chat'),
+              onTap: () => Navigator.pushNamed(context, 'vocabulary'),
               child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -69,6 +71,7 @@ class _UserPageState extends State<UserPage> {
                   child: Icon(Icons.edit,
                       color: Colors.white, size: size.width * 0.06)),
             ),
+            SizedBox(height: 10),
             Divider(),
             _menu(),
           ],
@@ -80,33 +83,36 @@ class _UserPageState extends State<UserPage> {
   }
 
   Widget _words() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
+    return Wrap(
       children: [
         SizedBox(height: size.width * 0.045),
-        _element('Downwash'),
+        _element('Shattered'),
+        SizedBox(height: size.width * 0.045),
+        _element('Gimme a break!'),
         SizedBox(height: size.width * 0.045),
         _element('Hello'),
         SizedBox(height: size.width * 0.045),
-        _element('Briming with energy'),
+        _element('Swoop'),
         SizedBox(height: size.width * 0.045),
-        _element('Swoope'),
-        SizedBox(height: size.width * 0.045),
-        _element('Abvode mentioned'),
+        _element('A drawback'),
       ],
     );
   }
 
   Widget _element(text) {
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          border: Border.all(width: 1, color: Color(0xffBFBFBF))),
-      child: Text(
-        text,
-        style:
-            TextStyle(fontSize: size.width * 0.041, color: Color(0xff7F7F7F)),
+      padding: EdgeInsets.symmetric(
+          vertical: size.width * 0.012, horizontal: size.width * 0.012),
+      child: Container(
+        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            border: Border.all(width: 1, color: Color(0xffBFBFBF))),
+        child: Text(
+          text,
+          style:
+              TextStyle(fontSize: size.width * 0.041, color: Color(0xff7F7F7F)),
+        ),
       ),
     );
   }
@@ -118,16 +124,27 @@ class _UserPageState extends State<UserPage> {
           SizedBox(height: size.width * 0.045),
           _item('Email'),
           SizedBox(height: size.width * 0.045),
-          _item('Coins'),
+          _item('Coins', coins: true),
           SizedBox(height: size.width * 0.045),
           _item('Change password'),
-          SizedBox(height: size.width * 0.08),
+          SizedBox(height: size.width * 0.15),
+          Container(
+              width: size.width,
+              alignment: Alignment.center,
+              child: Text(
+                'Delete Account',
+                style: TextStyle(
+                  fontSize: size.width * 0.047,
+                  color: Colors.red.withOpacity(0.8),
+                ),
+              ))
         ],
       ),
     );
   }
 
-  Widget _item(txt) {
+  Widget _item(txt, {coins}) {
+    coins = coins == null ? false : coins;
     return Container(
       width: size.width,
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.045),
@@ -139,9 +156,30 @@ class _UserPageState extends State<UserPage> {
             style:
                 TextStyle(fontSize: 17, color: Colors.black.withOpacity(0.8)),
           ),
-          Icon(Icons.chevron_right, color: Colors.black.withOpacity(0.4))
+          Row(
+            children: [
+              if (coins) _coins(),
+              Icon(Icons.chevron_right, color: Colors.black.withOpacity(0.4))
+            ],
+          )
         ],
       ),
+    );
+  }
+
+  Widget _coins() {
+    return Row(
+      children: [
+        Image.asset('assets/coin01.png', width: size.width * 0.065),
+        SizedBox(width: 5),
+        Text(
+          '900',
+          style: TextStyle(
+            color: Colors.black54,
+            fontSize: size.width * 0.047,
+          ),
+        )
+      ],
     );
   }
 }

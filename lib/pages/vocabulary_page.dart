@@ -103,14 +103,14 @@ class _VocabularyPageState extends State<VocabularyPage>
         'label': 'Enter a new word…'
       }),
       child: Container(
-          height: 55,
-          width: 55,
+          height: size.width*0.15,
+          width: size.width*0.15,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             color: Color(0xff92D050),
           ),
           alignment: Alignment.center,
-          child: Icon(Icons.add, color: Colors.white)),
+          child: Icon(Icons.add, color: Colors.white, size: size.width*0.07)),
     );
   }
 
@@ -135,7 +135,7 @@ class _VocabularyPageState extends State<VocabularyPage>
     bool likedTab = type == 'liked';
 
     return Container(
-        width: MediaQuery.of(context).size.width,
+        width: size.width,
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
         decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color: Color(0xffE7E6E6)))),
@@ -148,23 +148,24 @@ class _VocabularyPageState extends State<VocabularyPage>
             },
             child: Container(
               padding: EdgeInsets.symmetric(vertical: 10),
-              width: MediaQuery.of(context).size.width * 0.8,
+              width: size.width * 0.8,
               alignment: Alignment.center,
               child: Text(
                 '${elem['title'][0].toUpperCase()}${elem['title'].substring(1)}',
-                style: TextStyle(color: Color(0xff7F7F7F), fontSize: 18),
+                style: TextStyle(color: Color(0xff7F7F7F), fontSize: size.width*0.052),
               ),
             ),
           ),
           if (likedTab)
             InkWell(
                 onTap: () => vocabulary.removeFromLikedList(elem['id']),
-                child: Icon(LineIcons.times, color: Colors.black26)),
+                child: Icon(LineIcons.times, color: Colors.black26, size: size.width*0.065)),
           if (!likedTab)
             InkWell(
               onTap: () => vocabulary.likeWord(elem['id']),
               child: Icon(elem['liked'] ? Icons.favorite : LineIcons.heart,
-                  color: elem['liked'] ? Color(0xffFF6565) : Color(0xffD9D9D9)),
+                  color: elem['liked'] ? Color(0xffFF6565) : Color(0xffD9D9D9),
+                  size: size.width*0.065),
             )
         ]));
   }
@@ -183,7 +184,7 @@ class _VocabularyPageState extends State<VocabularyPage>
     return InkWell(
       onTap: () => Navigator.pushNamed(context, 'folder', arguments: elem),
       child: Container(
-          width: MediaQuery.of(context).size.width,
+          width: size.width,
           padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
           decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Color(0xffE7E6E6)))),
@@ -193,14 +194,14 @@ class _VocabularyPageState extends State<VocabularyPage>
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.folder, color: Colors.black45),
+                  Icon(Icons.folder, color: Colors.black45, size: size.width*0.065),
                   SizedBox(width: 10),
                   Container(
-                    width: MediaQuery.of(context).size.width * 0.6,
+                    width: size.width * 0.6,
                     child: Text(elem['name'],
                         overflow: TextOverflow.ellipsis,
                         style:
-                            TextStyle(fontSize: 18, color: Color(0xff7F7F7F))),
+                            TextStyle(fontSize: size.width*0.05, color: Color(0xff7F7F7F))),
                   )
                 ],
               ),
@@ -209,7 +210,7 @@ class _VocabularyPageState extends State<VocabularyPage>
                   Text(
                     '(${elem['total_words'].toString()})',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: size.width*0.052,
                       color: Color(0xff7F7F7F),
                     ),
                   ),
@@ -263,7 +264,7 @@ class _VocabularyPageState extends State<VocabularyPage>
           bool knownTab = type == 'known';
           return Container(
             color: Color(0xFF737373),
-            height: 250,
+            height: size.width*0.7,
             child: Container(
               decoration: BoxDecoration(
                   color: Colors.white,
@@ -279,13 +280,15 @@ class _VocabularyPageState extends State<VocabularyPage>
 
   Widget _actionSheetBody(elem, knownTab) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(height: 30),
+      SizedBox(height: size.width*0.1),
       _actionSheetHeader(elem),
-      SizedBox(height: 10),
+      SizedBox(height: size.width*0.035),
       Divider(),
-      SizedBox(height: 10),
+      SizedBox(height: size.width*0.035),
       ListTile(
-          title: Text(knownTab ? 'Relearn' : 'Known'),
+          title: Text(knownTab ? 'Relearn' : 'Known', style: TextStyle(
+            fontSize: size.width*0.044
+          ),),
           onTap: () {
             if (knownTab) {
               vocabulary.markAsRelearn(elem['id']);
@@ -295,7 +298,9 @@ class _VocabularyPageState extends State<VocabularyPage>
             Navigator.pop(context);
           }),
       ListTile(
-          title: Text('Delete', style: TextStyle(color: Colors.red)),
+          title: Text('Delete', style: TextStyle(
+            color: Colors.red,
+            fontSize: size.width*0.044)),
           onTap: () {
             vocabulary.deleteWord(elem);
             Navigator.pop(context);
@@ -309,18 +314,18 @@ class _VocabularyPageState extends State<VocabularyPage>
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Row(
             children: [
-              Icon(LineIcons.mitten, color: Colors.black87, size: 22),
+              Icon(LineIcons.mitten, color: Colors.black87, size: size.width*0.07),
               SizedBox(width: 5),
               Text(elem['title'],
-                  style: TextStyle(fontSize: 18, color: Colors.black87)),
+                  style: TextStyle(fontSize: size.width*0.052, color: Colors.black87)),
             ],
           ),
-          SizedBox(height: 3),
+          SizedBox(height: size.width*0.01),
           Row(
             children: [
-              SizedBox(width: 10),
+              SizedBox(width: size.width*0.03),
               Text(elem['folder_name'],
-                  style: TextStyle(fontSize: 15, color: Colors.black54)),
+                  style: TextStyle(fontSize: size.width*0.04, color: Colors.black54)),
             ],
           )
         ]));

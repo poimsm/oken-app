@@ -22,30 +22,30 @@ AppBar vocabularyAppBar(
         controller: _tabController,
         isScrollable: true,
         indicatorColor: Colors.white,
-        indicatorWeight: 6,
+        indicatorWeight: size.width*0.015,
         tabs: [
           Tab(
               child: Container(
-                  child: Text('Latest', style: TextStyle(fontSize: 17)))),
+                  child: Text('Latest', style: TextStyle(fontSize: size.width*0.049)))),
           Tab(
               child: Container(
-                  child: Text('Relearn', style: TextStyle(fontSize: 17)))),
+                  child: Text('Relearn', style: TextStyle(fontSize: size.width*0.049)))),
           Tab(
               child: Container(
-                  child: Text('Known', style: TextStyle(fontSize: 17)))),
+                  child: Text('Known', style: TextStyle(fontSize: size.width*0.049)))),
           Tab(
               child: Container(
                   child: Row(children: [
-            Icon(Icons.favorite_outline, color: Colors.white),
+            Icon(Icons.favorite_outline, color: Colors.white, size: size.width*0.06),
             SizedBox(width: 5),
-            Text('Liked', style: TextStyle(fontSize: 17)),
+            Text('Liked', style: TextStyle(fontSize: size.width*0.049)),
           ]))),
           Tab(
               child: Container(
                   child: Row(children: [
-            Icon(Icons.folder_outlined, color: Colors.white),
+            Icon(Icons.folder_outlined, color: Colors.white, size: size.width*0.06),
             SizedBox(width: 5),
-            Text('Folders', style: TextStyle(fontSize: 17)),
+            Text('Folders', style: TextStyle(fontSize: size.width*0.049)),
           ]))),
         ],
       ));

@@ -19,7 +19,7 @@ class _ViewerPageState extends State<ViewerPage> {
     return Scaffold(
         body: Container(
             color: Colors.black,
-            padding: EdgeInsets.only(top: 60),
+            padding: EdgeInsets.only(top: size.height*0.06),
             height: MediaQuery.of(context).size.height,
             alignment: Alignment.center,
             child: Center(child: _body())));

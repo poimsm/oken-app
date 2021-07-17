@@ -80,6 +80,19 @@ class VocabularyProvider with ChangeNotifier {
   void addWord(txt) {
     int userId = 839221;
     int index = _folders.indexWhere((f) => f['id'] == userId);
+
+    if (index < 0) {
+      Map folder = {
+        'name': 'My words',
+        'id': userId,
+        'default': true,
+        'total_words': 0
+      };
+
+      _folders.add(folder);
+      index = _folders.indexWhere((f) => f['id'] == userId);
+    }
+
     _folders[index]['total_words']++;
 
     Map word = {

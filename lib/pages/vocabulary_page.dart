@@ -66,8 +66,8 @@ class _VocabularyPageState extends State<VocabularyPage>
                 ],
               ),
               _list('relearn'),
-              _list('known', knownTab: true),
-              _list('liked', likedTab: true),
+              _list('known'),
+              _list('liked'),
               _folderList(),
             ],
           )),
@@ -114,19 +114,20 @@ class _VocabularyPageState extends State<VocabularyPage>
     );
   }
 
-  Widget _list(String type, {likedTab, knownTab}) {
+  Widget _list(String type) {
     List words = vocabulary.getWords(type);
     return SingleChildScrollView(
       child: Container(
           padding: EdgeInsets.only(top: 20),
-          child: Column(
-            children: List.generate(
+          child: Column(children: [
+            ...List.generate(
                 words.length,
                 (i) => _item(
                       words[i],
                       type,
                     )),
-          )),
+            SizedBox(height: 100),
+          ])),
     );
   }
 
@@ -150,7 +151,7 @@ class _VocabularyPageState extends State<VocabularyPage>
               width: MediaQuery.of(context).size.width * 0.8,
               alignment: Alignment.center,
               child: Text(
-                elem['title'],
+                '${elem['title'][0].toUpperCase()}${elem['title'].substring(1)}',
                 style: TextStyle(color: Color(0xff7F7F7F), fontSize: 18),
               ),
             ),
@@ -194,8 +195,13 @@ class _VocabularyPageState extends State<VocabularyPage>
                 children: [
                   Icon(Icons.folder, color: Colors.black45),
                   SizedBox(width: 10),
-                  Text(elem['name'],
-                      style: TextStyle(fontSize: 18, color: Color(0xff7F7F7F)))
+                  Container(
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: Text(elem['name'],
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            TextStyle(fontSize: 18, color: Color(0xff7F7F7F))),
+                  )
                 ],
               ),
               Row(

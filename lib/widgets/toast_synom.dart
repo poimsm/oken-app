@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/ui_provider.dart';
+import 'package:oken/providers/vocabulary_provider.dart';
 import 'package:provider/provider.dart';
 
 class ToastSynonym extends StatefulWidget {
-  ToastSynonym({
-    Key key,
-  }) : super(key: key);
+  ToastSynonym(this.book);
+  Map book;
 
   @override
   _ToastSynonymState createState() => _ToastSynonymState();
@@ -14,11 +14,18 @@ class ToastSynonym extends StatefulWidget {
 class _ToastSynonymState extends State<ToastSynonym> {
   UIProvider ui;
   Size size;
+  VocabularyProvider vocabulary;
+
+  String extractWord(txt) {
+    RegExp re = RegExp(r'\w+');
+    return re.firstMatch(txt).group(0);
+  }
 
   @override
   Widget build(BuildContext context) {
     ui = Provider.of<UIProvider>(context);
     size = MediaQuery.of(context).size;
+    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
     return ui.showSynomToast ? _body() : Container();
   }
 
@@ -40,7 +47,8 @@ class _ToastSynonymState extends State<ToastSynonym> {
                 Row(
                   children: [
                     Image.asset('assets/coffee.png',
-                        width: size.width*0.1, color: Colors.white.withOpacity(0.7)),
+                        width: size.width * 0.1,
+                        color: Colors.white.withOpacity(0.7)),
                     SizedBox(width: 10),
                     ConstrainedBox(
                       constraints: BoxConstraints(
@@ -49,27 +57,58 @@ class _ToastSynonymState extends State<ToastSynonym> {
                           maxWidth: size.width * 0.55,
                           minWidth: size.width * 0.4),
                       child: Container(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [_word(), _synom()],
-                        ),
-                      ),
+                          child: ui.synomSaved ? _saved() : _normal()),
                     )
                   ],
                 ),
-                Icon(Icons.add, color: Colors.white, size: size.width*0.07)
+                InkWell(
+                    onTap: () {
+                      ui.setSynomSaved();
+                      vocabulary.addWordFromBook(
+                          widget.book, extractWord(ui.word['word']));
+                    },
+                    child: Icon(Icons.add,
+                        color: Colors.white, size: size.width * 0.07))
               ],
             )),
       ),
     );
   }
 
+  Widget _saved() {
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          children: [
+            Icon(Icons.check, color: Colors.white, size: size.width * 0.06),
+            SizedBox(width: 5),
+            Text(
+              'Saved',
+              style: TextStyle(
+                fontSize: size.width * 0.045,
+                color: Colors.white,
+              ),
+            )
+          ],
+        ));
+  }
+
+  Widget _normal() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [_word(), _synom()],
+    );
+  }
+
   Widget _word() {
+    String word = extractWord(ui.word['word']);
     return Text(
-      "${ui.word['word'][0].toUpperCase()}${ui.word['word'].substring(1)}",
+      '${word[0].toUpperCase()}${word.substring(1)}',
       style: TextStyle(
-          fontSize: size.width*0.045, fontWeight: FontWeight.bold, color: Colors.white),
+          fontSize: size.width * 0.045,
+          fontWeight: FontWeight.bold,
+          color: Colors.white),
     );
   }
 
@@ -77,7 +116,7 @@ class _ToastSynonymState extends State<ToastSynonym> {
     return Flexible(
       child: Text(
         ui.word['synonym'],
-        style: TextStyle(fontSize: size.width*0.043, color: Colors.white),
+        style: TextStyle(fontSize: size.width * 0.043, color: Colors.white),
       ),
     );
   }

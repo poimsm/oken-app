@@ -148,8 +148,9 @@ class _ParagraphState extends State<Paragraph> {
           ),
           child: Text(
             word['word'],
-            style:
-                TextStyle(fontSize: size.width*0.0475, color: Colors.black.withOpacity(0.7)),
+            style: TextStyle(
+                fontSize: size.width * 0.0475,
+                color: Colors.black.withOpacity(0.7)),
           )),
     );
   }
@@ -161,6 +162,7 @@ class _ParagraphState extends State<Paragraph> {
       }
       int msec = word['synonym'].length > 30 ? 6500 : 3500;
       timer = Timer(Duration(milliseconds: msec), () {
+        if (ui.synomSaved) return;
         ui.setSynomToast(false, word);
       });
       ui.setSynomToast(true, word);

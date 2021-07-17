@@ -12,17 +12,17 @@ class Questions {
 }
 
 List<String> _randomQuestions = [
-  "If you could go back in time and change one thing, what would that be?",
   "What is one thing you would change about your home?",
-  "What are some things that you should not not say during a job interview?",
-  "What do you do when you're bored?",
-  "What qualities do you value most in a friend?",
+  "If you could choose your last meal, what would it be?",
   "If you were the opposite gender for one day, what would you do?",
   "What celebrity do you like to follow?",
   "Do you like to plan things out or be spontaneous?",
+  "What are some things that you should not not say during a job interview?",
+  "What do you do when you're bored?",
   "What is your favorite childhood memory?",
+  "What qualities do you value most in a friend?",
+  "If you could go back in time and change one thing, what would that be?",
   "What is the least favorite thing about this week?",
-  "If you could choose your last meal, what would it be?",
   "What is one thing that you would like to change about the world?",
   "What is your favorite season?",
   "What is your favorite brand?",

@@ -6,6 +6,7 @@ import 'package:oken/providers/reading_provider.dart';
 import 'package:oken/providers/rx_loader.dart';
 import 'package:oken/providers/rx_paragraph.dart';
 import 'package:oken/providers/ui_provider.dart';
+import 'package:oken/providers/vocabulary_provider.dart';
 import 'package:oken/providers/word_provider.dart';
 import 'package:oken/widgets/header_reading.dart';
 import 'package:oken/widgets/loader.dart';
@@ -26,10 +27,13 @@ class _ReadingPageState extends State<ReadingPage> {
   WordProvider words;
 
   ScrollController _scrollController = new ScrollController();
+  VocabularyProvider vocabulary;
 
   @override
   void initState() {
     reading = Provider.of<ReadingProvider>(context, listen: false);
+    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
+    vocabulary.load();
     super.initState();
   }
 
@@ -108,7 +112,7 @@ class _ReadingPageState extends State<ReadingPage> {
             Positioned(
                 child: HeaderReading(title: args['title']), top: 0, left: 0),
             Positioned(
-                child: ToastSynonym(), bottom: size.height * 0.025, left: 0),
+                child: ToastSynonym(args), bottom: size.height * 0.025, left: 0),
             StreamBuilder(
                 stream: rxLoader.isLoading,
                 builder: (context, snapshot) {

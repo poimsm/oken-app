@@ -36,7 +36,7 @@ class _MemoryState extends State<Memory> {
         : Color(0xff92D050).withOpacity(0.6);
 
     return Container(
-        height: widget.showWords ? size.height * 0.28 : size.height * 0.15,
+        height: widget.showWords ? size.height * 0.28 : size.height * 0.25,
         child: _shifter());
   }
 
@@ -59,22 +59,26 @@ class _MemoryState extends State<Memory> {
                   Image.asset(widget.timelinePath, height: size.height * 0.26),
               top: 0,
               left: size.width * 0.29),
-        // if (widget.showWords)
-        //   Positioned(
-        //       child: Image.asset('assets/chat01.png',
-        //           width: size.width * 0.15,
-        //           color: Color(0xff92D050).withOpacity(0.9),
-        //           fit: BoxFit.fill),
-        //       top: size.height * 0.07,
-        //       left: size.width * 0.08),
         if (!widget.showWords)
           Positioned(
-              child: Image.asset('assets/chat01.png',
-                  width: size.width * 0.15,
-                  fit: BoxFit.fill,
-                  color: Color(0xff92D050).withOpacity(0.45)),
+              child: Container(
+                child: Column(
+                  children: [
+                    Image.asset('assets/chat01.png',
+                        width: size.width * 0.15,
+                        fit: BoxFit.fill,
+                        color: Color(0xff92D050).withOpacity(0.45)),
+                    Container(
+                        padding: EdgeInsets.only(top: 15),
+                        child: Text('V O C A B U L A R Y',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Color(0xff92D050).withOpacity(0.5)))),
+                  ],
+                ),
+              ),
               top: size.height * 0.07,
-              left: size.width * 0.32),
+              left: size.width * 0.2),
         if (widget.showWords)
           Positioned(
               child: Text(

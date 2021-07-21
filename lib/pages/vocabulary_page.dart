@@ -286,7 +286,7 @@ class _VocabularyPageState extends State<VocabularyPage>
       Divider(),
       SizedBox(height: size.width*0.035),
       ListTile(
-          title: Text(knownTab ? 'Relearn' : 'Known', style: TextStyle(
+          title: Text(knownTab ? 'Relearn' : 'Mastered', style: TextStyle(
             fontSize: size.width*0.044
           ),),
           onTap: () {

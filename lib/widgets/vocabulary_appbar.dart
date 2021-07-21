@@ -32,7 +32,7 @@ AppBar vocabularyAppBar(
                   child: Text('Relearn', style: TextStyle(fontSize: size.width*0.049)))),
           Tab(
               child: Container(
-                  child: Text('Known', style: TextStyle(fontSize: size.width*0.049)))),
+                  child: Text('Mastered', style: TextStyle(fontSize: size.width*0.049)))),
           Tab(
               child: Container(
                   child: Row(children: [

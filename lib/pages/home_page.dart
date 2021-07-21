@@ -6,6 +6,7 @@ import 'package:oken/providers/content_provider.dart';
 import 'package:oken/widgets/base_appbar.dart';
 import 'package:oken/constants/types.dart' as TYPES;
 import 'package:oken/widgets/side_menu.dart';
+import 'package:oken/widgets/vocabulary_btn.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key key}) : super(key: key);
@@ -29,11 +30,17 @@ class HomePage extends StatelessWidget {
             child: Stack(
               children: [
                 _pinGrid(context),
-                  Positioned(
-                    bottom: size.height*0.015,
-                    left: 0,
-                    child: _footerBar(context),
-                  )
+                Positioned(
+                  bottom: size.height * 0.015,
+                  left: 0,
+                  child: _footerBar(context),
+                ),
+                Positioned(
+                  bottom: 32,
+                  left: 155,
+                  child: VocabularyBtn(),
+                ),
+                // _categories(),
               ],
             ),
           ),
@@ -42,22 +49,52 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  Widget _categories() {
+    return Container(
+        padding: EdgeInsets.only(top: 10, left: 10, bottom: 10),
+        color: Colors.white,
+        child: Row(children: [
+          _cat('Books', active: true),
+          SizedBox(width: 8),
+          _cat('Stories', active: false),
+          SizedBox(width: 8),
+          _cat('Images', active: false),
+          SizedBox(width: 8),
+          _cat('Quiz', active: false),
+        ]));
+  }
+
+  Widget _cat(txt, {active}) {
+    active = active == null ? false : active;
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
+      decoration: BoxDecoration(
+          color: active ? Color(0xff404040) : Color(0xffF2F2F2),
+          borderRadius: BorderRadius.circular(50)),
+      child: Text(txt,
+          style: TextStyle(
+            fontSize: 17,
+            color: active ? Colors.white : Color(0xff595959),
+          )),
+    );
+  }
+
   Widget _footerBar(context) {
     return Container(
       width: size.width,
       child: Center(
         child: Card(
+          color: Colors.black.withOpacity(0.4),
           elevation: 3,
           child: Container(
               width: size.width * 0.75,
-              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 25),
+              padding: EdgeInsets.symmetric(vertical: 8, horizontal: 45),
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    _icon(context, LineIcons.bars, 'menu'),
-                    _icon(context, LineIcons.home, '/'),
-                    _icon(context, LineIcons.edit, 'vocabulary'),
-                    _icon(context, LineIcons.user, 'user'),
+                    _icon(LineIcons.bars, page: 'menu', title: 'Menu'),
+                    SizedBox(width: 30),
+                    _icon(LineIcons.user, page: 'user', title: 'Me'),
                   ])),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
@@ -69,16 +106,21 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _icon(context2, icon, open) {
+  Widget _icon(icon, {title, page}) {
     return Builder(builder: (context) {
       return InkWell(
           onTap: () {
-            if (open == 'menu') {
+            if (page == 'menu') {
               return Scaffold.of(context).openDrawer();
             }
-            Navigator.pushNamed(context, open);
+            Navigator.pushNamed(context, page);
           },
-          child: Icon(icon, color: Colors.black38, size: size.width*0.08));
+          child: Column(
+            children: [
+              Icon(icon, color: Colors.white70, size: size.width * 0.08),
+              Text(title, style: TextStyle(color: Colors.white70, fontSize: 13))
+            ],
+          ));
     });
   }
 
@@ -91,7 +133,7 @@ class HomePage extends StatelessWidget {
   Widget _grid(context) {
     return StaggeredGridView.countBuilder(
       crossAxisCount: 2,
-            itemCount: contentInstance.length(),
+      itemCount: contentInstance.length(),
       itemBuilder: (BuildContext context, int index) => _cell(index, context),
       staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
       mainAxisSpacing: 10.0,
@@ -111,28 +153,41 @@ class HomePage extends StatelessWidget {
         children: [
           Stack(children: [
             ClipRRect(
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(5),
               child: Image.network(contentInstance.get(i)['img']),
             ),
             if (contentInstance.get(i)['isBlocked'])
               Positioned(right: 10, top: 10, child: _priceTag()),
-            Positioned(
-                right: 10,
-                bottom: 6,
-                child: _type(contentInstance.get(i)['type'])),
           ]),
           SizedBox(height: 3),
           Text(
             contentInstance.get(i)['title'],
-            style: TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
-                fontSize: size.width*0.045),
-          )
+            style:
+                TextStyle(color: Colors.black87, fontSize: size.width * 0.045),
+          ),
+          _tag(contentInstance.get(i)['type'])
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
       )),
     );
+  }
+
+  Widget _tag(type) {
+    final iconTypes = {
+      TYPES.QUESTION: 'Quiz',
+      TYPES.BOOK: 'Book',
+      TYPES.READING: 'Book',
+      TYPES.IMGS_HINT: 'Photos',
+      TYPES.QUIZ: 'Routine',
+    };
+
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(color: Colors.grey.withOpacity(0.7))),
+        child: Text(iconTypes[type],
+            style: TextStyle(fontSize: 13, color: Colors.black54)));
   }
 
   Widget _priceTag() {
@@ -142,34 +197,15 @@ class HomePage extends StatelessWidget {
           color: Colors.black.withOpacity(0.3),
           child: Row(
             children: [
-              Icon(Icons.lock, color: Colors.white, size: size.width*0.06),
+              Icon(Icons.lock, color: Colors.white, size: size.width * 0.06),
               SizedBox(width: 5),
               Text('200',
                   style: TextStyle(
-                    fontSize: size.width*0.04,
-                      color: Colors.white, fontWeight: FontWeight.bold))
+                      fontSize: size.width * 0.04,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold))
             ],
           )),
-    );
-  }
-
-  Widget _type(type) {
-    final iconTypes = {
-      TYPES.QUESTION: Icons.quiz_outlined,
-      TYPES.BOOK: Icons.format_align_right,
-      TYPES.READING: Icons.format_align_right,
-      TYPES.IMGS_HINT: Icons.collections,
-      TYPES.QUIZ: Icons.style,
-    };
-
-    return Stack(
-      children: [
-        Image.asset('assets/red_type.png',
-            width: size.width*0.13, color: Colors.grey.withOpacity(0.5)),
-        Container(
-            padding: EdgeInsets.only(top: 10, left: 10),
-            child: Icon(iconTypes[type], color: Colors.white, size: size.width*0.075))
-      ],
     );
   }
 }

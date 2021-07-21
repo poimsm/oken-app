@@ -46,9 +46,7 @@ class _ToastSynonymState extends State<ToastSynonym> {
               children: [
                 Row(
                   children: [
-                    Image.asset('assets/coffee.png',
-                        width: size.width * 0.1,
-                        color: Colors.white.withOpacity(0.7)),
+                    Icon(Icons.translate, color: Colors.white, size: 20),
                     SizedBox(width: 10),
                     ConstrainedBox(
                       constraints: BoxConstraints(
@@ -67,8 +65,13 @@ class _ToastSynonymState extends State<ToastSynonym> {
                       vocabulary.addWordFromBook(
                           widget.book, extractWord(ui.word['word']));
                     },
-                    child: Icon(Icons.add,
-                        color: Colors.white, size: size.width * 0.07))
+                    child: Text(
+                      'SAVE',
+                      style: TextStyle(
+                        color: Colors.blue,
+                        fontSize: 17,
+                      ),
+                    ))
               ],
             )),
       ),

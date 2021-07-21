@@ -11,7 +11,8 @@ AppBar baseAppBar(
   bool search = false,
 }) {
   return AppBar(
-      elevation: shadow ? 3 : 0,
+      // elevation: shadow ? 3 : 0,
+      elevation: 0,
       title: Text(title, style: TextStyle(fontSize: size.width * 0.06)),
       leading: Builder(builder: (BuildContext context) {
         return IconButton(
@@ -29,6 +30,7 @@ AppBar baseAppBar(
       }),
       titleSpacing: 0,
       backgroundColor: Color(0xff92D050),
+      // backgroundColor: Colors.black,
       actions: [
         if (whiteBtn)
           ClipRRect(

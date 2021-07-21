@@ -151,6 +151,7 @@ class VocabularyProvider with ChangeNotifier {
   }
 
   void shuffle() {
+    startLoading();
     this._questionWords.shuffle();
     notifyListeners();
   }

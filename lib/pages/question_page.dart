@@ -48,6 +48,7 @@ class _QuestionPageState extends State<QuestionPage> {
   Size size;
   bool offWords = false;
   VocabularyProvider vocabulary;
+  List actives = [false, false, false];
 
   @override
   Widget build(BuildContext context) {
@@ -230,10 +231,14 @@ class _QuestionPageState extends State<QuestionPage> {
             customBorder: CircleBorder(),
             child: Container(
               padding: EdgeInsets.all(5),
-              child: Icon(Icons.autorenew,
+              child: Icon(Icons.done,
                   size: size.width * 0.1, color: Colors.white.withOpacity(0.8)),
             ),
-            onTap: () => vocabulary.shuffle(),
+            onTap: () {
+              if (offWords) return;
+              _presentActionSheet();
+            },
+            // onTap: () => vocabulary.shuffle(),
             splashColor: Colors.white.withOpacity(0.2)),
       ),
     );
@@ -250,8 +255,8 @@ class _QuestionPageState extends State<QuestionPage> {
               padding: EdgeInsets.all(10),
               child: Icon(
                   offWords
-                      ? Icons.font_download_outlined
-                      : Icons.font_download_off_outlined,
+                      ? Icons.radio_button_unchecked
+                      : Icons.not_interested,
                   size: size.width * 0.09,
                   color: Colors.white.withOpacity(0.8)),
             ),
@@ -299,7 +304,206 @@ class _QuestionPageState extends State<QuestionPage> {
     Toast.show(text, context,
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
-}
+
+   void _presentActionSheet() {     
+    Future<void> future = showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+        return Container(
+            color: Colors.white,
+            height: size.width*0.8,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(10),
+                    topRight: Radius.circular(10),
+                  )),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Container(
+            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+            alignment: Alignment.centerRight,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    // Icon(Icons.translate, color: Colors.black.withOpacity(0.7)),
+                    // SizedBox(width: 5),
+                    Container(
+                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: Text('Vocabulary', style: TextStyle(
+                        fontSize: 15,
+                      ),),
+                    ),
+                  ],
+                ),
+                // Icon(Icons.translate, color: Colors.black.withOpacity(0.7)),
+                InkWell(
+                  onTap: () {
+                    if (actives[0] || actives[1] || actives[2]) {
+                      vocabulary.shuffle();
+                      Navigator.pop(context);
+                    }                    
+                  },
+                  child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                    child: Text('Mastered', style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 15,
+                    ),),
+                  ),
+                ),
+              ],
+            )
+          ),
+      ListTile(
+         leading: Icon(actives[0] ? Icons.check_box : Icons.check_box_outline_blank,
+          color: actives[0]? Colors.blue : Colors.black54
+        ),
+          title: Text(vocabulary.firstThreeWords[0]['title'], style: TextStyle(
+            fontSize: size.width*0.044
+          ),),
+          onTap: () {
+            actives[0] = !actives[0];
+            setState(() {});
+            // Navigator.pop(context);
+          }),
+      ListTile(
+        leading: Icon(actives[1] ? Icons.check_box : Icons.check_box_outline_blank,
+          color: actives[1]? Colors.blue : Colors.black54
+        ),
+          title: Text(vocabulary.firstThreeWords[1]['title'], style: TextStyle(
+            fontSize: size.width*0.044
+          ),),
+          onTap: () {
+            actives[1] = !actives[1];
+            setState(() {});
+            // Navigator.pop(context);
+          }),
+      ListTile(
+        leading: Icon(actives[2] ? Icons.check_box : Icons.check_box_outline_blank,
+          color: actives[2]? Colors.blue : Colors.black54
+        ),
+          title: Text(vocabulary.firstThreeWords[2]['title'], style: TextStyle(
+            fontSize: size.width*0.044
+          ),),
+          onTap: () {
+            actives[2] = !actives[2];
+            setState(() {});
+            // Navigator.pop(context);
+          }),
+          SizedBox(height: 10,),
+          InkWell(
+            onTap: () => Navigator.pop(context),
+            child: Center(
+              child: Container(
+                width: size.width*0.8,
+                padding: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(5)
+                ),
+                alignment: Alignment.center,
+                child: Text('Cancel', style: TextStyle(
+                ),)
+              ),
+            ),
+          ),
+    ])
+            ),
+          );
+          
+        });
+  });
+  void _closeModal(v) {
+    actives = [false, false, false];
+  }
+
+  future.then((void value) => _closeModal(0));
+
+  
+
+  Widget _actionSheetBody() {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      InkWell(
+        onTap: () => Navigator.pop(context),
+        child: Container(
+              padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+              alignment: Alignment.centerRight,
+              child: Text('Known', style: TextStyle(
+                color: Colors.blue,
+                fontSize: 15,
+              ),)
+            ),
+      ),
+      ListTile(
+        leading: Icon(Icons.check_box_outline_blank),
+          title: Text(vocabulary.firstThreeWords[0]['title'], style: TextStyle(
+            fontSize: size.width*0.044
+          ),),
+          onTap: () {
+            // Navigator.pop(context);
+          }),
+      ListTile(
+        leading: Icon(actives[1] ? Icons.check_box : Icons.check_box_outline_blank,
+          color: actives[1]? Colors.blue : Colors.black54
+        ),
+          title: Text(vocabulary.firstThreeWords[1]['title'], style: TextStyle(
+            fontSize: size.width*0.044
+          ),),
+          onTap: () {
+            actives[1] = !actives[1];
+            setState(() {
+              
+            });
+            // Navigator.pop(context);
+          }),
+      ListTile(
+        leading: Icon(Icons.check_box_outline_blank),
+          title: Text(vocabulary.firstThreeWords[2]['title'], style: TextStyle(
+            fontSize: size.width*0.044
+          ),),
+          onTap: () {
+            // Navigator.pop(context);
+          }),
+          SizedBox(height: 10,),
+          InkWell(
+            onTap: () => Navigator.pop(context),
+            child: Center(
+              child: Container(
+                width: size.width*0.8,
+                padding: EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black),
+                  borderRadius: BorderRadius.circular(5)
+                ),
+                alignment: Alignment.center,
+                child: Text('Cancel', style: TextStyle(
+                ),)
+              ),
+            ),
+          ),
+    ]);
+  }
+
+  Widget _actionSheetHeader(elem) {
+    return Container(
+        padding: EdgeInsets.only(left: 20),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          
+          Row(
+            children: [
+              SizedBox(width: size.width*0.03),
+              Text(elem['folder_name'],
+                  style: TextStyle(fontSize: size.width*0.04, color: Colors.black54)),
+            ],
+          )
+        ]));
+  }
+}}
 
 class Clock extends StatelessWidget {
   @override
@@ -328,4 +532,5 @@ class Clock extends StatelessWidget {
       ),
     );
   }
+  
 }

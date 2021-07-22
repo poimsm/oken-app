@@ -1,10 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/utils/helper.dart';
+import 'package:oken/widgets/vocabulary_actionsheet.dart';
 import 'package:oken/widgets/vocabulary_appbar.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class VocabularyPage extends StatefulWidget {
   @override
@@ -38,12 +43,6 @@ class _VocabularyPageState extends State<VocabularyPage>
   void initState() {
     vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
     vocabulary.load();
-    // _tabController =
-    //     TabController(length: 5, vsync: this, initialIndex: 0);
-    // _tabController.addListener(() {
-    //   currIndex = _tabController.index;
-    //   vocabulary.setWords(getTab(_tabController.index));
-    //   });
     super.initState();
   }
 
@@ -53,7 +52,7 @@ class _VocabularyPageState extends State<VocabularyPage>
     Provider.of<VocabularyProvider>(context);
 
     return DefaultTabController(
-      length: 5,
+      length: 4,
       child: Scaffold(
           appBar: vocabularyAppBar(size, _tabController),
           body: TabBarView(
@@ -62,10 +61,12 @@ class _VocabularyPageState extends State<VocabularyPage>
               Stack(
                 children: [
                   _list('latest'),
-                  Positioned(bottom: 25, right: 15, child: _favBtn())
+                  Positioned(
+                      bottom: size.width * 0.066,
+                      right: size.width * 0.045,
+                      child: _favBtn())
                 ],
               ),
-              _list('relearn'),
               _list('known'),
               _list('liked'),
               _folderList(),
@@ -103,14 +104,14 @@ class _VocabularyPageState extends State<VocabularyPage>
         'label': 'Enter a new word…'
       }),
       child: Container(
-          height: size.width*0.15,
-          width: size.width*0.15,
+          height: size.width * 0.15,
+          width: size.width * 0.15,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
             color: Color(0xff92D050),
           ),
           alignment: Alignment.center,
-          child: Icon(Icons.add, color: Colors.white, size: size.width*0.07)),
+          child: Icon(Icons.add, color: Colors.white, size: size.width * 0.07)),
     );
   }
 
@@ -136,7 +137,8 @@ class _VocabularyPageState extends State<VocabularyPage>
 
     return Container(
         width: size.width,
-        padding: EdgeInsets.symmetric(vertical: 8, horizontal: 20),
+        padding:
+            EdgeInsets.symmetric(vertical: 8, horizontal: size.width * 0.052),
         decoration: BoxDecoration(
             border: Border(bottom: BorderSide(color: Color(0xffE7E6E6)))),
         child:
@@ -151,21 +153,23 @@ class _VocabularyPageState extends State<VocabularyPage>
               width: size.width * 0.8,
               alignment: Alignment.center,
               child: Text(
-                '${elem['title'][0].toUpperCase()}${elem['title'].substring(1)}',
-                style: TextStyle(color: Color(0xff7F7F7F), fontSize: size.width*0.052),
+                Helper().toCapital(elem['title']),
+                style: TextStyle(
+                    color: Color(0xff7F7F7F), fontSize: size.width * 0.052),
               ),
             ),
           ),
           if (likedTab)
             InkWell(
                 onTap: () => vocabulary.removeFromLikedList(elem['id']),
-                child: Icon(LineIcons.times, color: Colors.black26, size: size.width*0.065)),
+                child: Icon(LineIcons.times,
+                    color: Colors.black26, size: size.width * 0.065)),
           if (!likedTab)
             InkWell(
               onTap: () => vocabulary.likeWord(elem['id']),
               child: Icon(elem['liked'] ? Icons.favorite : LineIcons.heart,
                   color: elem['liked'] ? Color(0xffFF6565) : Color(0xffD9D9D9),
-                  size: size.width*0.065),
+                  size: size.width * 0.065),
             )
         ]));
   }
@@ -173,7 +177,7 @@ class _VocabularyPageState extends State<VocabularyPage>
   _folderList() {
     return SingleChildScrollView(
       child: Container(
-          padding: EdgeInsets.only(top: 20),
+          padding: EdgeInsets.only(top: size.width * 0.052),
           child: Column(
               children: List.generate(vocabulary.folders.length,
                   (index) => _folderItem(vocabulary.folders[index])))),
@@ -185,7 +189,8 @@ class _VocabularyPageState extends State<VocabularyPage>
       onTap: () => Navigator.pushNamed(context, 'folder', arguments: elem),
       child: Container(
           width: size.width,
-          padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+          padding: EdgeInsets.symmetric(
+              vertical: size.width * 0.048, horizontal: size.width * 0.052),
           decoration: BoxDecoration(
               border: Border(bottom: BorderSide(color: Color(0xffE7E6E6)))),
           child: Row(
@@ -194,14 +199,16 @@ class _VocabularyPageState extends State<VocabularyPage>
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Icon(Icons.folder, color: Colors.black45, size: size.width*0.065),
+                  Icon(Icons.folder,
+                      color: Colors.black45, size: size.width * 0.065),
                   SizedBox(width: 10),
                   Container(
                     width: size.width * 0.6,
                     child: Text(elem['name'],
                         overflow: TextOverflow.ellipsis,
-                        style:
-                            TextStyle(fontSize: size.width*0.05, color: Color(0xff7F7F7F))),
+                        style: TextStyle(
+                            fontSize: size.width * 0.05,
+                            color: Color(0xff7F7F7F))),
                   )
                 ],
               ),
@@ -210,7 +217,7 @@ class _VocabularyPageState extends State<VocabularyPage>
                   Text(
                     '(${elem['total_words'].toString()})',
                     style: TextStyle(
-                      fontSize: size.width*0.052,
+                      fontSize: size.width * 0.052,
                       color: Color(0xff7F7F7F),
                     ),
                   ),
@@ -258,76 +265,28 @@ class _VocabularyPageState extends State<VocabularyPage>
   }
 
   void _presentActionSheet(elem, type) {
-    showModalBottomSheet(
+    Future modal = showModalBottomSheet(
         context: context,
         builder: (context) {
           bool knownTab = type == 'known';
-          return Container(
-            color: Color(0xFF737373),
-            height: size.width*0.7,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  )),
-              child: _actionSheetBody(elem, knownTab),
-            ),
-          );
+          return VocabularyActionSheet(elem, knownTab);
         });
+    modal.then((val) {
+      switch (val) {
+        case 'delete':
+          _toast('Deleted');
+          break;
+        case 'copy':
+          _toast('Copied');
+          break;
+      }
+    });
   }
 
-  Widget _actionSheetBody(elem, knownTab) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      SizedBox(height: size.width*0.1),
-      _actionSheetHeader(elem),
-      SizedBox(height: size.width*0.035),
-      Divider(),
-      SizedBox(height: size.width*0.035),
-      ListTile(
-          title: Text(knownTab ? 'Relearn' : 'Mastered', style: TextStyle(
-            fontSize: size.width*0.044
-          ),),
-          onTap: () {
-            if (knownTab) {
-              vocabulary.markAsRelearn(elem['id']);
-            } else {
-              vocabulary.markAsKnown(elem['id']);
-            }
-            Navigator.pop(context);
-          }),
-      ListTile(
-          title: Text('Delete', style: TextStyle(
-            color: Colors.red,
-            fontSize: size.width*0.044)),
-          onTap: () {
-            vocabulary.deleteWord(elem);
-            Navigator.pop(context);
-          }),
-    ]);
-  }
-
-  Widget _actionSheetHeader(elem) {
-    return Container(
-        padding: EdgeInsets.only(left: 20),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            children: [
-              Icon(LineIcons.mitten, color: Colors.black87, size: size.width*0.07),
-              SizedBox(width: 5),
-              Text(elem['title'],
-                  style: TextStyle(fontSize: size.width*0.052, color: Colors.black87)),
-            ],
-          ),
-          SizedBox(height: size.width*0.01),
-          Row(
-            children: [
-              SizedBox(width: size.width*0.03),
-              Text(elem['folder_name'],
-                  style: TextStyle(fontSize: size.width*0.04, color: Colors.black54)),
-            ],
-          )
-        ]));
+  void _toast(txt) {
+    Timer(
+        Duration(milliseconds: 300),
+        () => Toast.show(txt, context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM));
   }
 }

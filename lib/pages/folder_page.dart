@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/utils/helper.dart';
 import 'package:oken/widgets/base_appbar.dart';
+import 'package:provider/provider.dart';
 
 class FolderPage extends StatefulWidget {
   @override
@@ -11,65 +14,55 @@ class FolderPage extends StatefulWidget {
 class _FolderPageState extends State<FolderPage> {
   Size size;
   Map args;
+  VocabularyProvider vocabulary;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     args = ModalRoute.of(context).settings.arguments;
+    vocabulary = Provider.of<VocabularyProvider>(context);
 
     return Scaffold(
-        appBar: baseAppBar(size, title: args['name'], back: true, shadow: false),
-        body: _body()
-    );
+        appBar:
+            baseAppBar(size, title: args['name'], back: true, shadow: false),
+        body: _body());
   }
 
   Widget _body() {
     return _list();
   }
 
-
   Widget _list() {
+    List words = vocabulary.getWordsByFolder(args['id']);
     return SingleChildScrollView(
       child: Container(
-        padding: EdgeInsets.only(top: 20),
-        child: Column(children: [
-          _item('Swoop', false),
-          _item('Brimming with energy', false),
-          _item('throw up', true),
-          _item('hello', false),
-          _item('Swoop', false),
-          _item('Brimming with energy', false),
-          _item('throw up', true),
-          _item('hello', false),
-          _item('Swoop', false),
-          _item('Brimming with energy', false),
-          _item('throw up', true),
-          _item('hello', false),
-        ],)
-      ),
+          padding: EdgeInsets.only(top: size.width * 0.052),
+          child: Column(
+            children: List.generate(words.length, (i) => _item(words[i])),
+          )),
     );
   }
 
-  Widget _item(txt, liked) {
+  Widget _item(word) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.symmetric(vertical: 18, horizontal: 20),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Color(0xffE7E6E6))
-        )
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-        SizedBox(width: 1),
-        Text(txt, style: TextStyle(
-          color: Color(0xff7F7F7F),
-          fontSize: 18
-        ),),
-        Icon(liked ? Icons.favorite :  LineIcons.heart, color: liked ? Color(0xffFF6565) : Color(0xffD9D9D9))        ]
-      )
-    );
+        width: MediaQuery.of(context).size.width,
+        padding: EdgeInsets.symmetric(
+            vertical: size.width * 0.05, horizontal: size.width * 0.052),
+        decoration: BoxDecoration(
+            border: Border(bottom: BorderSide(color: Color(0xffE7E6E6)))),
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          SizedBox(width: 1),
+          Text(
+            Helper().toCapital(word['title']),
+            style: TextStyle(
+                color: Color(0xff7F7F7F), fontSize: size.width * 0.05),
+          ),
+          InkWell(
+            onTap: () => vocabulary.likeWord(word['id']),
+            child: Icon(word['liked'] ? Icons.favorite : LineIcons.heart,
+                color: word['liked'] ? Color(0xffFF6565) : Color(0xffD9D9D9)),
+          )
+        ]));
   }
-  
 }

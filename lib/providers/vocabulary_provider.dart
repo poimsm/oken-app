@@ -24,7 +24,7 @@ class VocabularyProvider with ChangeNotifier {
   List getWords(String type) {
     switch (type) {
       case 'latest':
-        return _allWords.where((word) => word['new']).toList();
+        return _allWords.where((word) => word['new'] || word['relearn']).toList();
       case 'liked':
         return _allWords.where((word) => word['liked']).toList();
       case 'known':
@@ -34,6 +34,10 @@ class VocabularyProvider with ChangeNotifier {
       default:
         return [];
     }
+  }
+
+  List getWordsByFolder(id) {
+    return _allWords.where((word) => word['folder'] == id).toList();
   }
 
   get folders => _folders;
@@ -80,7 +84,7 @@ class VocabularyProvider with ChangeNotifier {
 
   void deleteFolder(elem, i) {}
 
-  void addWord(txt) {
+  void addWord(title, synonyms) {
     int userId = 839221;
     int index = _folders.indexWhere((f) => f['id'] == userId);
 
@@ -99,7 +103,8 @@ class VocabularyProvider with ChangeNotifier {
     _folders[index]['total_words']++;
 
     Map word = {
-      'title': txt,
+      'title': title,
+      'synonyms': synonyms,
       'folder_name': 'My words',
       'folder': userId,
       'liked': false,

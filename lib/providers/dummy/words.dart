@@ -10,7 +10,8 @@ class Words {
 
 List<Map> _wordList = [
   {
-    'title': 'Shroud',
+    'title': 'Ground',
+    'synonyms': 'soil, floor, land',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -21,6 +22,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'Totally clueless',
+    'synonyms': 'No meaning',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -30,7 +32,8 @@ List<Map> _wordList = [
     'id': 254726
   },  
   {
-    'title': 'Swoop',
+    'title': 'Out of nowhere',
+    'synonyms': 'that happend suddenly',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -40,7 +43,8 @@ List<Map> _wordList = [
     'id': 468325
   },
   {
-    'title': 'Seeps away',
+    'title': 'Apologize',
+    'synonyms': 'No meaning',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -50,7 +54,8 @@ List<Map> _wordList = [
     'id': 569372
   },
   {
-    'title': 'Shattered',
+    'title': 'Screaming',
+    'synonyms': 'No meaning',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -61,6 +66,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'A drawback',
+    'synonyms': 'a disadvantage',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -71,6 +77,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'Tranquil river',
+    'synonyms': 'a calmy river',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': true,
@@ -81,6 +88,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'Gimme a break!',
+    'synonyms': 'Hmm Hell stop it!',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -91,6 +99,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'Exceedingly difficult',
+    'synonyms': 'No meaning',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -101,6 +110,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'Gym',
+    'synonyms': 'No meaning',
     'folder_name': 'My words',
     'folder': 839221,
     'liked': false,
@@ -111,6 +121,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'depth',
+    'synonyms': 'deepness, profundity',
     'folder_name': 'My words',
     'folder': 324584,
     'liked': false,
@@ -121,6 +132,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'feared',
+    'synonyms': 'scared, afraid',
     'folder_name': 'My words',
     'folder': 324584,
     'liked': false,
@@ -131,6 +143,7 @@ List<Map> _wordList = [
   },
   {
     'title': 'glimpse',
+    'synonyms': 'glance, look, see',
     'folder_name': 'My words',
     'folder': 324584,
     'liked': false,

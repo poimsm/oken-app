@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/ui_provider.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart';
 import 'package:provider/provider.dart';
 
@@ -18,7 +18,7 @@ class VocabularyActionSheet extends StatefulWidget {
 class _VocabularyActionSheetState extends State<VocabularyActionSheet> {
   UIProvider ui;
   Size size;
-  VocabularyProvider vocabulary;
+  VocabProvider vocabulary;
 
   String extractWord(txt) {
     RegExp re = RegExp(r'\w+');
@@ -29,7 +29,7 @@ class _VocabularyActionSheetState extends State<VocabularyActionSheet> {
   Widget build(BuildContext context) {
     ui = Provider.of<UIProvider>(context);
     size = MediaQuery.of(context).size;
-    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
+    vocabulary = Provider.of<VocabProvider>(context, listen: false);
     return Container(
       color: Color(0xFF737373),
       height: size.width * 0.7,

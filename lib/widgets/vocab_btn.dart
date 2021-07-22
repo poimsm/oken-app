@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class VocabularyBtn extends StatefulWidget {
+class VocabBtn extends StatefulWidget {
 
   @override
-  State<VocabularyBtn> createState() => _VocabularyBtnState();
+  State<VocabBtn> createState() => _VocabBtnState();
 }
 
-class _VocabularyBtnState extends State<VocabularyBtn> with SingleTickerProviderStateMixin {
+class _VocabBtnState extends State<VocabBtn> with SingleTickerProviderStateMixin {
   Size size;
   AnimationController _controller;
   Animation<double> _animation;

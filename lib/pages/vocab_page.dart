@@ -3,24 +3,23 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart';
-import 'package:oken/widgets/vocabulary_actionsheet.dart';
-import 'package:oken/widgets/vocabulary_appbar.dart';
+import 'package:oken/widgets/vocab_actionsheet.dart';
+import 'package:oken/widgets/vocab_appbar.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
-class VocabularyPage extends StatefulWidget {
+class VocabPage extends StatefulWidget {
   @override
-  _VocabularyPageState createState() => _VocabularyPageState();
+  _VocabPageState createState() => _VocabPageState();
 }
 
-class _VocabularyPageState extends State<VocabularyPage>
-    with TickerProviderStateMixin {
+class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
   Size size;
   TabController _tabController;
-  VocabularyProvider vocabulary;
+  VocabProvider vocabulary;
   int currIndex = 0;
   int oldIndex = 0;
 
@@ -41,7 +40,7 @@ class _VocabularyPageState extends State<VocabularyPage>
 
   @override
   void initState() {
-    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
+    vocabulary = Provider.of<VocabProvider>(context, listen: false);
     vocabulary.load();
     super.initState();
   }
@@ -49,12 +48,12 @@ class _VocabularyPageState extends State<VocabularyPage>
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    Provider.of<VocabularyProvider>(context);
+    Provider.of<VocabProvider>(context);
 
     return DefaultTabController(
       length: 4,
       child: Scaffold(
-          appBar: vocabularyAppBar(size, _tabController),
+          appBar: vocabAppBar(size, _tabController),
           body: TabBarView(
             controller: _tabController,
             children: [

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart';
 import 'package:oken/widgets/base_appbar.dart';
 import 'package:provider/provider.dart';
@@ -14,13 +14,13 @@ class FolderPage extends StatefulWidget {
 class _FolderPageState extends State<FolderPage> {
   Size size;
   Map args;
-  VocabularyProvider vocabulary;
+  VocabProvider vocabulary;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     args = ModalRoute.of(context).settings.arguments;
-    vocabulary = Provider.of<VocabularyProvider>(context);
+    vocabulary = Provider.of<VocabProvider>(context);
 
     return Scaffold(
         appBar:

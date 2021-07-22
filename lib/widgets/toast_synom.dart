@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/ui_provider.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:provider/provider.dart';
 
 class ToastSynonym extends StatefulWidget {
@@ -14,7 +14,7 @@ class ToastSynonym extends StatefulWidget {
 class _ToastSynonymState extends State<ToastSynonym> {
   UIProvider ui;
   Size size;
-  VocabularyProvider vocabulary;
+  VocabProvider vocabulary;
 
   String extractWord(txt) {
     RegExp re = RegExp(r'\w+');
@@ -25,7 +25,7 @@ class _ToastSynonymState extends State<ToastSynonym> {
   Widget build(BuildContext context) {
     ui = Provider.of<UIProvider>(context);
     size = MediaQuery.of(context).size;
-    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
+    vocabulary = Provider.of<VocabProvider>(context, listen: false);
     return ui.showSynomToast ? _body() : Container();
   }
 

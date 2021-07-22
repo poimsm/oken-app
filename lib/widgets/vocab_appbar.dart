@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-AppBar vocabularyAppBar(
+AppBar vocabAppBar(
   Size size,
   TabController _tabController, {
   String title = 'Vocabulary',

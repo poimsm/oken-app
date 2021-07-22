@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:oken/providers/question_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/widgets/audiobar.dart';
 import 'package:oken/widgets/header.dart';
 import 'package:oken/widgets/memory.dart';
@@ -23,7 +23,7 @@ class _QuestionPageState extends State<QuestionPage> {
   void initState() {
     questions = Provider.of<QuestionProvider>(context, listen: false);
     questions.shuffle();
-    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
+    vocabulary = Provider.of<VocabProvider>(context, listen: false);
     vocabulary.load();
     vocabulary.setQuestionWords();
     SystemChrome.setEnabledSystemUIOverlays([]);
@@ -47,7 +47,7 @@ class _QuestionPageState extends State<QuestionPage> {
   Map args;
   Size size;
   bool offWords = false;
-  VocabularyProvider vocabulary;
+  VocabProvider vocabulary;
   List actives = [false, false, false];
 
   @override
@@ -58,7 +58,7 @@ class _QuestionPageState extends State<QuestionPage> {
     timer = Provider.of<TimerProvider>(context, listen: false);
     cont = SwiperController();
     size = MediaQuery.of(context).size;
-    Provider.of<VocabularyProvider>(context);
+    Provider.of<VocabProvider>(context);
 
     if (isPristine) {
       cont.startAutoplay();
@@ -305,205 +305,234 @@ class _QuestionPageState extends State<QuestionPage> {
         duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 
-   void _presentActionSheet() {     
+  void _presentActionSheet() {
     Future<void> future = showModalBottomSheet(
         context: context,
         builder: (context) {
           return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
-        return Container(
-            color: Colors.white,
-            height: size.width*0.8,
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10),
-                    topRight: Radius.circular(10),
-                  )),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Container(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
-            alignment: Alignment.centerRight,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Row(
-                  children: [
-                    // Icon(Icons.translate, color: Colors.black.withOpacity(0.7)),
-                    // SizedBox(width: 5),
-                    Container(
-                      padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      child: Text('Vocabulary', style: TextStyle(
-                        fontSize: 15,
-                      ),),
-                    ),
-                  ],
-                ),
-                // Icon(Icons.translate, color: Colors.black.withOpacity(0.7)),
-                InkWell(
-                  onTap: () {
-                    if (actives[0] || actives[1] || actives[2]) {
-                      vocabulary.shuffle();
-                      Navigator.pop(context);
-                    }                    
-                  },
-                  child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                    child: Text('Mastered', style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 15,
-                    ),),
-                  ),
-                ),
-              ],
-            )
-          ),
-      ListTile(
-         leading: Icon(actives[0] ? Icons.check_box : Icons.check_box_outline_blank,
-          color: actives[0]? Colors.blue : Colors.black54
-        ),
-          title: Text(vocabulary.firstThreeWords[0]['title'], style: TextStyle(
-            fontSize: size.width*0.044
-          ),),
-          onTap: () {
-            actives[0] = !actives[0];
-            setState(() {});
-            // Navigator.pop(context);
-          }),
-      ListTile(
-        leading: Icon(actives[1] ? Icons.check_box : Icons.check_box_outline_blank,
-          color: actives[1]? Colors.blue : Colors.black54
-        ),
-          title: Text(vocabulary.firstThreeWords[1]['title'], style: TextStyle(
-            fontSize: size.width*0.044
-          ),),
-          onTap: () {
-            actives[1] = !actives[1];
-            setState(() {});
-            // Navigator.pop(context);
-          }),
-      ListTile(
-        leading: Icon(actives[2] ? Icons.check_box : Icons.check_box_outline_blank,
-          color: actives[2]? Colors.blue : Colors.black54
-        ),
-          title: Text(vocabulary.firstThreeWords[2]['title'], style: TextStyle(
-            fontSize: size.width*0.044
-          ),),
-          onTap: () {
-            actives[2] = !actives[2];
-            setState(() {});
-            // Navigator.pop(context);
-          }),
-          SizedBox(height: 10,),
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            child: Center(
+              builder: (BuildContext context, StateSetter setState) {
+            return Container(
+              color: Colors.white,
+              height: size.width * 0.8,
               child: Container(
-                width: size.width*0.8,
-                padding: EdgeInsets.symmetric(vertical: 10),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(5)
-                ),
-                alignment: Alignment.center,
-                child: Text('Cancel', style: TextStyle(
-                ),)
-              ),
-            ),
-          ),
-    ])
-            ),
-          );
-          
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(10),
+                        topRight: Radius.circular(10),
+                      )),
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            padding: EdgeInsets.symmetric(
+                                vertical: 5, horizontal: 5),
+                            alignment: Alignment.centerRight,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    // Icon(Icons.translate, color: Colors.black.withOpacity(0.7)),
+                                    // SizedBox(width: 5),
+                                    Container(
+                                      padding: EdgeInsets.symmetric(
+                                          horizontal: 10, vertical: 5),
+                                      child: Text(
+                                        'Vocabulary',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                // Icon(Icons.translate, color: Colors.black.withOpacity(0.7)),
+                                InkWell(
+                                  onTap: () {
+                                    if (actives[0] ||
+                                        actives[1] ||
+                                        actives[2]) {
+                                      vocabulary.shuffle();
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  child: Container(
+                                    padding: EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    child: Text(
+                                      'Mastered',
+                                      style: TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+                        ListTile(
+                            leading: Icon(
+                                actives[0]
+                                    ? Icons.check_box
+                                    : Icons.check_box_outline_blank,
+                                color:
+                                    actives[0] ? Colors.blue : Colors.black54),
+                            title: Text(
+                              vocabulary.firstThreeWords[0]['title'],
+                              style: TextStyle(fontSize: size.width * 0.044),
+                            ),
+                            onTap: () {
+                              actives[0] = !actives[0];
+                              setState(() {});
+                              // Navigator.pop(context);
+                            }),
+                        ListTile(
+                            leading: Icon(
+                                actives[1]
+                                    ? Icons.check_box
+                                    : Icons.check_box_outline_blank,
+                                color:
+                                    actives[1] ? Colors.blue : Colors.black54),
+                            title: Text(
+                              vocabulary.firstThreeWords[1]['title'],
+                              style: TextStyle(fontSize: size.width * 0.044),
+                            ),
+                            onTap: () {
+                              actives[1] = !actives[1];
+                              setState(() {});
+                              // Navigator.pop(context);
+                            }),
+                        ListTile(
+                            leading: Icon(
+                                actives[2]
+                                    ? Icons.check_box
+                                    : Icons.check_box_outline_blank,
+                                color:
+                                    actives[2] ? Colors.blue : Colors.black54),
+                            title: Text(
+                              vocabulary.firstThreeWords[2]['title'],
+                              style: TextStyle(fontSize: size.width * 0.044),
+                            ),
+                            onTap: () {
+                              actives[2] = !actives[2];
+                              setState(() {});
+                              // Navigator.pop(context);
+                            }),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        InkWell(
+                          onTap: () => Navigator.pop(context),
+                          child: Center(
+                            child: Container(
+                                width: size.width * 0.8,
+                                padding: EdgeInsets.symmetric(vertical: 10),
+                                decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black),
+                                    borderRadius: BorderRadius.circular(5)),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(),
+                                )),
+                          ),
+                        ),
+                      ])),
+            );
+          });
         });
-  });
-  void _closeModal(v) {
-    actives = [false, false, false];
-  }
+    void _closeModal(v) {
+      actives = [false, false, false];
+    }
 
-  future.then((void value) => _closeModal(0));
+    future.then((void value) => _closeModal(0));
 
-  
-
-  Widget _actionSheetBody() {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      InkWell(
-        onTap: () => Navigator.pop(context),
-        child: Container(
+    Widget _actionSheetBody() {
+      return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        InkWell(
+          onTap: () => Navigator.pop(context),
+          child: Container(
               padding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
               alignment: Alignment.centerRight,
-              child: Text('Known', style: TextStyle(
-                color: Colors.blue,
-                fontSize: 15,
-              ),)
-            ),
-      ),
-      ListTile(
-        leading: Icon(Icons.check_box_outline_blank),
-          title: Text(vocabulary.firstThreeWords[0]['title'], style: TextStyle(
-            fontSize: size.width*0.044
-          ),),
-          onTap: () {
-            // Navigator.pop(context);
-          }),
-      ListTile(
-        leading: Icon(actives[1] ? Icons.check_box : Icons.check_box_outline_blank,
-          color: actives[1]? Colors.blue : Colors.black54
+              child: Text(
+                'Known',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontSize: 15,
+                ),
+              )),
         ),
-          title: Text(vocabulary.firstThreeWords[1]['title'], style: TextStyle(
-            fontSize: size.width*0.044
-          ),),
-          onTap: () {
-            actives[1] = !actives[1];
-            setState(() {
-              
-            });
-            // Navigator.pop(context);
-          }),
-      ListTile(
-        leading: Icon(Icons.check_box_outline_blank),
-          title: Text(vocabulary.firstThreeWords[2]['title'], style: TextStyle(
-            fontSize: size.width*0.044
-          ),),
-          onTap: () {
-            // Navigator.pop(context);
-          }),
-          SizedBox(height: 10,),
-          InkWell(
-            onTap: () => Navigator.pop(context),
-            child: Center(
-              child: Container(
-                width: size.width*0.8,
+        ListTile(
+            leading: Icon(Icons.check_box_outline_blank),
+            title: Text(
+              vocabulary.firstThreeWords[0]['title'],
+              style: TextStyle(fontSize: size.width * 0.044),
+            ),
+            onTap: () {
+              // Navigator.pop(context);
+            }),
+        ListTile(
+            leading: Icon(
+                actives[1] ? Icons.check_box : Icons.check_box_outline_blank,
+                color: actives[1] ? Colors.blue : Colors.black54),
+            title: Text(
+              vocabulary.firstThreeWords[1]['title'],
+              style: TextStyle(fontSize: size.width * 0.044),
+            ),
+            onTap: () {
+              actives[1] = !actives[1];
+              setState(() {});
+              // Navigator.pop(context);
+            }),
+        ListTile(
+            leading: Icon(Icons.check_box_outline_blank),
+            title: Text(
+              vocabulary.firstThreeWords[2]['title'],
+              style: TextStyle(fontSize: size.width * 0.044),
+            ),
+            onTap: () {
+              // Navigator.pop(context);
+            }),
+        SizedBox(
+          height: 10,
+        ),
+        InkWell(
+          onTap: () => Navigator.pop(context),
+          child: Center(
+            child: Container(
+                width: size.width * 0.8,
                 padding: EdgeInsets.symmetric(vertical: 10),
                 decoration: BoxDecoration(
-                  border: Border.all(color: Colors.black),
-                  borderRadius: BorderRadius.circular(5)
-                ),
+                    border: Border.all(color: Colors.black),
+                    borderRadius: BorderRadius.circular(5)),
                 alignment: Alignment.center,
-                child: Text('Cancel', style: TextStyle(
-                ),)
-              ),
-            ),
+                child: Text(
+                  'Cancel',
+                  style: TextStyle(),
+                )),
           ),
-    ]);
-  }
+        ),
+      ]);
+    }
 
-  Widget _actionSheetHeader(elem) {
-    return Container(
-        padding: EdgeInsets.only(left: 20),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          
-          Row(
-            children: [
-              SizedBox(width: size.width*0.03),
-              Text(elem['folder_name'],
-                  style: TextStyle(fontSize: size.width*0.04, color: Colors.black54)),
-            ],
-          )
-        ]));
+    Widget _actionSheetHeader(elem) {
+      return Container(
+          padding: EdgeInsets.only(left: 20),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Row(
+              children: [
+                SizedBox(width: size.width * 0.03),
+                Text(elem['folder_name'],
+                    style: TextStyle(
+                        fontSize: size.width * 0.04, color: Colors.black54)),
+              ],
+            )
+          ]));
+    }
   }
-}}
+}
 
 class Clock extends StatelessWidget {
   @override
@@ -532,5 +561,4 @@ class Clock extends StatelessWidget {
       ),
     );
   }
-  
 }

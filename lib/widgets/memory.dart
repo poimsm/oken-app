@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/text_size.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -19,11 +19,11 @@ class Memory extends StatefulWidget {
 
 class _MemoryState extends State<Memory> {
   Size size;
-  VocabularyProvider vocabulary;
+  VocabProvider vocabulary;
 
   @override
   Widget build(BuildContext context) {
-    vocabulary = Provider.of<VocabularyProvider>(context);
+    vocabulary = Provider.of<VocabProvider>(context);
     size = MediaQuery.of(context).size;
 
     widget.timelinePath =

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:provider/provider.dart';
 
 class AddPage extends StatefulWidget {
@@ -12,7 +12,7 @@ class AddPage extends StatefulWidget {
 class _AddPageState extends State<AddPage> {
   Size size;
   Map args;
-  VocabularyProvider vocabulary;
+  VocabProvider vocabulary;
   final _wordCtrl = TextEditingController();
   final _meaningCtrl = TextEditingController();
 
@@ -27,7 +27,7 @@ class _AddPageState extends State<AddPage> {
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     args = ModalRoute.of(context).settings.arguments;
-    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
+    vocabulary = Provider.of<VocabProvider>(context, listen: false);
 
     return Scaffold(
         body: SafeArea(
@@ -67,7 +67,7 @@ class _AddPageState extends State<AddPage> {
         padding: EdgeInsets.only(
             top: size.width * 0.09,
             bottom: size.width * 0.17,
-            left: size.width*0.052,
+            left: size.width * 0.052,
             right: size.width * 0.19),
         alignment: Alignment.center,
         child: Text(

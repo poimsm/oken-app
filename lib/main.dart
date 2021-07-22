@@ -10,13 +10,13 @@ import 'package:oken/pages/themed_quiz_page.dart';
 import 'package:oken/pages/tutorial_page.dart';
 import 'package:oken/pages/user_page.dart';
 import 'package:oken/pages/viewer_page.dart';
-import 'package:oken/pages/vocabulary_page.dart';
+import 'package:oken/pages/vocab_page.dart';
 import 'package:oken/providers/question_provider.dart';
 import 'package:oken/providers/reading_provider.dart';
 import 'package:oken/providers/themed_quiz_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/providers/ui_provider.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/providers/word_list.dart';
 import 'package:oken/providers/word_provider.dart';
 import 'package:oken/providers/hint_img_provider.dart';
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => HintImgProvider()),
         ChangeNotifierProvider(create: (context) => ThemedQuizProvider()),
         ChangeNotifierProvider(create: (context) => UIProvider()),
-        ChangeNotifierProvider(create: (context) => VocabularyProvider()),
+        ChangeNotifierProvider(create: (context) => VocabProvider()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,
@@ -56,7 +56,7 @@ class MyApp extends StatelessWidget {
             'themed_quiz': (BuildContext context) => ThemedQuizPage(),
             'chat': (BuildContext context) => ChatPage(),
             'tutorial': (BuildContext context) => TutorialPage(),
-            'vocabulary': (BuildContext context) => VocabularyPage(),
+            'vocabulary': (BuildContext context) => VocabPage(),
             'viewer': (BuildContext context) => ViewerPage(),
             'add': (BuildContext context) => AddPage(),
             'folder': (BuildContext context) => FolderPage(),

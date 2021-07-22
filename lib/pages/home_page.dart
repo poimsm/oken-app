@@ -6,7 +6,7 @@ import 'package:oken/providers/content_provider.dart';
 import 'package:oken/widgets/base_appbar.dart';
 import 'package:oken/constants/types.dart' as TYPES;
 import 'package:oken/widgets/side_menu.dart';
-import 'package:oken/widgets/vocabulary_btn.dart';
+import 'package:oken/widgets/vocab_btn.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key key}) : super(key: key);
@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
                 Positioned(
                   bottom: 32,
                   left: 155,
-                  child: VocabularyBtn(),
+                  child: VocabBtn(),
                 ),
                 // _categories(),
               ],

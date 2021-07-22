@@ -6,9 +6,9 @@ import 'package:oken/providers/reading_provider.dart';
 import 'package:oken/providers/rx_loader.dart';
 import 'package:oken/providers/rx_paragraph.dart';
 import 'package:oken/providers/ui_provider.dart';
-import 'package:oken/providers/vocabulary_provider.dart';
+import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/providers/word_provider.dart';
-import 'package:oken/widgets/header_reading.dart';
+import 'package:oken/widgets/reading_header.dart';
 import 'package:oken/widgets/loader.dart';
 import 'package:oken/widgets/paragraph.dart';
 import 'package:oken/widgets/toast_synom.dart';
@@ -27,12 +27,12 @@ class _ReadingPageState extends State<ReadingPage> {
   WordProvider words;
 
   ScrollController _scrollController = new ScrollController();
-  VocabularyProvider vocabulary;
+  VocabProvider vocabulary;
 
   @override
   void initState() {
     reading = Provider.of<ReadingProvider>(context, listen: false);
-    vocabulary = Provider.of<VocabularyProvider>(context, listen: false);
+    vocabulary = Provider.of<VocabProvider>(context, listen: false);
     vocabulary.load();
     super.initState();
   }

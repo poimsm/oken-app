@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:oken/providers/dummy/words.dart';
 
-class VocabularyProvider with ChangeNotifier {
+class VocabProvider with ChangeNotifier {
   Words wordsInstance;
   List _allWords = [];
   List _words = [];

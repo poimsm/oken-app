@@ -268,7 +268,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
         context: context,
         builder: (context) {
           bool knownTab = type == 'known';
-          return VocabularyActionSheet(elem, knownTab);
+          return VocabActionSheet(elem, knownTab);
         });
     modal.then((val) {
       switch (val) {

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:oken/providers/dummy/words.dart';
+import 'package:oken/utils/helper.dart';
 
 class VocabProvider with ChangeNotifier {
   Words wordsInstance;
@@ -24,7 +25,9 @@ class VocabProvider with ChangeNotifier {
   List getWords(String type) {
     switch (type) {
       case 'latest':
-        return _allWords.where((word) => word['new'] || word['relearn']).toList();
+        return _allWords
+            .where((word) => word['new'] || word['relearn'])
+            .toList();
       case 'liked':
         return _allWords.where((word) => word['liked']).toList();
       case 'known':
@@ -119,10 +122,12 @@ class VocabProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void addWordFromBook(book, wordTxt) {
+  void addWordFromBook(book, word) {
     int i = _folders.indexWhere((f) => f['id'] == book['id']);
-    Map word = {
-      'title': '${wordTxt[0].toUpperCase()}${wordTxt.substring(1)}',
+
+    Map wordElem = {
+      'title': Helper().extractWord(word['word']),
+      'synonyms': word['synonym'],
       'folder_name': book['folder_name'],
       'folder': book['id'],
       'liked': false,
@@ -132,7 +137,7 @@ class VocabProvider with ChangeNotifier {
       'id': Random().nextInt(100000)
     };
 
-    _allWords.add(word);
+    _allWords.add(wordElem);
 
     if (i < 0) {
       Map folder = {

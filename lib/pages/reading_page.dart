@@ -112,7 +112,9 @@ class _ReadingPageState extends State<ReadingPage> {
             Positioned(
                 child: HeaderReading(title: args['title']), top: 0, left: 0),
             Positioned(
-                child: ToastSynonym(args), bottom: size.height * 0.025, left: 0),
+                child: ToastSynonym(args),
+                bottom: size.height * 0.025,
+                left: 0),
             StreamBuilder(
                 stream: rxLoader.isLoading,
                 builder: (context, snapshot) {
@@ -165,7 +167,7 @@ class _ReadingPageState extends State<ReadingPage> {
                   bool visible = snapshot.data != null ? snapshot.data : false;
                   int maxLength = reading.paragraphs.length;
 
-                  return Paragraph(words, index, visible, maxLength);
+                  return Paragraph(words, index, visible, maxLength, args);
                 });
           }),
         ]),
@@ -206,7 +208,8 @@ class _ReadingPageState extends State<ReadingPage> {
               return Row(
                 children: [
                   _page(i, reading.chapters[i]),
-                  SizedBox(width: size.width*0.04),
+                  // TODO: Hardcoded paginatorIndex
+                  if (i != args['paginatorIndex'] - 1) SizedBox(width: size.width * 0.04),
                 ],
               );
             })
@@ -223,23 +226,25 @@ class _ReadingPageState extends State<ReadingPage> {
     bool selected = data['selected'];
     String path = data['path'];
 
-    return Container(
-        padding: EdgeInsets.symmetric(
-            horizontal: isChapter ? 15 : 3, vertical: isChapter ? 5 : 3),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(100),
-          border: Border.all(width: 1, color: Color(0xff595959)),
-        ),
-        child: InkWell(
-            onTap: () {
-              if (comingSoon) return _toast();
-              if (isChapter) index++;
+    return index == args['paginatorIndex'] - 1
+        ? Container()
+        : Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: isChapter ? 15 : 3, vertical: isChapter ? 5 : 3),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(100),
+              border: Border.all(width: 1, color: Color(0xff595959)),
+            ),
+            child: InkWell(
+                onTap: () {
+                  if (comingSoon) return _toast();
+                  if (isChapter) index++;
 
-              double width = size.width;
-              _scrollController.jumpTo(0);
-              setParagraphs(width, path, index);
-            },
-            child: isChapter ? _chapterBubble(txt) : _bullet(selected)));
+                  double width = size.width;
+                  _scrollController.jumpTo(0);
+                  setParagraphs(width, path, index);
+                },
+                child: isChapter ? _chapterBubble(txt) : _bullet(selected)));
   }
 
   Widget _bullet(selected) {

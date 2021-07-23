@@ -6,16 +6,16 @@ import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart';
 import 'package:provider/provider.dart';
 
-class VocabularyActionSheet extends StatefulWidget {
-  VocabularyActionSheet(this.elem, this.knownTab);
+class VocabActionSheet extends StatefulWidget {
+  VocabActionSheet(this.elem, this.knownTab);
   final Map elem;
   final bool knownTab;
 
   @override
-  _VocabularyActionSheetState createState() => _VocabularyActionSheetState();
+  _VocabActionSheetState createState() => _VocabActionSheetState();
 }
 
-class _VocabularyActionSheetState extends State<VocabularyActionSheet> {
+class _VocabActionSheetState extends State<VocabActionSheet> {
   UIProvider ui;
   Size size;
   VocabProvider vocabulary;

@@ -42,7 +42,7 @@ class UIProvider with ChangeNotifier {
 
   void changeColorHandler(currentScroll) {
     if (currentScroll > 330) {
-      // Hardcoded 330
+      // TODO: Hardcoded 330
       if (_changeColorAux) {
         _changeColor = true;
         _changeColorAux = false;

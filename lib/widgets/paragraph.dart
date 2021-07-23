@@ -5,17 +5,19 @@ import 'package:oken/constants/reading_types.dart' as TYPES;
 import 'package:oken/providers/reading_provider.dart';
 import 'package:oken/providers/rx_loader.dart';
 import 'package:oken/providers/ui_provider.dart';
-import 'package:oken/providers/word_provider.dart';
-import 'package:oken/widgets/memory.dart';
+import 'package:oken/providers/vocab_provider.dart';
+import 'package:oken/widgets/reading_actionsheet.dart';
 import 'package:provider/provider.dart';
+import 'package:toast/toast.dart';
 
 class Paragraph extends StatefulWidget {
-  Paragraph(this.lines, this.i, this.visible, this.maxLength);
+  Paragraph(this.lines, this.i, this.visible, this.maxLength, this.book);
 
-  List lines;
-  bool visible;
-  int i;
-  int maxLength;
+  final List lines;
+  final bool visible;
+  final int i;
+  final int maxLength;
+  final Map book;
 
   @override
   _ParagraphState createState() => _ParagraphState();
@@ -24,14 +26,21 @@ class Paragraph extends StatefulWidget {
 class _ParagraphState extends State<Paragraph> {
   UIProvider ui;
   ReadingProvider reading;
-  WordProvider words;
   Timer timer;
   Size size;
+  VocabProvider vocabulary;
+
+  @override
+  void initState() {
+    vocabulary = Provider.of<VocabProvider>(context, listen: false);
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    words = Provider.of<WordProvider>(context, listen: false);
     reading = Provider.of<ReadingProvider>(context, listen: false);
+    // vocabulary = Provider.of<VocabProvider>(context, listen: false);
     ui = Provider.of<UIProvider>(context, listen: false);
     size = MediaQuery.of(context).size;
 
@@ -51,15 +60,6 @@ class _ParagraphState extends State<Paragraph> {
         children: List.generate(widget.lines.length, (index) {
           Widget elem;
 
-          // if (widget.lines[index]['type'] == TYPES.LINE) {
-          //   elem = _line(widget.lines[index]['words'], widget.i, index + 1);
-          // } else if (widget.lines[index]['type'] == TYPES.QUESTION_LINE &&
-          //     widget.lines[index]['visible']) {
-          //   elem = _questionBox(widget.lines[index], widget.i, index);
-          // } else {
-          //   elem = SizedBox(width: 5);
-          // }
-
           if (widget.lines[index]['type'] == TYPES.LINE) {
             elem = _line(widget.lines[index]['words'], widget.i, index + 1);
           } else {
@@ -68,52 +68,6 @@ class _ParagraphState extends State<Paragraph> {
 
           return elem;
         }),
-      ),
-    );
-  }
-
-  Widget _questionBox(questionLine, i, j) {
-    return Container(
-        padding: EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-        child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 25),
-            color: Color(0xff7030A0),
-            width: MediaQuery.of(context).size.width,
-            child: _questionBoxContent(questionLine, i, j)));
-  }
-
-  Widget _questionBoxContent(questionLine, i, j) {
-    return Column(
-      children: [
-        Text(questionLine['question'],
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Colors.white, fontSize: 17.5)),
-        SizedBox(height: 20),
-        Text('Answer combining these words:',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-                color: Colors.white,
-                fontSize: 22,
-                fontWeight: FontWeight.bold,
-                fontFamily: 'Indi Flower')),
-        SizedBox(height: 15),
-        InkWell(
-            onTap: () => reading.toggleQuestionBox(i, j),
-            child: Memory(true, true))
-      ],
-    );
-  }
-
-  Widget _questionMark(word, i, j) {
-    return InkWell(
-      onTap: () {
-        words.shuffle();
-        reading.toggleQuestionBox(i, j);
-      },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(50),
-        child: Container(
-            width: 23, height: 23, color: Colors.grey.withOpacity(0.5)),
       ),
     );
   }
@@ -138,7 +92,7 @@ class _ParagraphState extends State<Paragraph> {
   Widget _words(word) {
     double opacity = (word['hasSynonym']) ? 0.6 : 0;
     return InkWell(
-      onTap: () => _presentSynom(word),
+      onTap: () => _presentActionSheet(word),
       child: Container(
           decoration: BoxDecoration(
             border: Border(
@@ -155,17 +109,26 @@ class _ParagraphState extends State<Paragraph> {
     );
   }
 
-  void _presentSynom(word) {
-    if (word['hasSynonym']) {
-      if (timer != null) {
-        timer.cancel();
-      }
-      int msec = word['synonym'].length > 30 ? 6500 : 3500;
-      timer = Timer(Duration(milliseconds: msec), () {
-        if (ui.synomSaved) return;
-        ui.setSynomToast(false, word);
-      });
-      ui.setSynomToast(true, word);
-    }
+  void _presentActionSheet(word) {
+    if (!word['hasSynonym']) return;
+
+    Future modal = showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return ReadingActionSheet(word);
+        });
+
+    modal.then((val) {
+      if (val == null) return;
+      vocabulary.addWordFromBook(widget.book, val);
+      _toast('Added to vocabulary');
+    });
+  }
+
+  void _toast(txt) {
+    Timer(
+        Duration(milliseconds: 300),
+        () => Toast.show(txt, context,
+            duration: Toast.LENGTH_LONG, gravity: Toast.BOTTOM));
   }
 }

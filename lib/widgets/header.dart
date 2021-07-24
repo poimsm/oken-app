@@ -37,6 +37,7 @@ class _HeaderState extends State<Header> {
     return InkWell(
       onTap: () => widget.back ? Navigator.pop(context) : print('none'),
       child: Container(
+        padding: EdgeInsets.symmetric(vertical: 10),
         child: Row(
           children: [
             Icon(widget.back ? Icons.arrow_back : Icons.menu,
@@ -61,17 +62,19 @@ class _HeaderState extends State<Header> {
       child: Container(
           padding: EdgeInsets.symmetric(
               horizontal: size.width * 0.023, vertical: size.width * 0.012),
-          color: Colors.black.withOpacity(0.3),
+          color: Colors.black.withOpacity(0.2),
           child: Row(
             children: [
-              Image.asset('assets/coin01.png', width: size.width * 0.065),
+              // Image.asset('assets/coin01.png', width: size.width * 0.065),
+              Icon(Icons.music_note, color: Colors.white),
               SizedBox(width: 5),
               Text(
-                '900',
+                'Records (9)',
                 style: TextStyle(
                     color: Colors.white,
-                    fontSize: size.width * 0.05,
-                    fontWeight: FontWeight.bold),
+                    fontSize: size.width * 0.045,
+                    // fontWeight: FontWeight.bold
+                    ),
               )
             ],
           )),

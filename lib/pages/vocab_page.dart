@@ -285,13 +285,19 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
   }
 
   void _addWord() {
-    showModalBottomSheet(
+    Future modal = showModalBottomSheet(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         isScrollControlled: true,
         context: context,
         builder: (context) {
           return VocabAdd();
         });
+
+    modal.then((val) {
+      val = val == null ? false : val;
+      if (!val) return;
+      _toast('Added');
+    });
   }
 
   void _toast(txt) {

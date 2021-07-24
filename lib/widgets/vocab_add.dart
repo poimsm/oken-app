@@ -51,7 +51,7 @@ class _VocabAddState extends State<VocabAdd> {
     return InkWell(
       onTap: () => Navigator.pop(context, false),
       child: Container(
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.symmetric(horizontal: 15, vertical: 20),
           child: Icon(LineIcons.times, size: 25, color: Colors.black87)),
     );
   }

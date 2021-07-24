@@ -6,6 +6,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart';
 import 'package:oken/widgets/vocab_actionsheet.dart';
+import 'package:oken/widgets/vocab_add.dart';
 import 'package:oken/widgets/vocab_appbar.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:provider/provider.dart';
@@ -97,11 +98,12 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
 
   Widget _favBtn() {
     return InkWell(
-      onTap: () => Navigator.pushNamed(context, 'add', arguments: {
-        'header': 'New word',
-        'title': 'Create a new word to study it!',
-        'label': 'Enter a new word…'
-      }),
+      // onTap: () => Navigator.pushNamed(context, 'add', arguments: {
+      //   'header': 'New word',
+      //   'title': 'Create a new word to study it!',
+      //   'label': 'Enter a new word…'
+      // }),
+      onTap: () => _addWord(),
       child: Container(
           height: size.width * 0.15,
           width: size.width * 0.15,
@@ -280,6 +282,16 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
           break;
       }
     });
+  }
+
+  void _addWord() {
+    showModalBottomSheet(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return VocabAdd();
+        });
   }
 
   void _toast(txt) {

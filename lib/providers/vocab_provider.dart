@@ -6,6 +6,7 @@ import 'package:oken/utils/helper.dart';
 
 class VocabProvider with ChangeNotifier {
   Words wordsInstance;
+  List _history = [];
   List _allWords = [];
   List _words = [];
   List _questionWords = [];
@@ -69,6 +70,16 @@ class VocabProvider with ChangeNotifier {
     int i = _allWords.indexWhere((word) => word['id'] == id);
     _allWords[i]['known'] = false;
     _allWords[i]['relearn'] = true;
+    notifyListeners();
+  }
+
+  void markAsKnownFromHistory(id, index) {
+    _history[index]['known'] = true;
+    _questionWords.removeWhere((w) => w['id'] == id);
+    _allWords = _allWords.map((w) {
+      if (w['id'] != id) return w;
+      return {...w, 'known': true, 'relearn': false, 'new': false};
+    }).toList();
     notifyListeners();
   }
 
@@ -154,14 +165,19 @@ class VocabProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  get history => _history.take(20).toList();
+
   get firstThreeWords => _questionWords.take(3).toList();
 
   void setQuestionWords() {
-    _questionWords = _allWords.where((w) => w['relearn'] || w['new']).toList();
+    List temp = _allWords.where((w) => w['relearn'] || w['new']).toList();
+    _questionWords = Helper().deepClone(temp);
   }
 
   void shuffle() {
     startLoading();
+    List temp = _history + _questionWords.take(3).toList();
+    _history = Helper().deepClone(temp).reversed.toList();
     this._questionWords.shuffle();
     notifyListeners();
   }

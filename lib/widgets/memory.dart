@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/vocab_provider.dart';
+import 'package:oken/utils/helper.dart';
 import 'package:oken/utils/text_size.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -51,6 +52,11 @@ class _MemoryState extends State<Memory> {
   }
 
   Widget _stack() {
+    List words = vocabulary.firstThreeWords;
+    Helper helper = Helper();
+
+    if (words.length < 3) return Container();
+
     return Stack(
       children: [
         if (widget.showWords)
@@ -82,7 +88,7 @@ class _MemoryState extends State<Memory> {
         if (widget.showWords)
           Positioned(
               child: Text(
-                vocabulary.firstThreeWords[0]['title'],
+                helper.toCapital(words[0]['title']),
                 style: TextStyle(
                     fontSize: size.width * 0.05, color: widget.textColor),
               ),
@@ -93,7 +99,7 @@ class _MemoryState extends State<Memory> {
               child: Container(
                 width: 190,
                 child: Text(
-                  vocabulary.firstThreeWords[1]['title'],
+                  helper.toCapital(words[1]['title']),
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: size.width * 0.05, color: widget.textColor),
@@ -104,19 +110,19 @@ class _MemoryState extends State<Memory> {
         if (widget.showWords)
           Positioned(
               child: Container(
-                width: vocabulary.firstThreeWords[2]['title'].length < 10
+                width: words[2]['title'].length < 10
                     ? size.width * 0.35
-                    : vocabulary.firstThreeWords[2]['title'].length < 16
+                    : words[2]['title'].length < 16
                         ? size.width * 0.4
                         : size.width * 0.45,
                 child: Text(
-                  vocabulary.firstThreeWords[2]['title'],
+                  helper.toCapital(words[2]['title']),
                   textAlign: TextAlign.end,
                   style: TextStyle(
                       fontSize: size.width * 0.05, color: widget.textColor),
                 ),
               ),
-              top: TextSize(vocabulary.firstThreeWords[2]['title'])
+              top: TextSize(helper.toCapital(words[2]['title']))
                       .isGreaterThan(size.width * 0.45, 17.5)
                   ? size.height * 0.18
                   : size.height * 0.2,

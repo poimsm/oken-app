@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:oken/providers/vocab_provider.dart';
+import 'package:oken/utils/helper.dart';
+import 'package:provider/provider.dart';
 
-class QuestionDrawer extends StatelessWidget {
+class QuestionDrawer extends StatefulWidget {
   QuestionDrawer(this.isExample);
   final bool isExample;
+
+  @override
+  State<QuestionDrawer> createState() => _QuestionDrawerState();
+}
+
+class _QuestionDrawerState extends State<QuestionDrawer> {
   Size size;
+  VocabProvider vocabulary;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    vocabulary = Provider.of<VocabProvider>(context);
 
-    return Drawer(child: isExample ? _exampleDrawer() : _vocabDrawer());
+    return Drawer(child: widget.isExample ? _exampleDrawer() : _vocabDrawer());
   }
 
   Widget _vocabDrawer() {
@@ -35,13 +46,9 @@ class QuestionDrawer extends StatelessWidget {
   }
 
   Widget _vocabTitle() {
-    return Row(
-      children: [
-        Text(
-          'HISTORY',
-          style: TextStyle(fontSize: size.width * 0.053, color: Colors.black54),
-        )
-      ],
+    return Text(
+      'HISTORY',
+      style: TextStyle(fontSize: size.width * 0.053, color: Colors.black54),
     );
   }
 
@@ -53,72 +60,35 @@ class QuestionDrawer extends StatelessWidget {
       ),
       child: SingleChildScrollView(
         child: Column(
-          children: [
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-            _vocabItem(),
-          ],
+          children: List.generate(vocabulary.history.length,
+              (index) => _vocabItem(vocabulary.history[index], index)),
         ),
       ),
     );
   }
 
-  Widget _vocabItem() {
-    return Container(
-      padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Dracula',
+  Widget _vocabItem(elem, i) {
+    return ListTile(
+        trailing: (elem['known'])
+            ? SizedBox(width: 10)
+            : OutlinedButton(
+                onPressed: () =>
+                    vocabulary.markAsKnownFromHistory(elem['id'], i),
+                child: Text(
+                  'Learned',
                   style: TextStyle(
-                      fontSize: size.width * 0.052, color: Colors.black87)),
-              SizedBox(
-                height: 5,
+                      color: Colors.black54, fontWeight: FontWeight.normal),
+                ),
               ),
-              Text('Jump, run, drink',
-                  style: TextStyle(
-                      fontSize: size.width * 0.045, color: Colors.black54)),
-            ],
+        title: Text(Helper().toCapital(elem['title']),
+            style: TextStyle(
+                fontSize: size.width * 0.052, fontWeight: FontWeight.normal)),
+        subtitle: Text(
+          Helper().toCapital(elem['synonyms']),
+          style: TextStyle(
+            fontSize: size.width * 0.047,
           ),
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(5),
-              border: Border.all(color: Colors.black38),
-            ),
-            child: Text(
-              'Learned',
-              style: TextStyle(
-                  color: Colors.black54, fontSize: size.width * 0.038),
-            ),
-          )
-        ],
-      ),
-    );
+        ));
   }
 
   Widget _vocabFooter() {
@@ -137,6 +107,7 @@ class QuestionDrawer extends StatelessWidget {
   }
 
   Widget _exampleDrawer() {
+    String txt = 'It challenges you to make an answer with the words';
     return Container(
         padding: EdgeInsets.only(right: 20, left: 20, top: 30),
         child: Column(
@@ -146,7 +117,7 @@ class QuestionDrawer extends StatelessWidget {
               width: double.infinity,
               padding: EdgeInsets.only(right: 30),
               child: Text(
-                'It challenges you to make an answer with the words',
+                txt,
                 style: TextStyle(
                     fontSize: size.width * 0.06, color: Colors.black87),
               ),

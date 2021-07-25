@@ -2,36 +2,33 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:oken/providers/reading_provider.dart';
+import 'package:oken/providers/book_provider.dart';
 import 'package:oken/providers/rx_loader.dart';
 import 'package:oken/providers/rx_paragraph.dart';
 import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/providers/word_provider.dart';
-import 'package:oken/widgets/reading_header.dart';
+import 'package:oken/widgets/book_header.dart';
 import 'package:oken/widgets/loader.dart';
 import 'package:oken/widgets/paragraph.dart';
-import 'package:oken/widgets/toast_synom.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
-class ReadingPage extends StatefulWidget {
-  const ReadingPage({Key key}) : super(key: key);
+class BookPage extends StatefulWidget {
+  const BookPage({Key key}) : super(key: key);
 
   @override
-  _ReadingPageState createState() => _ReadingPageState();
+  _BookPageState createState() => _BookPageState();
 }
 
-class _ReadingPageState extends State<ReadingPage> {
-  ReadingProvider reading;
-  WordProvider words;
+class _BookPageState extends State<BookPage> {
+  BookProvider book;
 
   ScrollController _scrollController = new ScrollController();
   VocabProvider vocabulary;
 
   @override
   void initState() {
-    reading = Provider.of<ReadingProvider>(context, listen: false);
+    book = Provider.of<BookProvider>(context, listen: false);
     vocabulary = Provider.of<VocabProvider>(context, listen: false);
     vocabulary.load();
     super.initState();
@@ -41,23 +38,23 @@ class _ReadingPageState extends State<ReadingPage> {
     int i = args['paginatorIndex'];
     List chapters = args['chapters'];
     String path = args['hasChapters'] ? chapters[i]['path'] : args['path'];
-    await reading.getById(2, width * 0.97, path, chapters);
+    await book.getById(2, width * 0.97, path, chapters);
     rxParagraph = RxParagraph(index: 2);
-    rxParagraph.generateObsList(reading.paragraphs.length);
+    rxParagraph.generateObsList(book.paragraphs.length);
   }
 
   setParagraphs(width, path, index) async {
     rxLoader.start();
-    await reading.changeReadingText(width, path, index);
+    await book.changeReadingText(width, path, index);
     rxParagraph.dispose();
-    rxParagraph.generateObsList(reading.paragraphs.length);
+    rxParagraph.generateObsList(book.paragraphs.length);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     rxParagraph.dispose();
-    reading.dispose();
+    book.dispose();
     super.dispose();
   }
 
@@ -73,8 +70,7 @@ class _ReadingPageState extends State<ReadingPage> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<ReadingProvider>(context);
-    words = Provider.of<WordProvider>(context, listen: false);
+    Provider.of<BookProvider>(context);
     ui = Provider.of<UIProvider>(context, listen: false);
     rxLoader = RxLoader();
     size = MediaQuery.of(context).size;
@@ -110,11 +106,7 @@ class _ReadingPageState extends State<ReadingPage> {
               ),
             ),
             Positioned(
-                child: HeaderReading(title: args['title']), top: 0, left: 0),
-            Positioned(
-                child: ToastSynonym(args),
-                bottom: size.height * 0.025,
-                left: 0),
+                child: BookHeader(title: args['title']), top: 0, left: 0),
             StreamBuilder(
                 stream: rxLoader.isLoading,
                 builder: (context, snapshot) {
@@ -159,13 +151,13 @@ class _ReadingPageState extends State<ReadingPage> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          ...List.generate(reading.paragraphs.length, (index) {
+          ...List.generate(book.paragraphs.length, (index) {
             return StreamBuilder(
                 stream: rxParagraph.getObs(index),
                 builder: (context, snapshot) {
-                  List words = reading.paragraphs[index];
+                  List words = book.paragraphs[index];
                   bool visible = snapshot.data != null ? snapshot.data : false;
-                  int maxLength = reading.paragraphs.length;
+                  int maxLength = book.paragraphs.length;
 
                   return Paragraph(words, index, visible, maxLength, args);
                 });
@@ -204,10 +196,10 @@ class _ReadingPageState extends State<ReadingPage> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            ...List.generate(reading.chapters.length, (i) {
+            ...List.generate(book.chapters.length, (i) {
               return Row(
                 children: [
-                  _page(i, reading.chapters[i]),
+                  _page(i, book.chapters[i]),
                   // TODO: Hardcoded paginatorIndex
                   if (i != args['paginatorIndex'] - 1) SizedBox(width: size.width * 0.04),
                 ],

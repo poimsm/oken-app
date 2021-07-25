@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:oken/providers/dummy/chat.dart';
 import 'package:oken/providers/dummy/imgs.dart';
 
-class HintImgProvider with ChangeNotifier {
-  List<String> _wordList = Chat().words();
+class PhotoProvider with ChangeNotifier {
 
   bool _showButtons = true;
   bool _showHints = false;

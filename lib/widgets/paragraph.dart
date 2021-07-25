@@ -2,11 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:oken/constants/reading_types.dart' as TYPES;
-import 'package:oken/providers/reading_provider.dart';
+import 'package:oken/providers/book_provider.dart';
 import 'package:oken/providers/rx_loader.dart';
 import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/widgets/reading_actionsheet.dart';
+import 'package:oken/widgets/book_actionsheet.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
@@ -25,7 +25,7 @@ class Paragraph extends StatefulWidget {
 
 class _ParagraphState extends State<Paragraph> {
   UIProvider ui;
-  ReadingProvider reading;
+  BookProvider book;
   Timer timer;
   Size size;
   VocabProvider vocabulary;
@@ -39,8 +39,7 @@ class _ParagraphState extends State<Paragraph> {
 
   @override
   Widget build(BuildContext context) {
-    reading = Provider.of<ReadingProvider>(context, listen: false);
-    // vocabulary = Provider.of<VocabProvider>(context, listen: false);
+    book = Provider.of<BookProvider>(context, listen: false);
     ui = Provider.of<UIProvider>(context, listen: false);
     size = MediaQuery.of(context).size;
 
@@ -115,7 +114,7 @@ class _ParagraphState extends State<Paragraph> {
     Future modal = showModalBottomSheet(
         context: context,
         builder: (context) {
-          return ReadingActionSheet(word);
+          return BookActionSheet(word);
         });
 
     modal.then((val) {

@@ -4,7 +4,7 @@ import 'package:oken/utils/paragraphs_builder.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 
-class ReadingProvider with ChangeNotifier {
+class BookProvider with ChangeNotifier {
   List<Map> _content = DataContent().get();
   List _paragraphs = [];
   List _chapters = [];

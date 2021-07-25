@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:oken/providers/dummy/content.dart';
 
 class ContentProvider with ChangeNotifier {

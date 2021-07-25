@@ -5,15 +5,15 @@ import 'package:oken/utils/helper.dart';
 import 'package:oken/utils/text_size.dart';
 import 'package:provider/provider.dart';
 
-class ReadingActionSheet extends StatefulWidget {
-  ReadingActionSheet(this.word);
+class BookActionSheet extends StatefulWidget {
+  BookActionSheet(this.word);
   final Map word;
 
   @override
-  _ReadingActionSheetState createState() => _ReadingActionSheetState();
+  _BookActionSheetState createState() => _BookActionSheetState();
 }
 
-class _ReadingActionSheetState extends State<ReadingActionSheet> {
+class _BookActionSheetState extends State<BookActionSheet> {
   UIProvider ui;
   Size size;
   VocabProvider vocabulary;

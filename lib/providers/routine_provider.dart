@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:oken/providers/dummy/chat.dart';
-import 'dummy/themed_quiz.dart';
+import 'dummy/routine.dart';
 
-class ThemedQuizProvider with ChangeNotifier {
-  
-  List<String> _wordList = Chat().words();
+class RoutineProvider with ChangeNotifier {  
 
   int _index = 0;
   bool _loading = false;

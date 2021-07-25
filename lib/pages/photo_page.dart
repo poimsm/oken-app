@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:oken/providers/hint_img_provider.dart';
+import 'package:oken/providers/photo_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/widgets/audiobar.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +18,7 @@ class ImagePage extends StatefulWidget {
 }
 
 class _ImagePageState extends State<ImagePage> {
-  HintImgProvider imgsProvider;
+  PhotoProvider imgsProvider;
   TimerProvider timer;
 
   void scrollToBottom() {
@@ -40,7 +40,7 @@ class _ImagePageState extends State<ImagePage> {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     timer = Provider.of<TimerProvider>(context, listen: false);
-    imgsProvider = Provider.of<HintImgProvider>(context, listen: false);
+    imgsProvider = Provider.of<PhotoProvider>(context, listen: false);
     super.initState();
   }
 
@@ -64,7 +64,7 @@ class _ImagePageState extends State<ImagePage> {
 
   @override
   Widget build(BuildContext context) {
-    Provider.of<HintImgProvider>(context);
+    Provider.of<PhotoProvider>(context);
     size = MediaQuery.of(context).size;
 
     if (isPristine) {

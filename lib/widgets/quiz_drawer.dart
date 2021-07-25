@@ -3,15 +3,15 @@ import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart';
 import 'package:provider/provider.dart';
 
-class QuestionDrawer extends StatefulWidget {
-  QuestionDrawer(this.isExample);
+class QuizDrawer extends StatefulWidget {
+  QuizDrawer(this.isExample);
   final bool isExample;
 
   @override
-  State<QuestionDrawer> createState() => _QuestionDrawerState();
+  State<QuizDrawer> createState() => _QuizDrawerState();
 }
 
-class _QuestionDrawerState extends State<QuestionDrawer> {
+class _QuizDrawerState extends State<QuizDrawer> {
   Size size;
   VocabProvider vocabulary;
 
@@ -123,7 +123,7 @@ class _QuestionDrawerState extends State<QuestionDrawer> {
               ),
             ),
             SizedBox(height: size.height * 0.035),
-            _title('1.... QUESTION'),
+            _title('1.... QUIZ'),
             SizedBox(height: 5),
             Text(
               'If you were in your house what would you do?',

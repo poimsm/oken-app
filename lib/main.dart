@@ -1,25 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:oken/pages/add_page.dart';
-import 'package:oken/pages/chat_page.dart';
 import 'package:oken/pages/folder_page.dart';
 import 'package:oken/pages/home_page.dart';
-import 'package:oken/pages/image_page.dart';
-import 'package:oken/pages/reading_page.dart';
-import 'package:oken/pages/question_page.dart';
-import 'package:oken/pages/themed_quiz_page.dart';
+import 'package:oken/pages/photo_page.dart';
+import 'package:oken/pages/book_page.dart';
+import 'package:oken/pages/quiz_page.dart';
+import 'package:oken/pages/routine_page.dart';
 import 'package:oken/pages/tutorial_page.dart';
 import 'package:oken/pages/user_page.dart';
 import 'package:oken/pages/viewer_page.dart';
 import 'package:oken/pages/vocab_page.dart';
-import 'package:oken/providers/question_provider.dart';
-import 'package:oken/providers/reading_provider.dart';
-import 'package:oken/providers/themed_quiz_provider.dart';
+import 'package:oken/providers/quiz_provider.dart';
+import 'package:oken/providers/book_provider.dart';
+import 'package:oken/providers/routine_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/providers/word_list.dart';
-import 'package:oken/providers/word_provider.dart';
-import 'package:oken/providers/hint_img_provider.dart';
+import 'package:oken/providers/photo_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -33,13 +29,11 @@ class MyApp extends StatelessWidget {
 
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (context) => WordList()),
-        ChangeNotifierProvider(create: (context) => QuestionProvider()),
+        ChangeNotifierProvider(create: (context) => QuizProvider()),
         ChangeNotifierProvider(create: (context) => TimerProvider()),
-        ChangeNotifierProvider(create: (context) => WordProvider()),
-        ChangeNotifierProvider(create: (context) => ReadingProvider()),
-        ChangeNotifierProvider(create: (context) => HintImgProvider()),
-        ChangeNotifierProvider(create: (context) => ThemedQuizProvider()),
+        ChangeNotifierProvider(create: (context) => BookProvider()),
+        ChangeNotifierProvider(create: (context) => PhotoProvider()),
+        ChangeNotifierProvider(create: (context) => RoutineProvider()),
         ChangeNotifierProvider(create: (context) => UIProvider()),
         ChangeNotifierProvider(create: (context) => VocabProvider()),
       ],
@@ -50,15 +44,13 @@ class MyApp extends StatelessWidget {
           routes: {
             '/': (BuildContext context) => HomePage(),
             'user': (BuildContext context) => UserPage(),
-            'reading': (BuildContext context) => ReadingPage(),
-            'questions': (BuildContext context) => QuestionPage(),
-            'images': (BuildContext context) => ImagePage(),
-            'themed_quiz': (BuildContext context) => ThemedQuizPage(),
-            'chat': (BuildContext context) => ChatPage(),
+            'reading': (BuildContext context) => BookPage(),
+            'quiz': (BuildContext context) => QuizPage(),
+            'photos': (BuildContext context) => ImagePage(),
+            'routine': (BuildContext context) => RoutinePage(),
             'tutorial': (BuildContext context) => TutorialPage(),
             'vocabulary': (BuildContext context) => VocabPage(),
             'viewer': (BuildContext context) => ViewerPage(),
-            'add': (BuildContext context) => AddPage(),
             'folder': (BuildContext context) => FolderPage(),
           }),
     );

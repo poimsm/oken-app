@@ -2,27 +2,27 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:oken/providers/question_provider.dart';
+import 'package:oken/providers/quiz_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/widgets/header.dart';
 import 'package:oken/widgets/memory.dart';
-import 'package:oken/widgets/question_drawer.dart';
+import 'package:oken/widgets/quiz_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
-class QuestionPage extends StatefulWidget {
-  QuestionPage({Key key}) : super(key: key);
+class QuizPage extends StatefulWidget {
+  QuizPage({Key key}) : super(key: key);
 
   @override
-  _QuestionPageState createState() => _QuestionPageState();
+  _QuizPageState createState() => _QuizPageState();
 }
 
-class _QuestionPageState extends State<QuestionPage> {
+class _QuizPageState extends State<QuizPage> {
   @override
   void initState() {
-    questions = Provider.of<QuestionProvider>(context, listen: false);
-    questions.shuffle();
+    quiz = Provider.of<QuizProvider>(context, listen: false);
+    quiz.shuffle();
     vocabulary = Provider.of<VocabProvider>(context, listen: false);
     vocabulary.load();
     vocabulary.setQuestionWords();
@@ -38,7 +38,7 @@ class _QuestionPageState extends State<QuestionPage> {
     super.dispose();
   }
 
-  QuestionProvider questions;
+  QuizProvider quiz;
   TimerProvider timer;
   bool auto = true;
   int duration = 300;
@@ -54,9 +54,9 @@ class _QuestionPageState extends State<QuestionPage> {
 
   @override
   Widget build(BuildContext context) {
-    questions = Provider.of<QuestionProvider>(context);
+    quiz = Provider.of<QuizProvider>(context);
     args = ModalRoute.of(context).settings.arguments;
-    questions.setQuestions(args['question_type']);
+    quiz.setQuestions(args['question_type']);
     timer = Provider.of<TimerProvider>(context, listen: false);
     cont = SwiperController();
     size = MediaQuery.of(context).size;
@@ -69,7 +69,7 @@ class _QuestionPageState extends State<QuestionPage> {
     return SafeArea(
         child: Scaffold(
             key: scaffoldKey,
-            endDrawer: QuestionDrawer(isExample),
+            endDrawer: QuizDrawer(isExample),
             body: Stack(
               children: [
                 _background(),
@@ -177,12 +177,12 @@ class _QuestionPageState extends State<QuestionPage> {
   Widget _micBtn() {
     return InkWell(
       onLongPress: () {
-        questions.enableTalking();
+        quiz.enableTalking();
         timer.start();
       },
       onTap: () {
-        if (!questions.isTalking) return _toast('Keep pressing');
-        questions.disableTalking();
+        if (!quiz.isTalking) return _toast('Keep pressing');
+        quiz.disableTalking();
         timer.stop();
       },
       child: Container(
@@ -195,7 +195,7 @@ class _QuestionPageState extends State<QuestionPage> {
               borderRadius: BorderRadius.circular(6),
               color: Color(0xff8037B7),
             ),
-            child: questions.isTalking
+            child: quiz.isTalking
                 ? Row(
                     children: [
                       Icon(Icons.pause,
@@ -269,7 +269,7 @@ class _QuestionPageState extends State<QuestionPage> {
           isPristine = false;
           vocabulary.shuffle();
         },
-        itemCount: questions.allQuestions.length,
+        itemCount: quiz.allQuestions.length,
         itemBuilder: (BuildContext context, int index) {
           return _cardbody(index);
         },
@@ -298,7 +298,7 @@ class _QuestionPageState extends State<QuestionPage> {
 
   Widget _cardContent(index) {
     return Column(children: [
-      SizedBox(height: questions.showChallengingWords ? 0 : 60),
+      SizedBox(height: quiz.showChallengingWords ? 0 : 60),
       ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Image.network(
@@ -308,17 +308,17 @@ class _QuestionPageState extends State<QuestionPage> {
             fit: BoxFit.cover,
           )),
       SizedBox(height: size.height * 0.03),
-      Text(questions.oneQuestion(index),
+      Text(quiz.oneQuestion(index),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: questions.oneQuestion(index).length > 60
-                ? questions.oneQuestion(index).length > 100
+            fontSize: quiz.oneQuestion(index).length > 60
+                ? quiz.oneQuestion(index).length > 100
                     ? size.width * 0.055
                     : size.width * 0.065
                 : size.width * 0.07,
           )),
       SizedBox(height: size.height * 0.05),
-      Memory(questions.showChallengingWords)
+      Memory(quiz.showChallengingWords)
     ]);
   }
 
@@ -331,7 +331,7 @@ class _QuestionPageState extends State<QuestionPage> {
 class Clock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    QuestionProvider question = Provider.of<QuestionProvider>(context);
+    QuizProvider question = Provider.of<QuizProvider>(context);
     int time = Provider.of<TimerProvider>(context).time;
     Size size = MediaQuery.of(context).size;
 

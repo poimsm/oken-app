@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:oken/providers/ui_provider.dart';
 import 'package:provider/provider.dart';
 
-class HeaderReading extends StatefulWidget {
-  const HeaderReading({
+class BookHeader extends StatefulWidget {
+  const BookHeader({
     Key key,
     @required this.title,
   }) : super(key: key);
@@ -11,10 +11,10 @@ class HeaderReading extends StatefulWidget {
   final String title;
 
   @override
-  _HeaderReadingState createState() => _HeaderReadingState();
+  _BookHeaderState createState() => _BookHeaderState();
 }
 
-class _HeaderReadingState extends State<HeaderReading> {
+class _BookHeaderState extends State<BookHeader> {
   UIProvider ui;
   Size size;
 

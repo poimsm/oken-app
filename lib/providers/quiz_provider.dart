@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'dummy/questions.dart';
 
-class QuestionProvider with ChangeNotifier {
+class QuizProvider with ChangeNotifier {
   List<String> _questions = [];
 
   bool _loading = false;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class NavDrawer extends StatelessWidget {
+class BaseDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;

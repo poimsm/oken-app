@@ -5,7 +5,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/content_provider.dart';
 import 'package:oken/widgets/base_appbar.dart';
 import 'package:oken/constants/types.dart' as TYPES;
-import 'package:oken/widgets/side_menu.dart';
+import 'package:oken/widgets/base_drawer.dart';
 import 'package:oken/widgets/vocab_btn.dart';
 
 class HomePage extends StatelessWidget {
@@ -20,7 +20,7 @@ class HomePage extends StatelessWidget {
     size = MediaQuery.of(context).size;
 
     return Scaffold(
-      drawer: SafeArea(child: NavDrawer()),
+      drawer: SafeArea(child: BaseDrawer()),
       appBar: baseAppBar(size, coins: true),
       body: Container(
         color: Color(0xff92D050),
@@ -174,11 +174,11 @@ class HomePage extends StatelessWidget {
 
   Widget _tag(type) {
     final iconTypes = {
-      TYPES.QUESTION: 'Quiz',
+      TYPES.QUIZ: 'Quiz',
       TYPES.BOOK: 'Book',
       TYPES.READING: 'Book',
-      TYPES.IMGS_HINT: 'Photos',
-      TYPES.QUIZ: 'Routine',
+      TYPES.PHOTOS: 'Photos',
+      TYPES.ROUTINE: 'Routine',
     };
 
     return Container(

@@ -5,21 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:oken/providers/themed_quiz_provider.dart';
+import 'package:oken/providers/routine_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/widgets/audiobar.dart';
 import 'package:oken/widgets/header.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 
-class ThemedQuizPage extends StatefulWidget {
-  ThemedQuizPage({Key key}) : super(key: key);
+class RoutinePage extends StatefulWidget {
+  RoutinePage({Key key}) : super(key: key);
 
   @override
-  _ThemedQuizPageState createState() => _ThemedQuizPageState();
+  _RoutinePageState createState() => _RoutinePageState();
 }
 
-class _ThemedQuizPageState extends State<ThemedQuizPage> {
+class _RoutinePageState extends State<RoutinePage> {
   @override
   void dispose() {
     themedQuiz.dispose();
@@ -27,7 +27,7 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
     super.dispose();
   }
 
-  ThemedQuizProvider themedQuiz;
+  RoutineProvider themedQuiz;
   TimerProvider timer;
   bool showToast = false;
   Map args;
@@ -36,7 +36,7 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    themedQuiz = Provider.of<ThemedQuizProvider>(context);
+    themedQuiz = Provider.of<RoutineProvider>(context);
     size = MediaQuery.of(context).size;
 
     if (isPristine) {
@@ -227,7 +227,7 @@ class _ThemedQuizPageState extends State<ThemedQuizPage> {
 class Clock extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    ThemedQuizProvider themedQuiz = Provider.of<ThemedQuizProvider>(context);
+    RoutineProvider themedQuiz = Provider.of<RoutineProvider>(context);
     int time = Provider.of<TimerProvider>(context).time;
     Size size = MediaQuery.of(context).size;
 

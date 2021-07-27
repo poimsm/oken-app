@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:toast/toast.dart';
+
+import 'audio_actionsheet.dart';
 
 class Header extends StatefulWidget {
   Header(
@@ -8,9 +11,9 @@ class Header extends StatefulWidget {
       this.title = 'Oken'})
       : super(key: key);
 
-  int color;
-  bool back;
-  String title;
+  final int color;
+  final bool back;
+  final String title;
 
   @override
   _HeaderState createState() => _HeaderState();
@@ -57,27 +60,53 @@ class _HeaderState extends State<Header> {
   }
 
   _rightBox() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(5),
-      child: Container(
-          padding: EdgeInsets.symmetric(
-              horizontal: size.width * 0.023, vertical: size.width * 0.012),
-          color: Colors.black.withOpacity(0.2),
-          child: Row(
-            children: [
-              // Image.asset('assets/coin01.png', width: size.width * 0.065),
-              Icon(Icons.music_note, color: Colors.white),
-              SizedBox(width: 5),
-              Text(
-                'Records (9)',
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: size.width * 0.045,
-                    // fontWeight: FontWeight.bold
-                    ),
-              )
-            ],
-          )),
+    return InkWell(
+      onTap: () => _audioList(),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(5),
+        child: Container(
+            padding: EdgeInsets.symmetric(
+                horizontal: size.width * 0.023, vertical: size.width * 0.012),
+            color: Colors.black.withOpacity(0.2),
+            child: Row(
+              children: [
+                // Image.asset('assets/coin01.png', width: size.width * 0.065),
+                Icon(Icons.music_note, color: Colors.white),
+                SizedBox(width: 5),
+                Text(
+                  'Records (9)',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: size.width * 0.045,
+                      // fontWeight: FontWeight.bold
+                      ),
+                )
+              ],
+            )),
+      ),
     );
+  }
+
+
+  void _audioList() {
+    Future modal = showModalBottomSheet(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        context: context,
+        builder: (context) {
+          return AudioActionSheet();
+        });
+
+    modal.then((val) {
+      val = val == null ? false : val;
+      if (!val) return;
+      _toast('Added');
+    });
+  }
+
+  void _toast([text = 'Coming soon']) {
+    Toast.show(text, context,
+        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
   }
 }

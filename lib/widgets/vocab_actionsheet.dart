@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/utils/helper.dart';
+import 'package:oken/utils/helper.dart' as helper;
 import 'package:provider/provider.dart';
 
 class VocabActionSheet extends StatefulWidget {
@@ -91,11 +91,11 @@ class _VocabActionSheetState extends State<VocabActionSheet> {
     return Container(
         padding: EdgeInsets.only(left: size.width * 0.052),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(Helper().toCapital(elem['title']),
+          Text(helper.toCapital(elem['title']),
               style: TextStyle(
                   fontSize: size.width * 0.052, color: Colors.black87)),
           SizedBox(height: size.width * 0.01),
-          Text(Helper().toCapital(elem['synonyms']),
+          Text(helper.toCapital(elem['synonyms']),
               style: TextStyle(
                   fontSize: size.width * 0.042, color: Colors.black54))
         ]));

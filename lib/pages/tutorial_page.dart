@@ -15,7 +15,7 @@ class _TutorialPageState extends State<TutorialPage> {
     size = MediaQuery.of(context).size;
 
     return Scaffold(
-        appBar: baseAppBar(size, title: 'Tutorial', back: true, shadow: false),
+        appBar: BaseAppBar(title: 'Tutorial', back: true, shadow: false),
         body: Stack(children: [
           _background(),
           SingleChildScrollView(child: _body()),

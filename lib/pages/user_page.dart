@@ -15,7 +15,7 @@ class _UserPageState extends State<UserPage> {
     size = MediaQuery.of(context).size;
 
     return Scaffold(
-        appBar: baseAppBar(size, title: 'Me', back: true, shadow: false),
+        appBar: BaseAppBar(title: 'Me', back: true, shadow: false),
         body: Stack(children: [
           _background(),
           SingleChildScrollView(child: _body()),

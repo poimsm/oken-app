@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:oken/providers/dummy/words.dart';
-import 'package:oken/utils/helper.dart';
+import 'package:oken/utils/helper.dart' as helper;
 
 class VocabProvider with ChangeNotifier {
   Words wordsInstance;
@@ -137,7 +137,7 @@ class VocabProvider with ChangeNotifier {
     int i = _folders.indexWhere((f) => f['id'] == book['id']);
 
     Map wordElem = {
-      'title': Helper().extractWord(word['word']),
+      'title': helper.extractWord(word['word']),
       'synonyms': word['synonym'],
       'folder_name': book['folder_name'],
       'folder': book['id'],
@@ -171,13 +171,13 @@ class VocabProvider with ChangeNotifier {
 
   void setQuestionWords() {
     List temp = _allWords.where((w) => w['relearn'] || w['new']).toList();
-    _questionWords = Helper().deepClone(temp);
+    _questionWords = helper.deepClone(temp);
   }
 
   void shuffle() {
     startLoading();
     List temp = _history + _questionWords.take(3).toList();
-    _history = Helper().deepClone(temp).reversed.toList();
+    _history = helper.deepClone(temp).reversed.toList();
     this._questionWords.shuffle();
     notifyListeners();
   }

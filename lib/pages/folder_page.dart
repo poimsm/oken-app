@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/utils/helper.dart';
+import 'package:oken/utils/helper.dart' as helper;
 import 'package:oken/widgets/base_appbar.dart';
 import 'package:provider/provider.dart';
 
@@ -24,7 +24,7 @@ class _FolderPageState extends State<FolderPage> {
 
     return Scaffold(
         appBar:
-            baseAppBar(size, title: args['name'], back: true, shadow: false),
+            BaseAppBar(title: args['name'], back: true, shadow: false),
         body: _body());
   }
 
@@ -54,7 +54,7 @@ class _FolderPageState extends State<FolderPage> {
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           SizedBox(width: 1),
           Text(
-            Helper().toCapital(word['title']),
+            helper.toCapital(word['title']),
             style: TextStyle(
                 color: Color(0xff7F7F7F), fontSize: size.width * 0.05),
           ),

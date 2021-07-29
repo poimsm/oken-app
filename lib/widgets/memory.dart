@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/utils/helper.dart';
+import 'package:oken/utils/helper.dart' as helper;
 import 'package:oken/utils/text_size.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -53,7 +53,6 @@ class _MemoryState extends State<Memory> {
 
   Widget _stack() {
     List words = vocabulary.firstThreeWords;
-    Helper helper = Helper();
 
     if (words.length < 3) return Container();
 

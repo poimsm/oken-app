@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/utils/helper.dart';
+import 'package:oken/utils/helper.dart' as helper;
 import 'package:oken/widgets/vocab_actionsheet.dart';
 import 'package:oken/widgets/vocab_add.dart';
 import 'package:oken/widgets/vocab_appbar.dart';
@@ -154,7 +154,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
               width: size.width * 0.8,
               alignment: Alignment.center,
               child: Text(
-                Helper().toCapital(elem['title']),
+                helper.toCapital(elem['title']),
                 style: TextStyle(
                     color: Color(0xff7F7F7F), fontSize: size.width * 0.052),
               ),

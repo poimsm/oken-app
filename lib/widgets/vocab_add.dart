@@ -63,7 +63,7 @@ class _VocabAddState extends State<VocabAdd> {
             top: size.width * 0.09,
             bottom: size.width * 0.17,
             left: size.width * 0.052,
-            right: size.width * 0.19),
+            right: size.width * 0.2),
         alignment: Alignment.center,
         child: Text(
           'Create a new word to study it!',
@@ -117,7 +117,7 @@ class _VocabAddState extends State<VocabAdd> {
                 TextStyle(color: Colors.black.withOpacity(0.4), fontSize: 15),
             isDense: true,
             contentPadding: EdgeInsets.all(12),
-            hintText: 'Meaning (optional)'),
+            hintText: 'Add a meaning or translation (optional)'),
       ),
     ));
   }

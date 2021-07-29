@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/utils/helper.dart';
+import 'package:oken/utils/helper.dart' as helper;
 import 'package:provider/provider.dart';
 
 class QuizDrawer extends StatefulWidget {
@@ -46,9 +46,13 @@ class _QuizDrawerState extends State<QuizDrawer> {
   }
 
   Widget _vocabTitle() {
-    return Text(
-      'HISTORY',
-      style: TextStyle(fontSize: size.width * 0.053, color: Colors.black54),
+    return Container(
+      width: double.infinity,
+      alignment: Alignment.centerLeft,
+      child: Text(
+        'HISTORY',
+        style: TextStyle(fontSize: size.width * 0.053, color: Colors.black54),
+      ),
     );
   }
 
@@ -80,11 +84,11 @@ class _QuizDrawerState extends State<QuizDrawer> {
                       color: Colors.black54, fontWeight: FontWeight.normal),
                 ),
               ),
-        title: Text(Helper().toCapital(elem['title']),
+        title: Text(helper.toCapital(elem['title']),
             style: TextStyle(
                 fontSize: size.width * 0.052, fontWeight: FontWeight.normal)),
         subtitle: Text(
-          Helper().toCapital(elem['synonyms']),
+          helper.toCapital(elem['synonyms']),
           style: TextStyle(
             fontSize: size.width * 0.047,
           ),

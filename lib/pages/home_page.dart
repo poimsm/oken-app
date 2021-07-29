@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       drawer: SafeArea(child: BaseDrawer()),
-      appBar: baseAppBar(size, coins: true),
+      appBar: BaseAppBar(coins: true),
       body: Container(
         color: Color(0xff92D050),
         child: SafeArea(

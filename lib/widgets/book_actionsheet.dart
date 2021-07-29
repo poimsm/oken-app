@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/utils/helper.dart';
+import 'package:oken/utils/helper.dart' as helper;
 import 'package:oken/utils/text_size.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +44,6 @@ class _BookActionSheetState extends State<BookActionSheet> {
   }
 
   Widget _actionSheetBody(word) {
-    Helper helper = Helper();
     String wordTxt = helper.extractWord(word['word']);
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

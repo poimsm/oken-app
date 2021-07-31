@@ -14,7 +14,7 @@ class QuizAlert extends StatelessWidget {
             Text(
                 'Study the words that you have saved in the vocabulary section and make them part of your daily conversations!'),
             SizedBox(height: m.s(20)),
-            Image.asset('assets/pop01.png', width: m.s(22)),
+            Image.asset('assets/pop04.png', width: m.s(22)),
             SizedBox(height: m.s(20)),
             Center(child: _gotItBtn(context, m))
           ],
@@ -30,7 +30,7 @@ class QuizAlert extends StatelessWidget {
         padding: EdgeInsets.symmetric(horizontal: m.s(8), vertical: m.s(5)),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
-          color: Color(0xff8C3FC5),
+          color: Color(0xff92D050),
         ),
         child: Text(
           'Got it!',

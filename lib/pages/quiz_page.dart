@@ -7,6 +7,7 @@ import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/widgets/header.dart';
 import 'package:oken/widgets/memory.dart';
+import 'package:oken/widgets/quiz_alert.dart';
 import 'package:oken/widgets/quiz_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
@@ -29,6 +30,8 @@ class _QuizPageState extends State<QuizPage> {
     SystemChrome.setEnabledSystemUIOverlays([]);
 
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) => afterBuild(swiperCtrl));
   }
 
   @override
@@ -42,7 +45,7 @@ class _QuizPageState extends State<QuizPage> {
   TimerProvider timer;
   bool auto = true;
   int duration = 300;
-  SwiperController cont;
+  SwiperController swiperCtrl;
   bool isPristine = true;
   Map args;
   Size size;
@@ -50,7 +53,7 @@ class _QuizPageState extends State<QuizPage> {
   VocabProvider vocabulary;
   List actives = [false, false, false];
   var scaffoldKey = GlobalKey<ScaffoldState>();
-  bool isExample = false;
+  String drawerType;
 
   @override
   Widget build(BuildContext context) {
@@ -58,26 +61,21 @@ class _QuizPageState extends State<QuizPage> {
     args = ModalRoute.of(context).settings.arguments;
     quiz.setQuestions(args['question_type']);
     timer = Provider.of<TimerProvider>(context, listen: false);
-    cont = SwiperController();
+    swiperCtrl = SwiperController();
     size = MediaQuery.of(context).size;
     Provider.of<VocabProvider>(context);
-
-    if (isPristine) {
-      cont.startAutoplay();
-    }
 
     return SafeArea(
         child: Scaffold(
             key: scaffoldKey,
-            endDrawer: QuizDrawer(isExample),
+            endDrawer: QuizDrawer(drawerType),
             body: Stack(
               children: [
                 _background(),
                 Column(
                   children: [
                     SizedBox(height: 80),
-                    Container(
-                        height: size.height * 0.8, child: _swiper(context)),
+                    Container(height: size.height * 0.8, child: _swiper()),
                   ],
                 ),
                 Positioned(
@@ -92,13 +90,16 @@ class _QuizPageState extends State<QuizPage> {
                   child: Clock(),
                 ),
                 Positioned(
-                    bottom: size.height * 0.73, right: 0, child: _vocabBtn()),
+                    bottom: size.height * 0.72, right: 2, child: _vocabBtn()),
                 Positioned(
-                    bottom: size.height * 0.63, right: 0, child: _example()),
+                    bottom: size.height * 0.63, right: 2, child: _example()),
+                if (args['power_word'])
+                  Positioned(
+                      bottom: size.height * 0.5,
+                      right: 2,
+                      child: _powerWords()),
                 Positioned(
                     bottom: size.height * 0.06, left: 0, child: _micBtn()),
-                // Positioned(
-                //     bottom: size.height * 0.13, left: 0, child: _customToast()),
               ],
             )));
   }
@@ -122,49 +123,52 @@ class _QuizPageState extends State<QuizPage> {
   Widget _example() {
     return InkWell(
       onTap: () {
-        isExample = true;
+        drawerType = 'example';
         setState(() {});
         scaffoldKey.currentState.openEndDrawer();
       },
       child: Container(
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(6),
-              bottomLeft: Radius.circular(6),
-            ),
+            borderRadius: BorderRadius.circular(100),
             color: Color(0xffFFC000),
             border: Border.all(color: Colors.white, width: 2),
           ),
-          child: Row(
-            children: [
-              Icon(Icons.lightbulb_outline,
-                  color: Colors.white, size: size.width * 0.07),
-              SizedBox(width: 10),
-              Text('EXAMPLE',
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      fontSize: size.width * 0.038))
-            ],
-          )),
+          child: Icon(Icons.lightbulb_outline,
+              color: Colors.white, size: size.width * 0.07)),
+    );
+  }
+
+  Widget _powerWords() {
+    return InkWell(
+      onTap: () {
+        drawerType = 'power-word';
+        setState(() {});
+        scaffoldKey.currentState.openEndDrawer();
+      },
+      child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(100),
+            color: Colors.redAccent,
+            border: Border.all(color: Colors.white, width: 2),
+          ),
+          child: Icon(Icons.local_fire_department,
+              color: Colors.white, size: size.width * 0.07)),
     );
   }
 
   Widget _vocabBtn() {
     return InkWell(
       onTap: () {
-        isExample = false;
+        drawerType = 'vocabulary';
         setState(() {});
         scaffoldKey.currentState.openEndDrawer();
       },
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(6),
-            bottomLeft: Radius.circular(6),
-          ),
+          borderRadius: BorderRadius.circular(100),
           color: Color(0xff8037B7),
           border: Border.all(color: Colors.white, width: 2),
         ),
@@ -261,11 +265,11 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  Widget _swiper(context) {
+  Widget _swiper() {
     return Swiper(
         duration: 800,
         onIndexChanged: (i) {
-          cont.stopAutoplay();
+          swiperCtrl.stopAutoplay();
           isPristine = false;
           vocabulary.shuffle();
         },
@@ -275,7 +279,7 @@ class _QuizPageState extends State<QuizPage> {
         },
         viewportFraction: 0.9,
         scale: 0.6,
-        controller: cont);
+        controller: swiperCtrl);
   }
 
   Widget _cardbody(index) {
@@ -320,6 +324,11 @@ class _QuizPageState extends State<QuizPage> {
       SizedBox(height: size.height * 0.05),
       Memory(quiz.showChallengingWords)
     ]);
+  }
+
+  Future afterBuild(swiperCtrl) async {
+    await showDialog(context: context, builder: (context) => QuizAlert());
+    swiperCtrl.startAutoplay();
   }
 
   void _toast([text = 'Coming soon']) {

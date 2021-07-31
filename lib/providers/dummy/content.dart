@@ -8,9 +8,13 @@ List<Map> _content = [
     'type': TYPES.QUIZ,
     'id': '1',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'power_word': false,
+    'price': 100,
     'nav': 'quiz',
-    'question_type': 'random'
+    'question_type': 'random',
+    'selling_text': '''
+    ''',
   },
   {
     'title': 'Interviews',
@@ -19,9 +23,16 @@ List<Map> _content = [
     'type': TYPES.QUIZ,
     'id': '1',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'power_word': true,
+    'price': 250,
     'nav': 'quiz',
-    'question_type': 'interview'
+    'question_type': 'interview',
+    'selling_text': '''Unlimited JOB INTERVIEW QUESTIONS pack. Practice your answers, improve your confidence, use power words to highlight your abilities in a job interview!
+
+• What are your salary expectations?
+• What interests you about this role?
+• Are you willing to travel?''',
   },
   {
     'title': 'Describe it',
@@ -30,8 +41,11 @@ List<Map> _content = [
     'pack': 'pack_a',
     'id': '1',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'price': 200,
     'nav': 'photos',
+    'selling_text': '''
+    ''',
   },
   {
     'title': 'Dracula - Bram Stoker',
@@ -42,7 +56,8 @@ List<Map> _content = [
     'id': 324584,
     'folder_name': 'Dracula - Bram Stoker',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'price': 260,
     'nav': 'reading',
     'hasChapters': true,
     'paginatorIndex': 0,
@@ -58,7 +73,9 @@ List<Map> _content = [
       {'type': 'bullet', 'selected': false, 'comingSoon': false, 'path': 'dracula_01_08.json'},
       {'type': 'chapter', 'comingSoon': true, 'text': 'Chapter 2', 'path': ''},
       {'type': 'chapter', 'comingSoon': true, 'text': 'Chapter 3', 'path': ''},
-    ]
+    ],
+    'selling_text': '''
+    ''',
   },
   {
     'title': 'The War Of The Worlds',
@@ -69,7 +86,8 @@ List<Map> _content = [
     'id': 843937,
     'folder_name': 'The War Of The Worlds',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'price': 190,
     'nav': 'reading',
     'hasChapters': true,
     'paginatorIndex': 2,
@@ -81,7 +99,9 @@ List<Map> _content = [
       {'type': 'bullet', 'selected': false, 'comingSoon': false, 'path': 'the_war_of_the_worlds_02_02.json'},
       {'type': 'chapter', 'comingSoon': true, 'text': 'Chapter 3', 'path': ''},
       {'type': 'chapter', 'comingSoon': true, 'text': 'Chapter 4', 'path': ''},
-    ]
+    ],
+    'selling_text': '''
+    ''',
   },
   {
     'title': 'Treasure Island - Robert Louis',
@@ -92,7 +112,8 @@ List<Map> _content = [
     'id': 293873,
     'folder_name': 'Treasure Island - Robert Louis',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'price': 130,
     'nav': 'reading',
     'hasChapters': true,
     'paginatorIndex': 0,
@@ -105,7 +126,9 @@ List<Map> _content = [
       {'type': 'chapter', 'comingSoon': true, 'text': 'Chapter 2', 'path': ''},
       {'type': 'chapter', 'comingSoon': true, 'text': 'Chapter 3', 'path': ''},
       {'type': 'chapter', 'comingSoon': true, 'text': 'Chapter 4', 'path': ''},
-    ]
+    ],
+    'selling_text': '''
+    ''',
   },
   {
     'title': 'Mark Jones',
@@ -116,10 +139,13 @@ List<Map> _content = [
     'id': 749372,
     'folder_name': 'Mark Jones',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'price': 200,
     'nav': 'reading',
     'path': 'mark_jones.json',
-    'hasChapters': false
+    'hasChapters': false,
+    'selling_text': '''
+    ''',
   },
    {
     'title': 'Describe it',
@@ -128,8 +154,11 @@ List<Map> _content = [
     'pack': 'pack_b',
     'id': '1',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'price': 150,
     'nav': 'photos',
+    'selling_text': '''
+    ''',
   },
   {
     'title': "Planet's Most Jaw-Dropping Landscapes",
@@ -138,9 +167,12 @@ List<Map> _content = [
     'pack': 'pack_c',
     'id': '1',
     'isBlocked': false,
-    'price': 0,
+    'isNew': false,
+    'price': 180,
     'nav': 'photos',
-    'args': {}
+    'args': {},
+    'selling_text': '''
+    ''',
   },
   {
     'title': 'Morning Routine',
@@ -151,10 +183,13 @@ List<Map> _content = [
     'question_type': 'morning',
     'id': '1',
     'isBlocked': false,
+    'isNew': false,
     'isBrown': false,
-    'price': 0,
+    'price': 200,
     'nav': 'routine',
-    'header_color': 0xff6F2927
+    'header_color': 0xff6F2927,
+    'selling_text': '''
+    ''',
   },
   {
     'title': 'Lunchtime!',
@@ -165,10 +200,13 @@ List<Map> _content = [
     'question_type': 'lunch',
     'id': '1',
     'isBlocked': false,
+    'isNew': true,
     'isBrown': true,
-    'price': 0,
+    'price': 220,
     'nav': 'routine',
-    'header_color': 0xffC55A11
+    'header_color': 0xffC55A11,
+    'selling_text': '''
+    ''',
   },
   {
     'title': 'Day Over',
@@ -178,21 +216,34 @@ List<Map> _content = [
     'type': TYPES.ROUTINE,
     'question_type': 'night',
     'id': '1',
-    'isBlocked': false,
+    'isBlocked': true,
+    'isNew': false,
     'isBrown': false,
-    'price': 0,
+    'price': 250,
     'nav': 'routine',
-    'header_color': 0xff117D97
+    'header_color': 0xff117D97,
+    'selling_text': '''Talk about your DAILY ROUTINE with this question pack. Try to use as many new vocabulary words as you can! You’ll be consolidating and making a final “print” in your brain of the things you just learned today, before you go to bed to let your brain rest!
+
+• Did you have to cook today? 🍖
+• What were you in today's morning?
+• Do you study at night? How is your late night study session?''',
   },
   {
-    'title': 'Day Over One',
+    'title': 'Training image pack',
     'img': 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1624424883/ax05.jpg',
     'type': TYPES.ROUTINE,    
     'id': '1',
     'isBlocked': true,
-    'price': 200,
+    'isNew': false,
+    'price': 170,
     'nav': 'routine',
-    'args': {}
+    'args': {},
+    'selling_text': '''Set of 10 visually stunning ENGLISH TRAINING PHOTOS that come with a complete labeling of items
+
+• Practice your speaking ability after describing what is going on in each picture
+• Includes 10 pictures fully labeled, meant for Intermediate levels
+• Boost your improvisation when speaking
+• Learn and explore new English words''',
   },
   {
     'title': 'Day Over Two',
@@ -200,9 +251,16 @@ List<Map> _content = [
     'type': TYPES.ROUTINE,
     'id': '1',
     'isBlocked': true,
-    'price': 200,
+    'isNew': false,
+    'price': 230,
     'nav': 'routine',
-    'args': {}
+    'args': {},
+    'selling_text': '''Set of 10 visually stunning ENGLISH TRAINING PHOTOS that come with a complete labeling of items
+
+• Practice your speaking ability after describing what is going on in each picture
+• Includes 10 pictures fully labeled, meant for Intermediate levels
+• Boost your improvisation when speaking
+• Learn and explore new English words''',
   },
 ];
 

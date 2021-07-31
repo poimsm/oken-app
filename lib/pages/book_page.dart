@@ -7,6 +7,7 @@ import 'package:oken/providers/rx_loader.dart';
 import 'package:oken/providers/rx_paragraph.dart';
 import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
+import 'package:oken/widgets/book_alert.dart';
 import 'package:oken/widgets/book_header.dart';
 import 'package:oken/widgets/loader.dart';
 import 'package:oken/widgets/paragraph.dart';
@@ -110,6 +111,7 @@ class _BookPageState extends State<BookPage> {
             StreamBuilder(
                 stream: rxLoader.isLoading,
                 builder: (context, snapshot) {
+                  afterBuild(snapshot.data);
                   return Loader(snapshot.data);
                 })
           ],
@@ -201,7 +203,8 @@ class _BookPageState extends State<BookPage> {
                 children: [
                   _page(i, book.chapters[i]),
                   // TODO: Hardcoded paginatorIndex
-                  if (i != args['paginatorIndex'] - 1) SizedBox(width: size.width * 0.04),
+                  if (i != args['paginatorIndex'] - 1)
+                    SizedBox(width: size.width * 0.04),
                 ],
               );
             })
@@ -253,6 +256,13 @@ class _BookPageState extends State<BookPage> {
     return Text(text,
         style:
             TextStyle(color: Color(0xff595959), fontSize: size.width * 0.045));
+  }
+
+  void afterBuild(isBuilding) {
+    if (isBuilding ?? true) return;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      showDialog(context: context, builder: (context) => BookAlert());
+    });
   }
 
   void _toast([text = 'Coming soon']) {

@@ -17,7 +17,7 @@ class Media {
   double sH(sizeArg) {
     assert(sizeArg is int || sizeArg is double);
     double size = sizeArg is int ? sizeArg.toDouble() : sizeArg;
-    return screenSize.height *0.014* size / 10;
+    return screenSize.height *0.0137* size / 10;
   }
 
   double get width => screenSize.width;

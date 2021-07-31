@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -6,12 +8,20 @@ import 'package:oken/providers/content_provider.dart';
 import 'package:oken/widgets/base_appbar.dart';
 import 'package:oken/constants/types.dart' as TYPES;
 import 'package:oken/widgets/base_drawer.dart';
+import 'package:oken/widgets/unlock_alert.dart';
 import 'package:oken/widgets/vocab_btn.dart';
+import 'package:toast/toast.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
 
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   ContentProvider contentInstance;
+
   Size size;
 
   @override
@@ -142,10 +152,10 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _cell(i, context) {
+    Map content = contentInstance.get(i);
     return InkWell(
       onTap: () {
-        Map content = contentInstance.get(i);
-        if (content['isBlocked']) return;
+        if (content['isBlocked']) return unlockPopup(content);
         Navigator.pushNamed(context, content['nav'], arguments: content);
       },
       child: Container(
@@ -154,18 +164,23 @@ class HomePage extends StatelessWidget {
           Stack(children: [
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
-              child: Image.network(contentInstance.get(i)['img']),
+              child: Image.network(content['img']),
             ),
-            if (contentInstance.get(i)['isBlocked'])
-              Positioned(right: 10, top: 10, child: _priceTag()),
+            if (content['isBlocked'])
+              Positioned(right: 10, top: 10, child: _priceTag(content)),
           ]),
           SizedBox(height: 3),
           Text(
-            contentInstance.get(i)['title'],
+            content['title'],
             style:
                 TextStyle(color: Colors.black87, fontSize: size.width * 0.045),
           ),
-          _tag(contentInstance.get(i)['type'])
+          Row(children: [
+            _tag(content['type']),
+            if(content['isNew']) SizedBox(width: 7),
+            if(content['isNew']) _newTag(),
+          ],)
+          // _tag(content['type'])
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
       )),
@@ -190,7 +205,19 @@ class HomePage extends StatelessWidget {
             style: TextStyle(fontSize: 13, color: Colors.black54)));
   }
 
-  Widget _priceTag() {
+   Widget _newTag() {
+
+    return Container(
+        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(3),
+            color: Colors.redAccent
+            // border: Border.all(color: Colors.grey.withOpacity(0.7))
+            ),
+        child: Text('New',
+            style: TextStyle(fontSize: 13, color: Colors.white)));
+  }
+  Widget _priceTag(content) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(4),
       child: Container(
@@ -199,7 +226,7 @@ class HomePage extends StatelessWidget {
             children: [
               Icon(Icons.lock, color: Colors.white, size: size.width * 0.06),
               SizedBox(width: 5),
-              Text('200',
+              Text(content['price'].toString() + ' ',
                   style: TextStyle(
                       fontSize: size.width * 0.04,
                       color: Colors.white,
@@ -207,5 +234,23 @@ class HomePage extends StatelessWidget {
             ],
           )),
     );
+  }
+
+  unlockPopup(elem) {
+    Future alert =
+        showDialog(context: context, builder: (context) => UnlockAlert(elem));
+
+    alert.then((val) {
+      val = val == null ? false : val;
+      if (!val) return;
+      _toast('Added');
+    });
+  }
+
+   void _toast(txt) {
+    Timer(
+        Duration(milliseconds: 300),
+        () => Toast.show(txt, context,
+            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM));
   }
 }

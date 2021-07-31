@@ -12,7 +12,7 @@ class BookAlert extends StatelessWidget {
         child: ListBody(
           children: [
             Text(
-                'Start exploring and mining strange words from the book, add words to the vocabulary section to learn them all!'),
+                'Start exploring and mining strange words from books, add those words to the vocabulary section and learn them all!'),
             SizedBox(height: m.s(20)),
             Image.asset('assets/pop02.png'),
             SizedBox(height: m.s(20)),

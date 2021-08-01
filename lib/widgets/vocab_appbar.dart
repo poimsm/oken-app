@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 AppBar vocabAppBar(
   Size size,
@@ -14,7 +15,7 @@ AppBar vocabAppBar(
             onPressed: () => Navigator.pop(context));
       }),
       titleSpacing: 0,
-      backgroundColor: Color(0xff92D050),
+      backgroundColor: Color(COLOR.GREEN),
       actions: [
         IconButton(onPressed: () => {}, icon: Icon(Icons.search)),
       ],

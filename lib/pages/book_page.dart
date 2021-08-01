@@ -13,6 +13,7 @@ import 'package:oken/widgets/loader.dart';
 import 'package:oken/widgets/paragraph.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class BookPage extends StatefulWidget {
   const BookPage({Key key}) : super(key: key);
@@ -228,7 +229,7 @@ class _BookPageState extends State<BookPage> {
                 horizontal: isChapter ? 15 : 3, vertical: isChapter ? 5 : 3),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(100),
-              border: Border.all(width: 1, color: Color(0xff595959)),
+              border: Border.all(width: 1, color: Color(COLOR.DARK_GREY)),
             ),
             child: InkWell(
                 onTap: () {
@@ -248,14 +249,14 @@ class _BookPageState extends State<BookPage> {
       width: size.width * 0.065,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: selected ? Color(0xff595959) : Colors.white),
+          color: selected ? Color(COLOR.DARK_GREY) : Colors.white),
     );
   }
 
   Widget _chapterBubble(text) {
     return Text(text,
-        style:
-            TextStyle(color: Color(0xff595959), fontSize: size.width * 0.045));
+        style: TextStyle(
+            color: Color(COLOR.DARK_GREY), fontSize: size.width * 0.045));
   }
 
   void afterBuild(isBuilding) {

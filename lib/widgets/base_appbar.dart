@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:oken/utils/media.dart';
 import 'package:oken/widgets/coin_alert.dart';
 import 'package:toast/toast.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
   @override
@@ -27,18 +28,18 @@ class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _BaseAppBarState extends State<BaseAppBar> {
-  Media m;
+  Media media;
 
   @override
   Widget build(BuildContext context) {
-    m = Media(context);
+    media = Media(context);
 
     return AppBar(
         elevation: widget.shadow ? 3 : 0,
         title: _title(),
         leading: _menuBtn(),
         titleSpacing: 0,
-        backgroundColor: Color(0xff92D050),
+        backgroundColor: Color(COLOR.GREEN),
         actions: [
           if (widget.search) _searchBtn(),
           if (widget.coins) _coinBtn()
@@ -46,12 +47,13 @@ class _BaseAppBarState extends State<BaseAppBar> {
   }
 
   Widget _title() {
-    return Text(widget.title, style: TextStyle(fontSize: m.s(22)));
+    return Text(widget.title, style: TextStyle(fontSize: media.s(22)));
   }
 
   Widget _menuBtn() {
     return IconButton(
-      icon: Icon(widget.back ? Icons.arrow_back : Icons.android, size: m.s(26)),
+      icon: Icon(widget.back ? Icons.arrow_back : Icons.android,
+          size: media.s(26)),
       onPressed: () {
         if (widget.back) return Navigator.pop(context);
         Scaffold.of(context).openDrawer();
@@ -69,13 +71,13 @@ class _BaseAppBarState extends State<BaseAppBar> {
         onPressed: () => _showCoinPopup(),
         child: Row(
           children: [
-            Image.asset('assets/coin01.png', width: m.s(24)),
+            Image.asset('assets/coin01.png', width: media.s(24)),
             SizedBox(width: 5),
             Text(
               '900',
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: m.s(17),
+                  fontSize: media.s(17),
                   fontWeight: FontWeight.bold),
             )
           ],
@@ -87,7 +89,7 @@ class _BaseAppBarState extends State<BaseAppBar> {
         showDialog(context: context, builder: (context) => CoinAlert());
 
     alert.then((val) {
-      val = val == null ? false : val;
+      val = val ?? false;
       if (!val) return;
       _toast('Added');
     });

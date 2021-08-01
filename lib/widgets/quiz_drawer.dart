@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart' as helper;
 import 'package:provider/provider.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class QuizDrawer extends StatefulWidget {
   QuizDrawer(this.type);
@@ -183,16 +183,10 @@ class _QuizDrawerState extends State<QuizDrawer> {
             SizedBox(height: 0),
             Row(children: [
               Text(' POWER WORD: ', style: TextStyle(fontSize: 17),),
-              Text('INITIATIVE ', style: TextStyle(color: Color(0xffED7D31), fontSize: 17, fontWeight: FontWeight.bold)),
+              Text('INITIATIVE ', style: TextStyle(color: Color(COLOR.ORANGE), fontSize: 17, fontWeight: FontWeight.bold)),
               Text('', style: TextStyle(fontSize: 17),)
             ],),
             SizedBox(height: 20),
-
-            // Text('*** POWER WORD ***', style: TextStyle(fontSize: 17)),
-            // SizedBox(height: 20),
-            // Text('Initiative', style: TextStyle(color: Color(0xffED7D31), fontSize: 18, fontWeight: FontWeight.normal)),
-            // SizedBox(height: 20),
-
             Text(
               "Employers love to people who take initiative because it also shows self-confidence and that you're a hard worker.",
               style: TextStyle(

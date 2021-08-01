@@ -11,6 +11,7 @@ import 'package:oken/widgets/quiz_alert.dart';
 import 'package:oken/widgets/quiz_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class QuizPage extends StatefulWidget {
   QuizPage({Key key}) : super(key: key);
@@ -131,7 +132,7 @@ class _QuizPageState extends State<QuizPage> {
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: Color(0xffFFC000),
+            color: Color(COLOR.YELLOW),
             border: Border.all(color: Colors.white, width: 2),
           ),
           child: Icon(Icons.lightbulb_outline,
@@ -150,7 +151,7 @@ class _QuizPageState extends State<QuizPage> {
           padding: EdgeInsets.symmetric(horizontal: 10, vertical: 6),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: Colors.redAccent,
+            color: Color(COLOR.RED),
             border: Border.all(color: Colors.white, width: 2),
           ),
           child: Icon(Icons.local_fire_department,
@@ -169,7 +170,7 @@ class _QuizPageState extends State<QuizPage> {
         padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(100),
-          color: Color(0xff8037B7),
+          color: Color(COLOR.PURPLE),
           border: Border.all(color: Colors.white, width: 2),
         ),
         child:
@@ -197,7 +198,7 @@ class _QuizPageState extends State<QuizPage> {
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(6),
-              color: Color(0xff8037B7),
+              color: Color(COLOR.PURPLE),
             ),
             child: quiz.isTalking
                 ? Row(
@@ -221,7 +222,7 @@ class _QuizPageState extends State<QuizPage> {
   }
 
   Widget _background() {
-    return Container(color: Color(0xff92D050));
+    return Container(color: Color(COLOR.GREEN));
   }
 
   Widget _bullets() {

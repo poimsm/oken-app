@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oken/widgets/base_appbar.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class UserPage extends StatefulWidget {
   @override
@@ -66,7 +67,7 @@ class _UserPageState extends State<UserPage> {
               child: Container(
                   padding: EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      color: Color(0xff92D050),
+                      color: Color(COLOR.GREEN),
                       borderRadius: BorderRadius.circular(100)),
                   child: Icon(Icons.edit,
                       color: Colors.white, size: size.width * 0.06)),
@@ -79,7 +80,7 @@ class _UserPageState extends State<UserPage> {
   }
 
   Widget _background() {
-    return Container(color: Color(0xfff2f2f2));
+    return Container(color: Color(COLOR.ALMOST_WHITE));
   }
 
   Widget _words() {
@@ -107,11 +108,11 @@ class _UserPageState extends State<UserPage> {
         padding: EdgeInsets.symmetric(vertical: 8, horizontal: 15),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            border: Border.all(width: 1, color: Color(0xffBFBFBF))),
+            border: Border.all(width: 1, color: Color(COLOR.LIGHT_GREY))),
         child: Text(
           text,
           style:
-              TextStyle(fontSize: size.width * 0.041, color: Color(0xff7F7F7F)),
+              TextStyle(fontSize: size.width * 0.041, color: Color(COLOR.GREY)),
         ),
       ),
     );
@@ -135,7 +136,7 @@ class _UserPageState extends State<UserPage> {
                 'Delete Account',
                 style: TextStyle(
                   fontSize: size.width * 0.047,
-                  color: Colors.red.withOpacity(0.8),
+                  color: Color(COLOR.LIGHT_RED),
                 ),
               ))
         ],
@@ -144,7 +145,7 @@ class _UserPageState extends State<UserPage> {
   }
 
   Widget _item(txt, {coins}) {
-    coins = coins == null ? false : coins;
+    coins = coins ?? false;
     return Container(
       width: size.width,
       padding: EdgeInsets.symmetric(horizontal: size.width * 0.045),

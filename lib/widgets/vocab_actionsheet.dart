@@ -5,6 +5,7 @@ import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart' as helper;
 import 'package:provider/provider.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class VocabActionSheet extends StatefulWidget {
   VocabActionSheet(this.elem, this.knownTab);
@@ -31,7 +32,7 @@ class _VocabActionSheetState extends State<VocabActionSheet> {
     size = MediaQuery.of(context).size;
     vocabulary = Provider.of<VocabProvider>(context, listen: false);
     return Container(
-      color: Color(0xFF737373),
+      color: Color(COLOR.GREY),
       height: size.width * 0.7,
       child: Container(
         decoration: BoxDecoration(
@@ -113,9 +114,8 @@ class _VocabActionSheetState extends State<VocabActionSheet> {
           width: size.width * 0.08,
           height: 6,
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(5),
-            color: Color(0xffE7E6E6),
-          ),
+              borderRadius: BorderRadius.circular(5),
+              color: Color(COLOR.SUPER_LIGHT_GREY)),
         ));
   }
 }

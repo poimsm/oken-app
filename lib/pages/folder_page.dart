@@ -5,6 +5,7 @@ import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart' as helper;
 import 'package:oken/widgets/base_appbar.dart';
 import 'package:provider/provider.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class FolderPage extends StatefulWidget {
   @override
@@ -23,8 +24,7 @@ class _FolderPageState extends State<FolderPage> {
     vocabulary = Provider.of<VocabProvider>(context);
 
     return Scaffold(
-        appBar:
-            BaseAppBar(title: args['name'], back: true, shadow: false),
+        appBar: BaseAppBar(title: args['name'], back: true, shadow: false),
         body: _body());
   }
 
@@ -49,19 +49,22 @@ class _FolderPageState extends State<FolderPage> {
         padding: EdgeInsets.symmetric(
             vertical: size.width * 0.05, horizontal: size.width * 0.052),
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Color(0xffE7E6E6)))),
+            border: Border(
+                bottom: BorderSide(color: Color(COLOR.SUPER_LIGHT_GREY)))),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           SizedBox(width: 1),
           Text(
             helper.toCapital(word['title']),
             style: TextStyle(
-                color: Color(0xff7F7F7F), fontSize: size.width * 0.05),
+                color: Color(COLOR.GREY), fontSize: size.width * 0.05),
           ),
           InkWell(
             onTap: () => vocabulary.likeWord(word['id']),
             child: Icon(word['liked'] ? Icons.favorite : LineIcons.heart,
-                color: word['liked'] ? Color(0xffFF6565) : Color(0xffD9D9D9)),
+                color: word['liked']
+                    ? Color(COLOR.LIGHT_RED)
+                    : Color(COLOR.LIGHT_GREY)),
           )
         ]));
   }

@@ -91,7 +91,9 @@ class _ImagePageState extends State<ImagePage> {
         Positioned(child: _switchers(), left: 0, top: size.height * 0.37),
       if (imgsProvider.isTalking)
         Positioned(
-            child: Audiobar(small: true, shiftDimensions: true), left: size.width * 0.38, top: 190),
+            child: Audiobar(small: true, shiftDimensions: true),
+            left: size.width * 0.38,
+            top: 190),
       if (imgsProvider.isTalking)
         Positioned(child: Clock(), left: 0, top: size.height * 0.05),
       Positioned(child: _menu(), left: 0, bottom: size.height * 0.05)
@@ -155,32 +157,41 @@ class _ImagePageState extends State<ImagePage> {
       width: size.width,
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
         _oneBullet(imgsProvider.index < 0),
-        SizedBox(width: 6),
+        SizedBox(width: 0),
         _oneBullet(imgsProvider.index < 1),
-        SizedBox(width: 6),
+        SizedBox(width: 0),
         _oneBullet(imgsProvider.index < 2),
-        SizedBox(width: 6),
+        SizedBox(width: 0),
         _oneBullet(imgsProvider.index < 3),
-        SizedBox(width: 6),
+        SizedBox(width: 0),
         _oneBullet(imgsProvider.index < 4),
-        SizedBox(width: 6),
+        SizedBox(width: 0),
         _oneBullet(imgsProvider.index < 5),
-        SizedBox(width: 6),
+        SizedBox(width: 0),
         _oneBullet(imgsProvider.index < 6),
-        SizedBox(width: 6),
+        SizedBox(width: 0),
         _oneBullet(imgsProvider.index < 7),
       ]),
     );
   }
 
   Widget _oneBullet(isLight) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(2),
-      child: Container(
-          height: 4,
-          width: size.width * 0.065,
-          color: Colors.white.withOpacity(isLight ? 0.2 : 1)),
+    Widget circle = Container(
+      height: 15,
+      width: 50,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(0),
+          color: Colors.black.withOpacity(0.2)),
     );
+
+    Widget stick = Container(
+      height: 15,
+      width: 50,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(0), color: Colors.white),
+    );
+
+    return isLight ? circle : stick;
   }
 
   Widget _switchers() {
@@ -293,7 +304,7 @@ class _ImagePageState extends State<ImagePage> {
         child: Container(
             color: Colors.black.withOpacity(0.5),
             padding: EdgeInsets.all(10),
-            child: Icon(Icons.label_outline,
+            child: Icon(Icons.loyalty,
                 color: Colors.white, size: size.height * 0.08)),
       ),
     );

@@ -11,6 +11,7 @@ import 'package:oken/widgets/vocab_appbar.dart';
 import 'package:dotted_border/dotted_border.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class VocabPage extends StatefulWidget {
   @override
@@ -109,7 +110,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
           width: size.width * 0.15,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(100),
-            color: Color(0xff92D050),
+            color: Color(COLOR.GREEN),
           ),
           alignment: Alignment.center,
           child: Icon(Icons.add, color: Colors.white, size: size.width * 0.07)),
@@ -141,7 +142,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
         padding:
             EdgeInsets.symmetric(vertical: 8, horizontal: size.width * 0.052),
         decoration: BoxDecoration(
-            border: Border(bottom: BorderSide(color: Color(0xffE7E6E6)))),
+            border: Border(bottom: BorderSide(color: Color(COLOR.GREY_WHITE)))),
         child:
             Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           InkWell(
@@ -156,7 +157,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
               child: Text(
                 helper.toCapital(elem['title']),
                 style: TextStyle(
-                    color: Color(0xff7F7F7F), fontSize: size.width * 0.052),
+                    color: Color(COLOR.GREY), fontSize: size.width * 0.052),
               ),
             ),
           ),
@@ -169,7 +170,9 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
             InkWell(
               onTap: () => vocabulary.likeWord(elem['id']),
               child: Icon(elem['liked'] ? Icons.favorite : LineIcons.heart,
-                  color: elem['liked'] ? Color(0xffFF6565) : Color(0xffD9D9D9),
+                  color: elem['liked']
+                      ? Color(COLOR.LIGHT_RED)
+                      : Color(COLOR.LIGHT_GREY),
                   size: size.width * 0.065),
             )
         ]));
@@ -193,7 +196,8 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
           padding: EdgeInsets.symmetric(
               vertical: size.width * 0.048, horizontal: size.width * 0.052),
           decoration: BoxDecoration(
-              border: Border(bottom: BorderSide(color: Color(0xffE7E6E6)))),
+              border: Border(
+                  bottom: BorderSide(color: Color(COLOR.SUPER_LIGHT_GREY)))),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -209,7 +213,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
                             fontSize: size.width * 0.05,
-                            color: Color(0xff7F7F7F))),
+                            color: Color(COLOR.GREY))),
                   )
                 ],
               ),
@@ -219,7 +223,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
                     '(${elem['total_words'].toString()})',
                     style: TextStyle(
                       fontSize: size.width * 0.052,
-                      color: Color(0xff7F7F7F),
+                      color: Color(COLOR.GREY),
                     ),
                   ),
                   Icon(Icons.chevron_right, color: Colors.black45)
@@ -294,7 +298,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
         });
 
     modal.then((val) {
-      val = val == null ? false : val;
+      val = val ?? false;
       if (!val) return;
       _toast('Added');
     });

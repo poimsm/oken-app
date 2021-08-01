@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class AudioActionSheet extends StatefulWidget {
   @override
@@ -104,10 +105,11 @@ class _AudioActionSheetState extends State<AudioActionSheet> {
   }
 
   Widget _item({ok}) {
-    ok = ok == null ? false : ok;
+    ok = ok ?? false;
     return ListTile(
         contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-        leading: Icon(Icons.play_circle, size: 45, color: Color(0xffCBCBCB)),
+        leading:
+            Icon(Icons.play_circle, size: 45, color: Color(COLOR.LIGHT_GREY)),
         title: Text(
           '2021-06-19 16:35',
           style: TextStyle(fontSize: size.width * 0.047, color: Colors.white),

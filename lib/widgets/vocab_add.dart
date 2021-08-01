@@ -3,6 +3,7 @@ import 'package:line_icons/line_icons.dart';
 import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class VocabAdd extends StatefulWidget {
   @override
@@ -67,8 +68,9 @@ class _VocabAddState extends State<VocabAdd> {
         alignment: Alignment.center,
         child: Text(
           'Create a new word to study it!',
-          style:
-              TextStyle(fontSize: size.width * 0.065, color: Color(0xff404040)),
+          style: TextStyle(
+              fontSize: size.width * 0.065,
+              color: Color(COLOR.SUPER_DARK_GREY)),
         ));
   }
 
@@ -139,7 +141,7 @@ class _VocabAddState extends State<VocabAdd> {
             padding: EdgeInsets.symmetric(
                 vertical: size.width * 0.02, horizontal: size.width * 0.04),
             decoration: BoxDecoration(
-                color: Color(0xff92D050),
+                color: Color(COLOR.GREEN),
                 borderRadius: BorderRadius.circular(size.width * 0.04)),
             child: Icon(Icons.edit_outlined,
                 color: Colors.white, size: size.width * 0.085)),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:oken/utils/media.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class CoinAlert extends StatefulWidget {
   @override
@@ -64,7 +65,7 @@ class _CoinAlertState extends State<CoinAlert> {
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(3),
-            color: Color(0xffE7E6E6),
+            color: Color(COLOR.SUPER_LIGHT_GREY),
           ),
           child: Text('\$1.5', style: TextStyle(fontSize: 16)),
         ));
@@ -86,7 +87,7 @@ class _CoinAlertState extends State<CoinAlert> {
           padding: EdgeInsets.symmetric(horizontal: 12, vertical: 5),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(3),
-            color: Color(0xffE7E6E6),
+            color: Color(COLOR.SUPER_LIGHT_GREY),
           ),
           child: Text('Free', style: TextStyle(fontSize: 16)),
         ));
@@ -109,7 +110,7 @@ class _CoinAlertState extends State<CoinAlert> {
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: Color(0xff954ECA),
+                    color: Color(COLOR.PURPLE),
                   ),
                   alignment: Alignment.centerLeft,
                   child: Text('Watch AD for 8 coins',

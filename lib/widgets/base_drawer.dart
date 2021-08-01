@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class BaseDrawer extends StatelessWidget {
   @override
@@ -39,7 +40,7 @@ class BaseDrawer extends StatelessWidget {
                         vertical: 8, horizontal: size.height * 0.025),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      color: Color(0xff8D35CF).withOpacity(0.9),
+                      color: Color(COLOR.PURPLE).withOpacity(0.9),
                     ),
                     width: size.width * 0.45,
                     child: Row(

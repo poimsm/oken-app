@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:toast/toast.dart';
-
+import 'package:oken/constants/color.dart' as COLOR;
 import 'audio_actionsheet.dart';
 
 class Header extends StatefulWidget {
   Header(
       {Key key,
-      this.color = 0xff92D050,
+      this.color = COLOR.GREEN,
       this.back = false,
       this.title = 'Oken'})
       : super(key: key);
@@ -99,7 +99,7 @@ class _HeaderState extends State<Header> {
         });
 
     modal.then((val) {
-      val = val == null ? false : val;
+      val = val ?? false;
       if (!val) return;
       _toast('Added');
     });

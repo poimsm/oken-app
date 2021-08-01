@@ -7,15 +7,15 @@ class CodeAlert extends StatelessWidget {
     String msg =
         "Invite a friend to sign up with your code and you'll get a reward!";
 
-    Media m = Media(context);
+    Media media = Media(context);
 
     return AlertDialog(
       title: const Text('This is your code:'),
       content: SingleChildScrollView(
         child: ListBody(
           children: [
-            Text('LA84HA7', style: TextStyle(fontSize: m.s(30))),
-            SizedBox(height: m.s(15)),
+            Text('LA84HA7', style: TextStyle(fontSize: media.s(30))),
+            SizedBox(height: media.s(15)),
             Text(msg),
           ],
         ),

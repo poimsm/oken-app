@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:oken/utils/media.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class BookAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Media m = Media(context);
+    Media media = Media(context);
 
     return AlertDialog(
       title: const Text('Learn New English Words'),
@@ -13,28 +14,29 @@ class BookAlert extends StatelessWidget {
           children: [
             Text(
                 'Start exploring and mining strange words from books, add those words to the vocabulary section and learn them all!'),
-            SizedBox(height: m.s(20)),
+            SizedBox(height: media.s(20)),
             Image.asset('assets/pop02.png'),
-            SizedBox(height: m.s(20)),
-            Center(child: _gotItBtn(context, m))
+            SizedBox(height: media.s(20)),
+            Center(child: _gotItBtn(context, media))
           ],
         ),
       ),
     );
   }
 
-  Widget _gotItBtn(BuildContext context, Media m) {
+  Widget _gotItBtn(BuildContext context, Media media) {
     return InkWell(
       onTap: () => Navigator.of(context).pop(),
       child: Container(
-        padding: EdgeInsets.symmetric(horizontal: m.s(8), vertical: m.s(5)),
+        padding:
+            EdgeInsets.symmetric(horizontal: media.s(8), vertical: media.s(5)),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(6),
-          color: Color(0xff8C3FC5),
+          color: Color(COLOR.PURPLE),
         ),
         child: Text(
           'Got it!',
-          style: TextStyle(color: Colors.white, fontSize: m.s(15)),
+          style: TextStyle(color: Colors.white, fontSize: media.s(15)),
         ),
       ),
     );

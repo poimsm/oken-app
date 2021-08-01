@@ -4,6 +4,7 @@ import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/utils/helper.dart' as helper;
 import 'package:oken/utils/text_size.dart';
 import 'package:provider/provider.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class BookActionSheet extends StatefulWidget {
   BookActionSheet(this.word);
@@ -28,7 +29,7 @@ class _BookActionSheetState extends State<BookActionSheet> {
         TextSize(widget.word['synonym']).isGreaterThan(size.width * 0.8, 17);
 
     return Container(
-      color: Color(0xFF737373),
+      color: Color(COLOR.DARK_GREY),
       height: size.width * (collapse ? 0.45 : 0.35),
       child: Container(
         padding: EdgeInsets.only(top: 15, left: 20, right: 15),
@@ -75,7 +76,7 @@ class _BookActionSheetState extends State<BookActionSheet> {
             padding: EdgeInsets.only(left: 10, right: 20, top: 5, bottom: 5),
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(5),
-                color: Color(0xffE0E0E0)),
+                color: Color(COLOR.SUPER_LIGHT_GREY)),
             child: Row(children: [
               Container(
                   padding: EdgeInsets.all(3),
@@ -83,11 +84,12 @@ class _BookActionSheetState extends State<BookActionSheet> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Icon(Icons.translate,
-                      color: Color(0xff353535), size: size.width * 0.06)),
+                      color: Color(COLOR.SUPER_DARK_GREY),
+                      size: size.width * 0.06)),
               SizedBox(width: 10),
               Text('Add',
                   style: TextStyle(
-                    color: Color(0xff353535),
+                    color: Color(COLOR.SUPER_DARK_GREY),
                     fontSize: size.width * 0.045,
                   ))
             ])),
@@ -105,7 +107,7 @@ class _BookActionSheetState extends State<BookActionSheet> {
           height: 6,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(5),
-            color: Color(0xffE7E6E6),
+            color: Color(COLOR.BAR_GREY),
           ),
         ));
   }

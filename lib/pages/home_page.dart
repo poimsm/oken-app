@@ -11,6 +11,7 @@ import 'package:oken/widgets/base_drawer.dart';
 import 'package:oken/widgets/unlock_alert.dart';
 import 'package:oken/widgets/vocab_btn.dart';
 import 'package:toast/toast.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class HomePage extends StatefulWidget {
   HomePage({Key key}) : super(key: key);
@@ -33,7 +34,7 @@ class _HomePageState extends State<HomePage> {
       drawer: SafeArea(child: BaseDrawer()),
       appBar: BaseAppBar(coins: true),
       body: Container(
-        color: Color(0xff92D050),
+        color: Color(COLOR.GREEN),
         child: SafeArea(
           child: Container(
             color: Colors.white,
@@ -75,11 +76,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _cat(txt, {active}) {
-    active = active == null ? false : active;
+    active = active ?? false;
     return Container(
       padding: EdgeInsets.symmetric(vertical: 7, horizontal: 15),
       decoration: BoxDecoration(
-          color: active ? Color(0xff404040) : Color(0xffF2F2F2),
+          color: active ? Color(COLOR.DARK_GREY) : Color(COLOR.GREY),
           borderRadius: BorderRadius.circular(50)),
       child: Text(txt,
           style: TextStyle(
@@ -175,11 +176,13 @@ class _HomePageState extends State<HomePage> {
             style:
                 TextStyle(color: Colors.black87, fontSize: size.width * 0.045),
           ),
-          Row(children: [
-            _tag(content['type']),
-            if(content['isNew']) SizedBox(width: 7),
-            if(content['isNew']) _newTag(),
-          ],)
+          Row(
+            children: [
+              _tag(content['type']),
+              if (content['isNew']) SizedBox(width: 7),
+              if (content['isNew']) _newTag(),
+            ],
+          )
           // _tag(content['type'])
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,18 +208,17 @@ class _HomePageState extends State<HomePage> {
             style: TextStyle(fontSize: 13, color: Colors.black54)));
   }
 
-   Widget _newTag() {
-
+  Widget _newTag() {
     return Container(
         padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3),
-            color: Colors.redAccent
+            borderRadius: BorderRadius.circular(3), color: Colors.redAccent
             // border: Border.all(color: Colors.grey.withOpacity(0.7))
             ),
-        child: Text('New',
-            style: TextStyle(fontSize: 13, color: Colors.white)));
+        child:
+            Text('New', style: TextStyle(fontSize: 13, color: Colors.white)));
   }
+
   Widget _priceTag(content) {
     return ClipRRect(
       borderRadius: BorderRadius.circular(4),
@@ -241,13 +243,13 @@ class _HomePageState extends State<HomePage> {
         showDialog(context: context, builder: (context) => UnlockAlert(elem));
 
     alert.then((val) {
-      val = val == null ? false : val;
+      val = val ?? false;
       if (!val) return;
       _toast('Added');
     });
   }
 
-   void _toast(txt) {
+  void _toast(txt) {
     Timer(
         Duration(milliseconds: 300),
         () => Toast.show(txt, context,

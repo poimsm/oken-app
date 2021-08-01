@@ -4,6 +4,7 @@ import 'package:oken/utils/helper.dart' as helper;
 import 'package:oken/utils/text_size.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:oken/constants/color.dart' as COLOR;
 
 class Memory extends StatefulWidget {
   bool showWords = false;
@@ -34,7 +35,7 @@ class _MemoryState extends State<Memory> {
 
     widget.loaderColor = widget.lightMode
         ? Colors.white.withOpacity(0.7)
-        : Color(0xff92D050).withOpacity(0.6);
+        : Color(COLOR.GREEN).withOpacity(0.6);
 
     return Container(
         height: widget.showWords ? size.height * 0.28 : size.height * 0.25,
@@ -72,13 +73,13 @@ class _MemoryState extends State<Memory> {
                     Image.asset('assets/chat01.png',
                         width: size.width * 0.15,
                         fit: BoxFit.fill,
-                        color: Color(0xff92D050).withOpacity(0.45)),
+                        color: Color(COLOR.GREEN).withOpacity(0.45)),
                     Container(
                         padding: EdgeInsets.only(top: 15),
                         child: Text('V O C A B U L A R Y',
                             style: TextStyle(
                                 fontSize: 20,
-                                color: Color(0xff92D050).withOpacity(0.5)))),
+                                color: Color(COLOR.GREEN).withOpacity(0.5)))),
                   ],
                 ),
               ),

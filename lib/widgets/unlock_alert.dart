@@ -12,23 +12,27 @@ class UnlockAlert extends StatelessWidget {
     Media media = Media(context);
 
     return AlertDialog(
+      contentPadding: EdgeInsets.zero,
       title: Text(elem['title']),
       content: SingleChildScrollView(
         child: ListBody(
           children: [
-            Container(
-                child: Column(children: [
+            SizedBox(height: media.s(15)),
+            Column(children: [
               _image(elem, media),
-              SizedBox(height: 5),
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Image.asset('assets/coin01.png', width: media.s(25)),
-                SizedBox(width: 5),
-                Text(elem['price'].toString(),
-                    style: TextStyle(fontSize: 20, color: Colors.black87))
-              ])
-            ])),
-            SizedBox(height: media.s(10)),
-            Text(elem['selling_text']),
+              SizedBox(height: media.s(20)),
+              _banner(media),
+              SizedBox(height: media.s(10)),
+            ]),
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 15),
+              child: Column(
+                children: [
+                  SizedBox(height: media.s(10)),
+                  Text(elem['selling_text']),
+                ],
+              ),
+            ),
           ],
         ),
       ),
@@ -43,12 +47,47 @@ class UnlockAlert extends StatelessWidget {
           },
         ),
         TextButton(
-          child: const Text('UNLOCK'),
+          child: const Text('PLAY'),
           onPressed: () {
             Navigator.of(context).pop();
           },
         ),
       ],
+    );
+  }
+
+  Widget _banner(media) {
+    return Container(
+      color: Color(COLOR.GREEN),
+      padding:
+          EdgeInsets.symmetric(horizontal: media.s(15), vertical: media.s(8)),
+      child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        Row(
+          children: [
+            Image.asset('assets/coin01.png', width: media.s(25)),
+            SizedBox(width: media.s(5)),
+            Text(elem['price'].toString(),
+                style: TextStyle(fontSize: media.s(17), color: Colors.white)),
+          ],
+        ),
+        Container(
+            height: media.s(30),
+            width: 2,
+            color: Color(COLOR.SUPER_LIGHT_GREY)),
+        Row(
+          children: [
+            Icon(Icons.alarm, color: Colors.white),
+            SizedBox(width: media.s(20)),
+            Container(
+              width: media.s(100),
+              child: Text(
+                'Play for up to 20 min',
+                style: TextStyle(color: Colors.white, fontSize: media.s(15)),
+              ),
+            )
+          ],
+        )
+      ]),
     );
   }
 
@@ -64,10 +103,10 @@ class UnlockAlert extends StatelessWidget {
             children: [
               ConstrainedBox(
                   constraints: new BoxConstraints(
-                    minHeight: 50,
-                    maxHeight: 150,
-                    minWidth: 80,
-                    maxWidth: 220,
+                    minHeight: media.s(50),
+                    maxHeight: media.s(150),
+                    minWidth: media.s(90),
+                    maxWidth: media.s(200),
                   ),
                   child: Image.network(elem['img'], fit: BoxFit.cover)),
               Positioned(
@@ -84,33 +123,6 @@ class UnlockAlert extends StatelessWidget {
                   ))
             ],
           )),
-    );
-  }
-
-  Widget _btn() {
-    return Center(
-      child: IntrinsicWidth(
-        child: Container(
-            padding: EdgeInsets.only(left: 20, right: 50, top: 12, bottom: 12),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(6),
-                color: Color(COLOR.SUPER_LIGHT_GREY)),
-            child: Row(
-              children: [
-                Image.asset('assets/coin01.png', width: 20),
-                SizedBox(width: 5),
-                Text(
-                  '5',
-                  style: TextStyle(color: Colors.black87),
-                ),
-                SizedBox(width: 15),
-                Text(
-                  'Unlock content',
-                  style: TextStyle(color: Colors.black87),
-                )
-              ],
-            )),
-      ),
     );
   }
 }

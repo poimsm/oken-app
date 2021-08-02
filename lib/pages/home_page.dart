@@ -176,21 +176,45 @@ class _HomePageState extends State<HomePage> {
             style:
                 TextStyle(color: Colors.black87, fontSize: size.width * 0.045),
           ),
+          SizedBox(height: 5),
+          if (i == 1) _counter(),
+          SizedBox(height: 5),
           Row(
             children: [
-              _tag(content['type']),
+              _typeTag(content['type']),
               if (content['isNew']) SizedBox(width: 7),
               if (content['isNew']) _newTag(),
             ],
           )
-          // _tag(content['type'])
         ],
         crossAxisAlignment: CrossAxisAlignment.start,
       )),
     );
   }
 
-  Widget _tag(type) {
+  Widget _counter() {
+    return Row(
+      children: [
+        Container(
+            padding: EdgeInsets.all(3),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Color(COLOR.GREEN)),
+            child: Text('29', style: TextStyle(color: Colors.white))),
+        SizedBox(width: 2),
+        Text(':'),
+        SizedBox(width: 2),
+        Container(
+            padding: EdgeInsets.all(3),
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: Color(COLOR.GREEN)),
+            child: Text('03', style: TextStyle(color: Colors.white))),
+      ],
+    );
+  }
+
+  Widget _typeTag(type) {
     final iconTypes = {
       TYPES.QUIZ: 'Quiz',
       TYPES.BOOK: 'Book',
@@ -212,9 +236,7 @@ class _HomePageState extends State<HomePage> {
     return Container(
         padding: EdgeInsets.symmetric(vertical: 4, horizontal: 10),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(3), color: Colors.redAccent
-            // border: Border.all(color: Colors.grey.withOpacity(0.7))
-            ),
+            borderRadius: BorderRadius.circular(3), color: Colors.redAccent),
         child:
             Text('New', style: TextStyle(fontSize: 13, color: Colors.white)));
   }

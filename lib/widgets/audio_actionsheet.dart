@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/vocab_provider.dart';
+import 'package:oken/widgets/audio_play.dart';
 import 'package:provider/provider.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 
@@ -70,8 +71,9 @@ class _AudioActionSheetState extends State<AudioActionSheet> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: 10),
             _item(),
-            // _item(ok: true),
+            _item(play: true),
             _item(),
             _item(),
             _item(),
@@ -104,12 +106,24 @@ class _AudioActionSheetState extends State<AudioActionSheet> {
         ));
   }
 
-  Widget _item({ok}) {
-    ok = ok ?? false;
+  Widget _item({play}) {
+    play = play ?? false;
     return ListTile(
         contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
-        leading:
-            Icon(Icons.play_circle, size: 45, color: Color(COLOR.LIGHT_GREY)),
+        leading: Container(
+          height: 45,
+          width: 45,
+          child: Stack(
+            children: [
+              if (play) Center(child: AudioPlay(40)),
+              Center(
+                  child: Icon(Icons.play_circle,
+                      size: 45, color: Color(COLOR.LIGHT_GREY)))
+            ],
+          ),
+        ),
+        // leading:
+        //     Icon(Icons.play_circle, size: 45, color: Color(COLOR.LIGHT_GREY)),
         title: Text(
           '2021-06-19 16:35',
           style: TextStyle(fontSize: size.width * 0.047, color: Colors.white),

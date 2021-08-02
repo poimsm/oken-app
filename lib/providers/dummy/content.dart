@@ -22,7 +22,7 @@ List<Map> _content = [
     'cover': 'https://res.cloudinary.com/ddon9fx1n/image/upload/v1625884257/job04.png',
     'type': TYPES.QUIZ,
     'id': '1',
-    'isBlocked': false,
+    'isBlocked': true,
     'isNew': false,
     'power_word': true,
     'price': 250,

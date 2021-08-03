@@ -176,7 +176,7 @@ class _HomePageState extends State<HomePage> {
             style:
                 TextStyle(color: Colors.black87, fontSize: size.width * 0.045),
           ),
-          SizedBox(height: 5),
+          if (i == 1) SizedBox(height: 5),
           if (i == 1) _counter(),
           SizedBox(height: 5),
           Row(

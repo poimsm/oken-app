@@ -1,8 +1,5 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:oken/utils/media.dart';
-import 'package:oken/widgets/coin_alert.dart';
-import 'package:toast/toast.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 
 class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -15,6 +12,7 @@ class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.back = false,
     this.shadow = true,
     this.search = false,
+    this.help = false,
   });
 
   final String title;
@@ -22,6 +20,7 @@ class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
   final bool back;
   final bool search;
   final bool shadow;
+  final bool help;
 
   @override
   State<BaseAppBar> createState() => _BaseAppBarState();
@@ -42,12 +41,18 @@ class _BaseAppBarState extends State<BaseAppBar> {
         backgroundColor: Color(COLOR.GREEN),
         actions: [
           if (widget.search) _searchBtn(),
-          if (widget.coins) _coinBtn()
+          if (widget.coins) _coinBtn(),
+          if (widget.help) _helpBtn(),
         ]);
   }
 
   Widget _title() {
     return Text(widget.title, style: TextStyle(fontSize: media.s(22)));
+  }
+
+  Widget _helpBtn() {
+    return IconButton(
+        onPressed: () {}, icon: Icon(Icons.help_outline, size: 25));
   }
 
   Widget _menuBtn() {
@@ -68,7 +73,7 @@ class _BaseAppBarState extends State<BaseAppBar> {
 
   Widget _coinBtn() {
     return TextButton(
-        onPressed: () => _showCoinPopup(),
+        onPressed: () => Navigator.pushNamed(context, 'coin'),
         child: Row(
           children: [
             Image.asset('assets/coin01.png', width: media.s(24)),
@@ -82,23 +87,5 @@ class _BaseAppBarState extends State<BaseAppBar> {
             )
           ],
         ));
-  }
-
-  void _showCoinPopup() {
-    Future alert =
-        showDialog(context: context, builder: (context) => CoinAlert());
-
-    alert.then((val) {
-      val = val ?? false;
-      if (!val) return;
-      _toast('Added');
-    });
-  }
-
-  void _toast(txt) {
-    Timer(
-        Duration(milliseconds: 300),
-        () => Toast.show(txt, context,
-            duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM));
   }
 }

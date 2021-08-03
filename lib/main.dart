@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oken/pages/coin_page.dart';
 import 'package:oken/pages/folder_page.dart';
 import 'package:oken/pages/home_page.dart';
 import 'package:oken/pages/photo_page.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
             'vocabulary': (BuildContext context) => VocabPage(),
             'viewer': (BuildContext context) => ViewerPage(),
             'folder': (BuildContext context) => FolderPage(),
+            'coin': (BuildContext context) => CoinPage(),
           }),
     );
   }

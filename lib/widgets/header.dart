@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oken/providers/coin_provider.dart';
 import 'package:toast/toast.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 import 'audio_actionsheet.dart';
@@ -21,10 +22,13 @@ class Header extends StatefulWidget {
 
 class _HeaderState extends State<Header> {
   Size size;
+  CoinProvider coinProvider;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
+    coinProvider = CoinProvider();
+
     return Container(
         width: size.width,
         padding: EdgeInsets.symmetric(
@@ -44,7 +48,7 @@ class _HeaderState extends State<Header> {
         child: Row(
           children: [
             Icon(widget.back ? Icons.arrow_back : Icons.menu,
-                color: Colors.white, size: size.width*0.065),
+                color: Colors.white, size: size.width * 0.065),
             SizedBox(
               width: 8,
             ),
@@ -60,6 +64,40 @@ class _HeaderState extends State<Header> {
   }
 
   _rightBox() {
+    return Row(
+      children: [
+        _coinButton(),
+        SizedBox(width: 15),
+        _audioRecordButton(),
+
+        //  _audioRecordButton(),
+        //   SizedBox(width: 15),
+        //   _coinButton(),
+      ],
+    );
+  }
+
+  _coinButton() {
+    return Container(
+        padding: EdgeInsets.symmetric(
+            horizontal: size.width * 0.023, vertical: size.width * 0.012),
+        color: Colors.black.withOpacity(0),
+        child: Row(
+          children: [
+            Image.asset('assets/coin01.png', width: size.width * 0.065),
+            SizedBox(width: 5),
+            Text(
+              coinProvider.totalCoins,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: size.width * 0.048,
+                  fontWeight: FontWeight.bold),
+            )
+          ],
+        ));
+  }
+
+  _audioRecordButton() {
     return InkWell(
       onTap: () => _audioList(),
       child: ClipRRect(
@@ -70,23 +108,20 @@ class _HeaderState extends State<Header> {
             color: Colors.black.withOpacity(0.2),
             child: Row(
               children: [
-                // Image.asset('assets/coin01.png', width: size.width * 0.065),
                 Icon(Icons.music_note, color: Colors.white),
                 SizedBox(width: 5),
                 Text(
                   'Records (9)',
                   style: TextStyle(
-                      color: Colors.white,
-                      fontSize: size.width * 0.045,
-                      // fontWeight: FontWeight.bold
-                      ),
+                    color: Colors.white,
+                    fontSize: size.width * 0.045,
+                  ),
                 )
               ],
             )),
       ),
     );
   }
-
 
   void _audioList() {
     Future modal = showModalBottomSheet(

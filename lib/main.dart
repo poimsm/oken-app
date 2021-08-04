@@ -10,6 +10,7 @@ import 'package:oken/pages/tutorial_page.dart';
 import 'package:oken/pages/user_page.dart';
 import 'package:oken/pages/viewer_page.dart';
 import 'package:oken/pages/vocab_page.dart';
+import 'package:oken/providers/coin_provider.dart';
 import 'package:oken/providers/quiz_provider.dart';
 import 'package:oken/providers/book_provider.dart';
 import 'package:oken/providers/routine_provider.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => RoutineProvider()),
         ChangeNotifierProvider(create: (context) => UIProvider()),
         ChangeNotifierProvider(create: (context) => VocabProvider()),
+        ChangeNotifierProvider(create: (context) => CoinProvider()),
       ],
       child: MaterialApp(
           debugShowCheckedModeBanner: false,

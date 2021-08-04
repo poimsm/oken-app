@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:oken/providers/coin_provider.dart';
 import 'package:oken/providers/quiz_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
@@ -12,6 +13,7 @@ import 'package:oken/widgets/quiz_drawer.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:oken/constants/color.dart' as COLOR;
+import 'package:oken/constants/paid_actions.dart';
 
 class QuizPage extends StatefulWidget {
   QuizPage({Key key}) : super(key: key);
@@ -55,6 +57,7 @@ class _QuizPageState extends State<QuizPage> {
   List actives = [false, false, false];
   var scaffoldKey = GlobalKey<ScaffoldState>();
   String drawerType;
+  CoinProvider coinProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +68,7 @@ class _QuizPageState extends State<QuizPage> {
     swiperCtrl = SwiperController();
     size = MediaQuery.of(context).size;
     Provider.of<VocabProvider>(context);
+    coinProvider = Provider.of<CoinProvider>(context);
 
     return SafeArea(
         child: Scaffold(
@@ -75,7 +79,7 @@ class _QuizPageState extends State<QuizPage> {
                 _background(),
                 Column(
                   children: [
-                    SizedBox(height: 80),
+                    SizedBox(height: 70),
                     Container(height: size.height * 0.8, child: _swiper()),
                   ],
                 ),
@@ -84,7 +88,9 @@ class _QuizPageState extends State<QuizPage> {
                   left: 0,
                   child: Header(back: true),
                 ),
-                Positioned(top: size.height * 0.07, left: 0, child: _bullets()),
+                if (false)
+                  Positioned(
+                      bottom: size.height * 0.025, left: 0, child: _bullets()),
                 Positioned(
                   top: 55,
                   left: 0,
@@ -100,7 +106,7 @@ class _QuizPageState extends State<QuizPage> {
                       right: 2,
                       child: _powerWords()),
                 Positioned(
-                    bottom: size.height * 0.06, left: 0, child: _micBtn()),
+                    bottom: size.height * 0.075, left: 0, child: _micBtn()),
               ],
             )));
   }
@@ -144,7 +150,8 @@ class _QuizPageState extends State<QuizPage> {
     return InkWell(
       onTap: () {
         drawerType = 'power-word';
-        setState(() {});
+        // setState(() {});
+        coinProvider.charge(PaidActions.showPowerWord);
         scaffoldKey.currentState.openEndDrawer();
       },
       child: Container(
@@ -273,6 +280,7 @@ class _QuizPageState extends State<QuizPage> {
           swiperCtrl.stopAutoplay();
           isPristine = false;
           vocabulary.shuffle();
+          coinProvider.charge(PaidActions.swipeQuiz);
         },
         itemCount: quiz.allQuestions.length,
         itemBuilder: (BuildContext context, int index) {

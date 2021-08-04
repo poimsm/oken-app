@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oken/providers/coin_provider.dart';
 import 'package:oken/utils/media.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 
@@ -28,10 +29,12 @@ class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _BaseAppBarState extends State<BaseAppBar> {
   Media media;
+  CoinProvider coinProvider;
 
   @override
   Widget build(BuildContext context) {
     media = Media(context);
+    coinProvider = CoinProvider();
 
     return AppBar(
         elevation: widget.shadow ? 3 : 0,
@@ -79,7 +82,7 @@ class _BaseAppBarState extends State<BaseAppBar> {
             Image.asset('assets/coin01.png', width: media.s(24)),
             SizedBox(width: 5),
             Text(
-              '900',
+              coinProvider.totalCoins,
               style: TextStyle(
                   color: Colors.white,
                   fontSize: media.s(17),

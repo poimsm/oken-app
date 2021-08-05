@@ -11,6 +11,18 @@ class UIProvider with ChangeNotifier {
   Map _word;
 
   bool _showQuestionBox = false;
+  bool _showCoinEffect = false;
+
+  startCoinEffect() {
+    _showCoinEffect = !_showCoinEffect;
+    notifyListeners();
+    Timer(Duration(milliseconds: 1600), () {
+      _showCoinEffect = false;
+      notifyListeners();
+    });
+  }
+
+  get showCoinEffect => _showCoinEffect;
 
   get showQuestionBox => _showQuestionBox;
 

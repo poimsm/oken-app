@@ -23,12 +23,8 @@ class CoinProvider with ChangeNotifier {
 
   _freeTire(type) {
     hola++;
-    print(hola);
-    print('hmmmmmmm');
-    print(_freeTireModel[type]);
     if (_freeTireModel[type] == 0) return false;
     _freeTireModel[type]--;
-    print(_freeTireModel[type]);
     return true;
   }
 

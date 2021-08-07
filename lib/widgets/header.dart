@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:oken/providers/audio_provider.dart';
 import 'package:oken/providers/coin_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 import 'audio_actionsheet.dart';
@@ -23,11 +25,13 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   Size size;
   CoinProvider coinProvider;
+  AudioProvider audioProvider;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     coinProvider = CoinProvider();
+    audioProvider = Provider.of<AudioProvider>(context);
 
     return Container(
         width: size.width,
@@ -66,13 +70,9 @@ class _HeaderState extends State<Header> {
   _rightBox() {
     return Row(
       children: [
-        _coinButton(),
-        SizedBox(width: 15),
+        // _coinButton(),
+        // SizedBox(width: 15),
         _audioRecordButton(),
-
-        //  _audioRecordButton(),
-        //   SizedBox(width: 15),
-        //   _coinButton(),
       ],
     );
   }
@@ -111,7 +111,7 @@ class _HeaderState extends State<Header> {
                 Icon(Icons.music_note, color: Colors.white),
                 SizedBox(width: 5),
                 Text(
-                  'Records (9)',
+                  'Records (${audioProvider.userAudios.length})',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: size.width * 0.045,

@@ -10,6 +10,7 @@ import 'package:oken/pages/tutorial_page.dart';
 import 'package:oken/pages/user_page.dart';
 import 'package:oken/pages/viewer_page.dart';
 import 'package:oken/pages/vocab_page.dart';
+import 'package:oken/providers/audio_provider.dart';
 import 'package:oken/providers/coin_provider.dart';
 import 'package:oken/providers/quiz_provider.dart';
 import 'package:oken/providers/book_provider.dart';
@@ -28,7 +29,6 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => QuizProvider()),
@@ -39,24 +39,28 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UIProvider()),
         ChangeNotifierProvider(create: (context) => VocabProvider()),
         ChangeNotifierProvider(create: (context) => CoinProvider()),
+        ChangeNotifierProvider(create: (context) => AudioProvider()),
       ],
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Material App',
-          initialRoute: '/',
-          routes: {
-            '/': (BuildContext context) => HomePage(),
-            'user': (BuildContext context) => UserPage(),
-            'reading': (BuildContext context) => BookPage(),
-            'quiz': (BuildContext context) => QuizPage(),
-            'photos': (BuildContext context) => ImagePage(),
-            'routine': (BuildContext context) => RoutinePage(),
-            'tutorial': (BuildContext context) => TutorialPage(),
-            'vocabulary': (BuildContext context) => VocabPage(),
-            'viewer': (BuildContext context) => ViewerPage(),
-            'folder': (BuildContext context) => FolderPage(),
-            'coin': (BuildContext context) => CoinPage(),
-          }),
+      child: GestureDetector(
+        onTap: () => FocusManager.instance.primaryFocus.unfocus(),
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Material App',
+            initialRoute: '/',
+            routes: {
+              '/': (BuildContext context) => HomePage(),
+              'user': (BuildContext context) => UserPage(),
+              'reading': (BuildContext context) => BookPage(),
+              'quiz': (BuildContext context) => QuizPage(),
+              'photos': (BuildContext context) => ImagePage(),
+              'routine': (BuildContext context) => RoutinePage(),
+              'tutorial': (BuildContext context) => TutorialPage(),
+              'vocabulary': (BuildContext context) => VocabPage(),
+              'viewer': (BuildContext context) => ViewerPage(),
+              'folder': (BuildContext context) => FolderPage(),
+              'coin': (BuildContext context) => CoinPage(),
+            }),
+      ),
     );
   }
 }

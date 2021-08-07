@@ -2,16 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
+import 'package:oken/providers/audio_provider.dart';
 import 'package:oken/providers/coin_provider.dart';
 import 'package:oken/providers/quiz_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
+import 'package:oken/widgets/clock_quiz.dart';
 import 'package:oken/widgets/header.dart';
 import 'package:oken/widgets/memory.dart';
+import 'package:oken/widgets/microphone_quiz.dart';
 import 'package:oken/widgets/quiz_alert.dart';
 import 'package:oken/widgets/quiz_drawer.dart';
 import 'package:provider/provider.dart';
-import 'package:toast/toast.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 import 'package:oken/constants/paid_actions.dart';
 
@@ -31,6 +33,8 @@ class _QuizPageState extends State<QuizPage> {
     vocabulary.load();
     vocabulary.setQuestionWords();
     SystemChrome.setEnabledSystemUIOverlays([]);
+    audioProvider = Provider.of<AudioProvider>(context, listen: false);
+    audioProvider.reset();
 
     super.initState();
 
@@ -58,6 +62,7 @@ class _QuizPageState extends State<QuizPage> {
   var scaffoldKey = GlobalKey<ScaffoldState>();
   String drawerType;
   CoinProvider coinProvider;
+  AudioProvider audioProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -69,32 +74,35 @@ class _QuizPageState extends State<QuizPage> {
     size = MediaQuery.of(context).size;
     Provider.of<VocabProvider>(context);
     coinProvider = Provider.of<CoinProvider>(context);
+    audioProvider = Provider.of<AudioProvider>(context, listen: false);
 
     return SafeArea(
         child: Scaffold(
             key: scaffoldKey,
+            drawerEdgeDragWidth: 0,
             endDrawer: QuizDrawer(drawerType),
             body: Stack(
               children: [
                 _background(),
-                Column(
-                  children: [
-                    SizedBox(height: 70),
-                    Container(height: size.height * 0.8, child: _swiper()),
-                  ],
+                SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      SizedBox(height: 80),
+                      Container(height: size.height * 0.8, child: _swiper()),
+                    ],
+                  ),
                 ),
                 Positioned(
                   top: 0,
                   left: 0,
                   child: Header(back: true),
                 ),
-                if (false)
-                  Positioned(
-                      bottom: size.height * 0.025, left: 0, child: _bullets()),
+                Positioned(
+                    top: size.height * 0.075, left: 0, child: _bullets()),
                 Positioned(
                   top: 55,
                   left: 0,
-                  child: Clock(),
+                  child: ClockQuiz(),
                 ),
                 Positioned(
                     bottom: size.height * 0.72, right: 2, child: _vocabBtn()),
@@ -105,8 +113,7 @@ class _QuizPageState extends State<QuizPage> {
                       bottom: size.height * 0.5,
                       right: 2,
                       child: _powerWords()),
-                Positioned(
-                    bottom: size.height * 0.075, left: 0, child: _micBtn()),
+                Positioned(bottom: 0, left: 0, child: MicrophoneQuiz()),
               ],
             )));
   }
@@ -186,48 +193,6 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  Widget _micBtn() {
-    return InkWell(
-      onLongPress: () {
-        quiz.enableTalking();
-        timer.start();
-      },
-      onTap: () {
-        if (!quiz.isTalking) return _toast('Keep pressing');
-        quiz.disableTalking();
-        timer.stop();
-      },
-      child: Container(
-        width: size.width,
-        alignment: Alignment.center,
-        child: Container(
-            width: size.width * 0.52,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              color: Color(COLOR.PURPLE),
-            ),
-            child: quiz.isTalking
-                ? Row(
-                    children: [
-                      Icon(Icons.pause,
-                          color: Colors.white, size: size.width * 0.09),
-                      SizedBox(width: 5),
-                      Text(
-                        'Recording...',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: size.width * 0.045,
-                        ),
-                      )
-                    ],
-                  )
-                : Icon(Icons.mic,
-                    color: Colors.white, size: size.width * 0.09)),
-      ),
-    );
-  }
-
   Widget _background() {
     return Container(color: Color(COLOR.GREEN));
   }
@@ -280,7 +245,8 @@ class _QuizPageState extends State<QuizPage> {
           swiperCtrl.stopAutoplay();
           isPristine = false;
           vocabulary.shuffle();
-          coinProvider.charge(PaidActions.swipeQuiz);
+          audioProvider.reset();
+          // coinProvider.charge(PaidActions.swipeQuiz);
         },
         itemCount: quiz.allQuestions.length,
         itemBuilder: (BuildContext context, int index) {
@@ -338,39 +304,5 @@ class _QuizPageState extends State<QuizPage> {
   Future afterBuild(swiperCtrl) async {
     await showDialog(context: context, builder: (context) => QuizAlert());
     swiperCtrl.startAutoplay();
-  }
-
-  void _toast([text = 'Coming soon']) {
-    Toast.show(text, context,
-        duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-  }
-}
-
-class Clock extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    QuizProvider question = Provider.of<QuizProvider>(context);
-    int time = Provider.of<TimerProvider>(context).time;
-    Size size = MediaQuery.of(context).size;
-
-    if (!question.isTalking) return Container();
-
-    return Container(
-      width: size.width,
-      padding: EdgeInsets.symmetric(vertical: 10),
-      color: Colors.black.withOpacity(0.6),
-      child: Center(
-        child: Container(
-          padding: EdgeInsets.all(11),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: Colors.white)),
-          child: Text(
-            time.toString(),
-            style: TextStyle(color: Colors.white, fontSize: size.width * 0.05),
-          ),
-        ),
-      ),
-    );
   }
 }

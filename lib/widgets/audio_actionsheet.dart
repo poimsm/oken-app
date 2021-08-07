@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oken/providers/audio_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/widgets/audio_play.dart';
 import 'package:provider/provider.dart';
@@ -12,11 +13,14 @@ class AudioActionSheet extends StatefulWidget {
 class _AudioActionSheetState extends State<AudioActionSheet> {
   Size size;
   VocabProvider vocabulary;
+  AudioProvider audioProvider;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     vocabulary = Provider.of<VocabProvider>(context, listen: false);
+    audioProvider = Provider.of<AudioProvider>(context);
+
     return Container(
       height: size.height * 0.8,
       decoration: BoxDecoration(
@@ -57,7 +61,7 @@ class _AudioActionSheetState extends State<AudioActionSheet> {
               width: 5,
             ),
             Text(
-              'My records (9)',
+              'My records (${audioProvider.userAudios.length})',
               style:
                   TextStyle(fontSize: size.width * 0.052, color: Colors.white),
             ),
@@ -66,29 +70,12 @@ class _AudioActionSheetState extends State<AudioActionSheet> {
   }
 
   Widget _list() {
+    List audios = audioProvider.userAudios;
     return Container(
       height: size.height * 0.58,
       child: SingleChildScrollView(
         child: Column(
-          children: [
-            SizedBox(height: 10),
-            _item(),
-            _item(play: true),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-            _item(),
-          ],
-        ),
+            children: List.generate(audios.length, (i) => _item(audios[i], i))),
       ),
     );
   }
@@ -106,29 +93,41 @@ class _AudioActionSheetState extends State<AudioActionSheet> {
         ));
   }
 
-  Widget _item({play}) {
-    play = play ?? false;
+  Widget _item(elem, i) {
+    bool isTitle = elem['title'].length > 0;
+    String title = isTitle ? elem['title'] : elem['date'];
+
     return ListTile(
+        onTap: () => audioProvider.play(isAudioList: true, index: i),
         contentPadding: EdgeInsets.symmetric(vertical: 6, horizontal: 10),
         leading: Container(
           height: 45,
           width: 45,
           child: Stack(
             children: [
-              if (play) Center(child: AudioPlay(40)),
+              if (elem['isPlaying']) Center(child: AudioPlay(40)),
               Center(
                   child: Icon(Icons.play_circle,
                       size: 45, color: Color(COLOR.LIGHT_GREY)))
             ],
           ),
         ),
-        // leading:
-        //     Icon(Icons.play_circle, size: 45, color: Color(COLOR.LIGHT_GREY)),
-        title: Text(
-          '2021-06-19 16:35',
-          style: TextStyle(fontSize: size.width * 0.047, color: Colors.white),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style:
+                  TextStyle(fontSize: size.width * 0.047, color: Colors.white),
+            ),
+            if (isTitle)
+              Text(
+                elem['date'],
+                style: TextStyle(fontSize: 12, color: Colors.white),
+              ),
+          ],
         ),
-        trailing: Text('3:21',
+        trailing: Text(elem['length'],
             style:
                 TextStyle(fontSize: size.width * 0.047, color: Colors.white)));
   }

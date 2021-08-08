@@ -7,6 +7,7 @@ class RoutineProvider with ChangeNotifier {
   int _index = 0;
   bool _loading = false;
   bool _isTalking = false;
+  bool _showToast = false;
 
   List _questions = [];
 
@@ -14,16 +15,17 @@ class RoutineProvider with ChangeNotifier {
     _questions = ThemedQuiz().get(type);
   }
 
-  get question {
-    return _questions[_index];
-  }
+  get question => _questions[_index];
 
-  get loading {
-    return _loading;
-  }
+  get loading => _loading;
 
-  get isTalking {
-    return _isTalking;
+  get isTalking =>  _isTalking;
+
+  get showToast => _showToast;
+
+  set showToast(bool val) {
+    _showToast = val;
+    notifyListeners();
   }
 
   void startTalking() {
@@ -57,7 +59,7 @@ class RoutineProvider with ChangeNotifier {
     });
   }
 
-  void dispose() {
+  void onDispose() {
     _index = 0;
   }
 }

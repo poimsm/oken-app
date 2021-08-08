@@ -216,7 +216,7 @@ List<Map> _content = [
     'type': TYPES.ROUTINE,
     'question_type': 'night',
     'id': 29462,
-    'isBlocked': true,
+    'isBlocked': false,
     'isNew': false,
     'isBrown': false,
     'price': 250,

@@ -111,6 +111,7 @@ class _MicrophoneQuizState extends State<MicrophoneQuiz> {
 
   Widget _micBtn() {
     void onStop() {
+      if (!quizProvider.isTalking) return _toast('Keep pressing');
       timer.cancel();
       _time = 0;
       if (!isRecording) return;
@@ -120,6 +121,10 @@ class _MicrophoneQuizState extends State<MicrophoneQuiz> {
     }
 
     Future<void> onStart() async {
+      timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
+        _time += 1;
+        if (_time >= 120) onStop();
+      });
       isRecording = await audioProvider.startRecording();
       if (!isRecording) return;
       quizProvider.enableTalking();
@@ -127,17 +132,8 @@ class _MicrophoneQuizState extends State<MicrophoneQuiz> {
     }
 
     return InkWell(
-      onTap: () {
-        if (!quizProvider.isTalking) return _toast('Keep pressing');
-        onStop();
-      },
-      onLongPress: () {
-        timer = Timer.periodic(Duration(milliseconds: 500), (timer) {
-          _time += 1;
-          if (_time >= 120) onStop();
-        });
-        onStart();
-      },
+      onTap: () => onStop(),
+      onLongPress: () => onStart(),
       child: Listener(
         onPointerUp: (e) {
           if (_time < 3) {

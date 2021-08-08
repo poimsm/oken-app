@@ -13,23 +13,19 @@ class AudioProvider with ChangeNotifier {
   AudioPlayer _player;
   bool _hasNewAudioToBeSaved = false;
   bool _isSaving = false;
-  bool _isKeyboardVisible = false;
   bool _isPlaying = false;
+  bool _isTalking = false;
   List _temAudioPaths = [];
   List _userAudios = [];
-  Timer _timeController;
-  int _time;
+  Timer _audioLengthController;
+  int _audioLength = 0;
 
   get userAudios => _userAudios;
   get isSaving => _isSaving;
   get hasNewAudioToBeSaved => _hasNewAudioToBeSaved;
-  get isKeyboardVisible => _isKeyboardVisible;
   get isPlaying => _isPlaying;
-
-  set isKeyboardVisible(bool val) {
-    _isKeyboardVisible = val;
-    notifyListeners();
-  }
+  get isTalking => _isTalking;
+  get audioLength => _audioLength > 59 ? '01:00' : '00:0$_audioLength';
 
   set isSaving(bool val) {
     _isSaving = val;
@@ -41,11 +37,12 @@ class AudioProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void reset() {
+  void reset({setState: false}) {
     _hasNewAudioToBeSaved = false;
     _isSaving = false;
-    _time = 0;
-    if (_timeController != null) _timeController.cancel();
+    _audioLength = 0;
+    if (_audioLengthController != null) _audioLengthController.cancel();
+    if (setState) notifyListeners();
   }
 
   Future<bool> startRecording() async {
@@ -54,11 +51,13 @@ class AudioProvider with ChangeNotifier {
 
     Directory directory = await getTemporaryDirectory();
     String name = Random().nextInt(100000).toString();
-    _timeController = Timer.periodic(Duration(seconds: 1), (timer) {
-      _time += 1;
+    _audioLengthController = Timer.periodic(Duration(seconds: 1), (timer) {
+      _audioLength += 1;
     });
     _temAudioPaths.add('${directory.path}/$name');
     _record.start(path: '${directory.path}/$name', encoder: AudioEncoder.AAC);
+    _isTalking = true;
+    notifyListeners();
     return true;
   }
 
@@ -77,7 +76,7 @@ class AudioProvider with ChangeNotifier {
       'date': updatedDt,
       'title': title,
       'type': module,
-      'length': _time > 59 ? '01:00' : '00:0$_time',
+      'length': _audioLength > 59 ? '01:00' : '00:0$_audioLength',
       'isPlaying': false,
     });
 
@@ -102,8 +101,9 @@ class AudioProvider with ChangeNotifier {
     if (_record == null) return;
 
     _hasNewAudioToBeSaved = true;
-    _timeController.cancel();
+    _audioLengthController.cancel();
     _record.stop();
+    _isTalking = false;
 
     notifyListeners();
   }

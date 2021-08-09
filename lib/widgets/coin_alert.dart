@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:oken/utils/media.dart';
+import 'package:oken/utils/dimens.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 
 class CoinAlert extends StatefulWidget {
@@ -9,18 +9,18 @@ class CoinAlert extends StatefulWidget {
 }
 
 class _CoinAlertState extends State<CoinAlert> {
-  Media m;
+  Dimens dimens;
 
   @override
   Widget build(BuildContext context) {
-    m = Media(context);
+    dimens = Dimens(context);
 
     return Center(
       child: IntrinsicHeight(
         child: Material(
           color: Colors.transparent,
           child: Container(
-            width: m.width * 0.9,
+            width: dimens.width * 0.9,
             child: Column(children: [
               Card(
                 elevation: 6,
@@ -98,15 +98,15 @@ class _CoinAlertState extends State<CoinAlert> {
       onTap: () => Navigator.of(context).pop(),
       child: Container(
         padding: EdgeInsets.only(top: 5),
-        height: m.width * 0.22,
-        width: m.width * 0.75,
+        height: dimens.width * 0.22,
+        width: dimens.width * 0.75,
         child: Stack(children: [
           Positioned(
               top: 20,
               left: 0,
               child: Container(
                   padding: EdgeInsets.only(left: 60),
-                  width: m.width * 0.75,
+                  width: dimens.width * 0.75,
                   height: 50,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oken/providers/coin_provider.dart';
-import 'package:oken/utils/media.dart';
+import 'package:oken/utils/dimens.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 
 class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
@@ -28,12 +28,12 @@ class BaseAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _BaseAppBarState extends State<BaseAppBar> {
-  Media media;
+  Dimens dimens;
   CoinProvider coinProvider;
 
   @override
   Widget build(BuildContext context) {
-    media = Media(context);
+    dimens = Dimens(context);
     coinProvider = CoinProvider();
 
     return AppBar(
@@ -50,7 +50,7 @@ class _BaseAppBarState extends State<BaseAppBar> {
   }
 
   Widget _title() {
-    return Text(widget.title, style: TextStyle(fontSize: media.s(22)));
+    return Text(widget.title, style: TextStyle(fontSize: dimens.s(22)));
   }
 
   Widget _helpBtn() {
@@ -61,7 +61,7 @@ class _BaseAppBarState extends State<BaseAppBar> {
   Widget _menuBtn() {
     return IconButton(
       icon: Icon(widget.back ? Icons.arrow_back : Icons.android,
-          size: media.s(26)),
+          size: dimens.s(26)),
       onPressed: () {
         if (widget.back) return Navigator.pop(context);
         Scaffold.of(context).openDrawer();
@@ -79,13 +79,13 @@ class _BaseAppBarState extends State<BaseAppBar> {
         onPressed: () => Navigator.pushNamed(context, 'coin'),
         child: Row(
           children: [
-            Image.asset('assets/coin01.png', width: media.s(24)),
+            Image.asset('assets/coin01.png', width: dimens.s(24)),
             SizedBox(width: 5),
             Text(
               coinProvider.totalCoins,
               style: TextStyle(
                   color: Colors.white,
-                  fontSize: media.s(17),
+                  fontSize: dimens.s(17),
                   fontWeight: FontWeight.bold),
             )
           ],

@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
 
-class Media {
+class Dimens {
   BuildContext context;
   Size screenSize;
 
-  Media(this.context) {
+  Dimens(this.context) {
     screenSize = MediaQuery.of(context).size;
   }
 
   double s(sizeArg) {
     assert(sizeArg is int || sizeArg is double);
     double size = sizeArg is int ? sizeArg.toDouble() : sizeArg;
-    return screenSize.width *0.0283* size / 10;
+    return screenSize.width * 0.0283 * size / 10;
   }
 
   double sH(sizeArg) {
     assert(sizeArg is int || sizeArg is double);
     double size = sizeArg is int ? sizeArg.toDouble() : sizeArg;
-    return screenSize.height *0.0137* size / 10;
+    return screenSize.height * 0.0137 * size / 10;
   }
 
   double get width => screenSize.width;

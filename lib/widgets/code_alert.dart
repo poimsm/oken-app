@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oken/utils/media.dart';
+import 'package:oken/utils/dimens.dart';
 
 class CodeAlert extends StatelessWidget {
   @override
@@ -7,15 +7,15 @@ class CodeAlert extends StatelessWidget {
     String msg =
         "Invite a friend to sign up with your code and you'll get a reward!";
 
-    Media media = Media(context);
+    Dimens dimens = Dimens(context);
 
     return AlertDialog(
       title: const Text('This is your code:'),
       content: SingleChildScrollView(
         child: ListBody(
           children: [
-            Text('LA84HA7', style: TextStyle(fontSize: media.s(30))),
-            SizedBox(height: media.s(15)),
+            Text('LA84HA7', style: TextStyle(fontSize: dimens.s(30))),
+            SizedBox(height: dimens.s(15)),
             Text(msg),
           ],
         ),

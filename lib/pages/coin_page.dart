@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:oken/providers/vocab_provider.dart';
-import 'package:oken/utils/media.dart';
+import 'package:oken/utils/dimens.dart';
 import 'package:oken/widgets/base_appbar.dart';
 import 'package:provider/provider.dart';
 import 'package:oken/constants/color.dart' as COLOR;
@@ -13,12 +13,12 @@ class CoinPage extends StatefulWidget {
 }
 
 class _CoinPageState extends State<CoinPage> {
-  Media media;
+  Dimens dimens;
   VocabProvider vocabulary;
 
   @override
   Widget build(BuildContext context) {
-    media = Media(context);
+    dimens = Dimens(context);
     vocabulary = Provider.of<VocabProvider>(context);
 
     return Scaffold(
@@ -33,26 +33,26 @@ class _CoinPageState extends State<CoinPage> {
   Widget _head() {
     return Container(
       color: Color(COLOR.GREEN),
-      height: media.sH(150),
+      height: dimens.sH(150),
       child: Center(
         child: IntrinsicHeight(
           child: Column(
             children: [
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Image.asset('assets/coin01.png', width: media.s(45)),
-                SizedBox(width: media.s(10)),
+                Image.asset('assets/coin01.png', width: dimens.s(45)),
+                SizedBox(width: dimens.s(10)),
                 Text(
                   '10.41',
                   style: TextStyle(
-                      fontSize: media.s(35),
+                      fontSize: dimens.s(35),
                       fontWeight: FontWeight.bold,
                       color: Colors.white),
                 )
               ]),
-              SizedBox(height: media.sH(10)),
+              SizedBox(height: dimens.sH(10)),
               Text(
                 'Total coins',
-                style: TextStyle(fontSize: media.s(15), color: Colors.white),
+                style: TextStyle(fontSize: dimens.s(15), color: Colors.white),
               )
             ],
           ),
@@ -64,7 +64,7 @@ class _CoinPageState extends State<CoinPage> {
   Widget _freeCoins() {
     return Column(
       children: [
-        SizedBox(height: media.sH(20)),
+        SizedBox(height: dimens.sH(20)),
         ListTile(
             onTap: () {},
             leading: Image.asset('assets/ig09.png', width: 50),
@@ -73,15 +73,15 @@ class _CoinPageState extends State<CoinPage> {
                     color: Colors.black87, fontWeight: FontWeight.bold)),
             trailing:
                 Icon(Icons.chevron_right, color: Colors.black38, size: 35)),
-        SizedBox(height: media.sH(35)),
+        SizedBox(height: dimens.sH(35)),
         ListTile(
             onTap: () {},
-            leading: Image.asset('assets/ig08.png', width: media.s(40)),
+            leading: Image.asset('assets/ig08.png', width: dimens.s(40)),
             title: Text('Invite a Friend and get Rewards',
                 style: TextStyle(
                     color: Colors.black87, fontWeight: FontWeight.bold)),
             trailing: Icon(Icons.chevron_right,
-                color: Colors.black38, size: media.s(35))),
+                color: Colors.black38, size: dimens.s(35))),
       ],
     );
   }
@@ -90,9 +90,9 @@ class _CoinPageState extends State<CoinPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(height: media.sH(40)),
+        SizedBox(height: dimens.sH(40)),
         Container(
-          padding: EdgeInsets.only(left: media.s(20)),
+          padding: EdgeInsets.only(left: dimens.s(20)),
           child: Text('Buy coins',
               style: TextStyle(
                   fontWeight: FontWeight.bold, color: Colors.black38)),
@@ -100,7 +100,7 @@ class _CoinPageState extends State<CoinPage> {
         SizedBox(height: 10),
         ListTile(
             onTap: () {},
-            leading: Image.asset('assets/ig06.png', width: media.s(40)),
+            leading: Image.asset('assets/ig06.png', width: dimens.s(40)),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -117,7 +117,7 @@ class _CoinPageState extends State<CoinPage> {
         Divider(),
         ListTile(
             onTap: () {},
-            leading: Image.asset('assets/ig02.png', width: media.s(40)),
+            leading: Image.asset('assets/ig02.png', width: dimens.s(40)),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -134,7 +134,7 @@ class _CoinPageState extends State<CoinPage> {
         Divider(),
         ListTile(
             onTap: () {},
-            leading: Image.asset('assets/ig04.png', width: media.s(40)),
+            leading: Image.asset('assets/ig04.png', width: dimens.s(40)),
             title: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

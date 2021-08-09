@@ -62,10 +62,12 @@ class AudioProvider with ChangeNotifier {
       if (_record == null) _record = Record();
       _record.start(path: '${directory.path}/$name', encoder: AudioEncoder.AAC);
       _isTalking = true;
-      return true;
     } catch (e) {
-      return false;
+      _isTalking = false;
     }
+
+    notifyListeners();
+    return _isTalking;
   }
 
   bool saveAudio(title, module) {

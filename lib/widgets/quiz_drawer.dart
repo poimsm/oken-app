@@ -32,7 +32,7 @@ class _QuizDrawerState extends State<QuizDrawer> {
       case 'example':
         child = _exampleDrawer();
         break;
-      case 'vocabProvider':
+      case 'vocabulary':
         child = _vocabDrawer();
         break;
       default:

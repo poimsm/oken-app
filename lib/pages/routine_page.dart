@@ -136,8 +136,7 @@ class _RoutinePageState extends State<RoutinePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MicrophonePhoto(),
-          // MicrophoneRoutine(isBrown: args['isBrown']),
+          MicrophoneRoutine(isBrown: args['isBrown']),
           SizedBox(width: size.width * (args['isBrown'] ? 0.15 : 0.2)),
           _next()
         ],

@@ -171,7 +171,7 @@ class _QuizPageState extends State<QuizPage> {
   Widget _vocabBtn() {
     return InkWell(
       onTap: () {
-        drawerType = 'vocaProvider';
+        drawerType = 'vocabulary';
         setState(() {});
         scaffoldKey.currentState.openEndDrawer();
       },

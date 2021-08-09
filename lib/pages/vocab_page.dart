@@ -164,11 +164,13 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
           if (likedTab)
             InkWell(
                 onTap: () => vocaProvider.removeFromLikedList(elem['id']),
+                customBorder: CircleBorder(),
                 child: Icon(LineIcons.times,
                     color: Colors.black26, size: size.width * 0.065)),
           if (!likedTab)
             InkWell(
               onTap: () => vocaProvider.likeWord(elem['id']),
+              customBorder: CircleBorder(),
               child: Icon(elem['liked'] ? Icons.favorite : LineIcons.heart,
                   color: elem['liked']
                       ? Color(COLOR.LIGHT_RED)

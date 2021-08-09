@@ -120,6 +120,7 @@ class _HomePageState extends State<HomePage> {
   Widget _icon(icon, {title, page}) {
     return Builder(builder: (context) {
       return InkWell(
+        customBorder: CircleBorder(),
           onTap: () {
             if (page == 'menu') {
               return Scaffold.of(context).openDrawer();
@@ -176,14 +177,16 @@ class _HomePageState extends State<HomePage> {
             style:
                 TextStyle(color: Colors.black87, fontSize: size.width * 0.045),
           ),
-          if (i == 1) SizedBox(height: 5),
-          if (i == 1) _counter(),
+          // if (i == 1) SizedBox(height: 5),
+          // if (i == 1) _counter(),
           SizedBox(height: 5),
           Row(
             children: [
               _typeTag(content['type']),
               if (content['isNew']) SizedBox(width: 7),
               if (content['isNew']) _newTag(),
+              if (i == 1) SizedBox(width: 7),
+              if (i == 1) _counter(),
             ],
           )
         ],

@@ -23,16 +23,16 @@ class BookPage extends StatefulWidget {
 }
 
 class _BookPageState extends State<BookPage> {
-  BookProvider book;
+  BookProvider bookProvider;
 
   ScrollController _scrollController = new ScrollController();
-  VocabProvider vocabulary;
+  VocabProvider vocaProvider;
 
   @override
   void initState() {
-    book = Provider.of<BookProvider>(context, listen: false);
-    vocabulary = Provider.of<VocabProvider>(context, listen: false);
-    vocabulary.load();
+    bookProvider = Provider.of<BookProvider>(context, listen: false);
+    vocaProvider = Provider.of<VocabProvider>(context, listen: false);
+    vocaProvider.load();
     super.initState();
   }
 
@@ -40,23 +40,23 @@ class _BookPageState extends State<BookPage> {
     int i = args['paginatorIndex'];
     List chapters = args['chapters'];
     String path = args['hasChapters'] ? chapters[i]['path'] : args['path'];
-    await book.getById(2, width * 0.97, path, chapters);
+    await bookProvider.getById(2, width * 0.97, path, chapters);
     rxParagraph = RxParagraph(index: 2);
-    rxParagraph.generateObsList(book.paragraphs.length);
+    rxParagraph.generateObsList(bookProvider.paragraphs.length);
   }
 
   setParagraphs(width, path, index) async {
     rxLoader.start();
-    await book.changeReadingText(width, path, index);
+    await bookProvider.changeReadingText(width, path, index);
     rxParagraph.dispose();
-    rxParagraph.generateObsList(book.paragraphs.length);
+    rxParagraph.generateObsList(bookProvider.paragraphs.length);
   }
 
   @override
   void dispose() {
     _scrollController.dispose();
     rxParagraph.dispose();
-    book.dispose();
+    bookProvider.dispose();
     super.dispose();
   }
 
@@ -154,13 +154,13 @@ class _BookPageState extends State<BookPage> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          ...List.generate(book.paragraphs.length, (index) {
+          ...List.generate(bookProvider.paragraphs.length, (index) {
             return StreamBuilder(
                 stream: rxParagraph.getObs(index),
                 builder: (context, snapshot) {
-                  List words = book.paragraphs[index];
+                  List words = bookProvider.paragraphs[index];
                   bool visible = snapshot.data != null ? snapshot.data : false;
-                  int maxLength = book.paragraphs.length;
+                  int maxLength = bookProvider.paragraphs.length;
 
                   return Paragraph(words, index, visible, maxLength, args);
                 });
@@ -199,10 +199,10 @@ class _BookPageState extends State<BookPage> {
         scrollDirection: Axis.horizontal,
         child: Row(
           children: [
-            ...List.generate(book.chapters.length, (i) {
+            ...List.generate(bookProvider.chapters.length, (i) {
               return Row(
                 children: [
-                  _page(i, book.chapters[i]),
+                  _page(i, bookProvider.chapters[i]),
                   // TODO: Hardcoded paginatorIndex
                   if (i != args['paginatorIndex'] - 1)
                     SizedBox(width: size.width * 0.04),

@@ -10,7 +10,7 @@ class RxLoader {
   RxLoader._internal();
 
   final BehaviorSubject<bool> _isLoading = BehaviorSubject<bool>.seeded(false);
-  
+
   get isLoading => _isLoading.stream;
 
   start() {
@@ -21,8 +21,7 @@ class RxLoader {
     _isLoading.add(false);
   }
 
-  void dispose() {
+  void onDispose() {
     _isLoading.add(false);
-    // isLoading.close();
   }
 }

@@ -21,7 +21,7 @@ class VocabPage extends StatefulWidget {
 class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
   Size size;
   TabController _tabController;
-  VocabProvider vocabulary;
+  VocabProvider vocaProvider;
   int currIndex = 0;
   int oldIndex = 0;
 
@@ -42,8 +42,8 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    vocabulary = Provider.of<VocabProvider>(context, listen: false);
-    vocabulary.load();
+    vocaProvider = Provider.of<VocabProvider>(context, listen: false);
+    vocaProvider.load();
     super.initState();
   }
 
@@ -118,7 +118,7 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
   }
 
   Widget _list(String type) {
-    List words = vocabulary.getWords(type);
+    List words = vocaProvider.getWords(type);
     return SingleChildScrollView(
       child: Container(
           padding: EdgeInsets.only(top: 20),
@@ -163,12 +163,12 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
           ),
           if (likedTab)
             InkWell(
-                onTap: () => vocabulary.removeFromLikedList(elem['id']),
+                onTap: () => vocaProvider.removeFromLikedList(elem['id']),
                 child: Icon(LineIcons.times,
                     color: Colors.black26, size: size.width * 0.065)),
           if (!likedTab)
             InkWell(
-              onTap: () => vocabulary.likeWord(elem['id']),
+              onTap: () => vocaProvider.likeWord(elem['id']),
               child: Icon(elem['liked'] ? Icons.favorite : LineIcons.heart,
                   color: elem['liked']
                       ? Color(COLOR.LIGHT_RED)
@@ -183,8 +183,8 @@ class _VocabPageState extends State<VocabPage> with TickerProviderStateMixin {
       child: Container(
           padding: EdgeInsets.only(top: size.width * 0.052),
           child: Column(
-              children: List.generate(vocabulary.folders.length,
-                  (index) => _folderItem(vocabulary.folders[index])))),
+              children: List.generate(vocaProvider.folders.length,
+                  (index) => _folderItem(vocaProvider.folders[index])))),
     );
   }
 

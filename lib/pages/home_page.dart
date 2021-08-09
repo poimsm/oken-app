@@ -21,13 +21,13 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  ContentProvider contentInstance;
+  ContentProvider contentProvider;
 
   Size size;
 
   @override
   Widget build(BuildContext context) {
-    contentInstance = ContentProvider();
+    contentProvider = ContentProvider();
     size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -144,7 +144,7 @@ class _HomePageState extends State<HomePage> {
   Widget _grid(context) {
     return StaggeredGridView.countBuilder(
       crossAxisCount: 2,
-      itemCount: contentInstance.length(),
+      itemCount: contentProvider.length(),
       itemBuilder: (BuildContext context, int index) => _cell(index, context),
       staggeredTileBuilder: (int index) => StaggeredTile.fit(1),
       mainAxisSpacing: 10.0,
@@ -153,7 +153,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _cell(i, context) {
-    Map content = contentInstance.get(i);
+    Map content = contentProvider.get(i);
     return InkWell(
       onTap: () {
         if (content['isBlocked']) return unlockPopup(content);

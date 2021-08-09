@@ -15,18 +15,18 @@ class BookHeader extends StatefulWidget {
 }
 
 class _BookHeaderState extends State<BookHeader> {
-  UIProvider ui;
+  UIProvider uiProvider;
   Size size;
 
   @override
   void dispose() {
-    ui.resetChangeColor();
+    uiProvider.resetChangeColor();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    ui = Provider.of<UIProvider>(context);
+    uiProvider = Provider.of<UIProvider>(context);
     size = MediaQuery.of(context).size;
 
     return Container(
@@ -36,11 +36,11 @@ class _BookHeaderState extends State<BookHeader> {
           top: size.height * 0.045,
           bottom: 0),
       decoration: BoxDecoration(
-        color: ui.changeColor ? Colors.white : Colors.transparent,
+        color: uiProvider.changeColor ? Colors.white : Colors.transparent,
         border: Border(
           bottom: BorderSide(
               width: 1,
-              color: Colors.grey.withOpacity(ui.changeColor ? 0.5 : 0)),
+              color: Colors.grey.withOpacity(uiProvider.changeColor ? 0.5 : 0)),
         ),
       ),
       width: size.width,
@@ -56,12 +56,14 @@ class _BookHeaderState extends State<BookHeader> {
                     width: size.width * 0.08,
                     child: Icon(Icons.arrow_back,
                         size: size.width * 0.075,
-                        color: ui.changeColor ? Colors.black54 : Colors.white),
+                        color: uiProvider.changeColor
+                            ? Colors.black54
+                            : Colors.white),
                   )),
               SizedBox(width: size.width * 0.015),
-              if (ui.changeColor)
+              if (uiProvider.changeColor)
                 Container(
-                  width: size.width*0.7,
+                  width: size.width * 0.7,
                   child: Text(
                     widget.title,
                     overflow: TextOverflow.ellipsis,
@@ -74,7 +76,7 @@ class _BookHeaderState extends State<BookHeader> {
           ),
           Icon(Icons.settings,
               size: size.width * 0.075,
-              color: ui.changeColor ? Colors.black54 : Colors.white),
+              color: uiProvider.changeColor ? Colors.black54 : Colors.white),
         ],
       ),
     );

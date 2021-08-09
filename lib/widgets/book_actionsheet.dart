@@ -17,14 +17,14 @@ class BookActionSheet extends StatefulWidget {
 class _BookActionSheetState extends State<BookActionSheet> {
   UIProvider ui;
   Size size;
-  VocabProvider vocabulary;
+  VocabProvider vocaProvider;
   bool collapse;
 
   @override
   Widget build(BuildContext context) {
     ui = Provider.of<UIProvider>(context);
     size = MediaQuery.of(context).size;
-    vocabulary = Provider.of<VocabProvider>(context, listen: false);
+    vocaProvider = Provider.of<VocabProvider>(context, listen: false);
     collapse =
         TextSize(widget.word['synonym']).isGreaterThan(size.width * 0.8, 17);
 

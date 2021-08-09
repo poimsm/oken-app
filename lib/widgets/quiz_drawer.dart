@@ -15,13 +15,13 @@ class QuizDrawer extends StatefulWidget {
 
 class _QuizDrawerState extends State<QuizDrawer> {
   Size size;
-  VocabProvider vocabulary;
+  VocabProvider vocabProvider;
   Widget child;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    vocabulary = Provider.of<VocabProvider>(context);
+    vocabProvider = Provider.of<VocabProvider>(context);
 
     print(widget.type);
 
@@ -32,7 +32,7 @@ class _QuizDrawerState extends State<QuizDrawer> {
       case 'example':
         child = _exampleDrawer();
         break;
-      case 'vocabulary':
+      case 'vocabProvider':
         child = _vocabDrawer();
         break;
       default:
@@ -82,8 +82,8 @@ class _QuizDrawerState extends State<QuizDrawer> {
       ),
       child: SingleChildScrollView(
         child: Column(
-          children: List.generate(vocabulary.history.length,
-              (index) => _vocabItem(vocabulary.history[index], index)),
+          children: List.generate(vocabProvider.history.length,
+              (index) => _vocabItem(vocabProvider.history[index], index)),
         ),
       ),
     );
@@ -95,7 +95,7 @@ class _QuizDrawerState extends State<QuizDrawer> {
             ? SizedBox(width: 10)
             : OutlinedButton(
                 onPressed: () =>
-                    vocabulary.markAsKnownFromHistory(elem['id'], i),
+                    vocabProvider.markAsKnownFromHistory(elem['id'], i),
                 child: Text(
                   'Learned',
                   style: TextStyle(
@@ -172,70 +172,78 @@ class _QuizDrawerState extends State<QuizDrawer> {
     return Text(txt, style: TextStyle(fontSize: size.width * 0.045));
   }
 
-
-
-   Widget _powerWordDrawer() {
+  Widget _powerWordDrawer() {
     return Container(
         padding: EdgeInsets.only(right: 20, left: 20, top: 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(height: 0),
-            Row(children: [
-              Text(' POWER WORD: ', style: TextStyle(fontSize: 17),),
-              Text('INITIATIVE ', style: TextStyle(color: Color(COLOR.ORANGE), fontSize: 17, fontWeight: FontWeight.bold)),
-              Text('', style: TextStyle(fontSize: 17),)
-            ],),
+            Row(
+              children: [
+                Text(
+                  ' POWER WORD: ',
+                  style: TextStyle(fontSize: 17),
+                ),
+                Text('INITIATIVE ',
+                    style: TextStyle(
+                        color: Color(COLOR.ORANGE),
+                        fontSize: 17,
+                        fontWeight: FontWeight.bold)),
+                Text(
+                  '',
+                  style: TextStyle(fontSize: 17),
+                )
+              ],
+            ),
             SizedBox(height: 20),
             Text(
               "Employers love to people who take initiative because it also shows self-confidence and that you're a hard worker.",
-              style: TextStyle(
-                  fontSize: 17, color: Colors.black87),
+              style: TextStyle(fontSize: 17, color: Colors.black87),
             ),
             SizedBox(height: 8),
             Text(
               "If you know that a colleague is struggling to meet a deadline then you can take the steps needed to offer specific help to your colleague before she needs to ask for help.",
-              style: TextStyle(
-                  fontSize: 17, color: Colors.black87),
+              style: TextStyle(fontSize: 17, color: Colors.black87),
             ),
             SizedBox(height: 45),
             Text(
               "MEANING ",
-              style: TextStyle(
-                  fontSize: 17, color: Colors.black87),
+              style: TextStyle(fontSize: 17, color: Colors.black87),
             ),
-             SizedBox(height: 20),
+            SizedBox(height: 20),
             Text(
               "You do what needs to be done without anyone asking you.",
-              style: TextStyle(
-                  fontSize: 17, color: Colors.black87),
+              style: TextStyle(fontSize: 17, color: Colors.black87),
             ),
             SizedBox(height: 45),
             Text(
               "USE ",
-              style: TextStyle(
-                  fontSize: 17, color: Colors.black87),
+              style: TextStyle(fontSize: 17, color: Colors.black87),
             ),
             SizedBox(height: 20),
             Text(
               "(a) I took the initiative to   _ _ _ _",
               style: TextStyle(
                   fontStyle: FontStyle.italic,
-                  fontSize: 17, color: Colors.black87),
+                  fontSize: 17,
+                  color: Colors.black87),
             ),
             SizedBox(height: 20),
             Text(
               "(b) I had to   _ _ _ _ _   working on my own initiative",
               style: TextStyle(
                   fontStyle: FontStyle.italic,
-                  fontSize: 17, color: Colors.black87),
+                  fontSize: 17,
+                  color: Colors.black87),
             ),
             SizedBox(height: 35),
             Text(
               "Share a specific example when you did something because you knew it needed to be done 👌",
               style: TextStyle(
                   fontStyle: FontStyle.normal,
-                  fontSize: 17, color: Colors.black87),
+                  fontSize: 17,
+                  color: Colors.black87),
             ),
             // SizedBox(height: 25),
             // Center(child: Icon(LineIcons.chevronRight, size: 40, color: Colors.black87))

@@ -2,9 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:oken/constants/reading_types.dart' as TYPES;
-import 'package:oken/providers/book_provider.dart';
 import 'package:oken/providers/rx_loader.dart';
-import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:oken/widgets/book_actionsheet.dart';
 import 'package:provider/provider.dart';
@@ -24,23 +22,19 @@ class Paragraph extends StatefulWidget {
 }
 
 class _ParagraphState extends State<Paragraph> {
-  UIProvider ui;
-  BookProvider book;
   Timer timer;
   Size size;
-  VocabProvider vocabulary;
+  VocabProvider vocabProvider;
 
   @override
   void initState() {
-    vocabulary = Provider.of<VocabProvider>(context, listen: false);
+    vocabProvider = Provider.of<VocabProvider>(context, listen: false);
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    book = Provider.of<BookProvider>(context, listen: false);
-    ui = Provider.of<UIProvider>(context, listen: false);
     size = MediaQuery.of(context).size;
 
     if (widget.visible && widget.i == widget.maxLength - 1) {
@@ -119,8 +113,8 @@ class _ParagraphState extends State<Paragraph> {
 
     modal.then((val) {
       if (val == null) return;
-      vocabulary.addWordFromBook(widget.book, val);
-      _toast('Added to vocabulary');
+      vocabProvider.addWordFromBook(widget.book, val);
+      _toast('Added to vocabProvider');
     });
   }
 

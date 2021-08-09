@@ -12,13 +12,13 @@ class AudioActionSheet extends StatefulWidget {
 
 class _AudioActionSheetState extends State<AudioActionSheet> {
   Size size;
-  VocabProvider vocabulary;
+  VocabProvider vocaProvider;
   AudioProvider audioProvider;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
-    vocabulary = Provider.of<VocabProvider>(context, listen: false);
+    vocaProvider = Provider.of<VocabProvider>(context, listen: false);
     audioProvider = Provider.of<AudioProvider>(context);
 
     return Container(

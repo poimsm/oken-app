@@ -5,7 +5,7 @@ class Loader extends StatefulWidget {
     this.isLoading,
   );
 
-  bool isLoading;
+  final bool isLoading;
 
   @override
   _LoaderState createState() => _LoaderState();
@@ -23,7 +23,8 @@ class _LoaderState extends State<Loader> {
             color: Colors.black.withOpacity(0.7),
             child: Center(
                 child: Text('Loading...',
-                    style: TextStyle(fontSize: size.width*0.06, color: Colors.white))))
+                    style: TextStyle(
+                        fontSize: size.width * 0.06, color: Colors.white))))
         : Container();
   }
 }

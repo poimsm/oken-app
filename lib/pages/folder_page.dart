@@ -15,13 +15,13 @@ class FolderPage extends StatefulWidget {
 class _FolderPageState extends State<FolderPage> {
   Size size;
   Map args;
-  VocabProvider vocabulary;
+  VocabProvider vocaProvider;
 
   @override
   Widget build(BuildContext context) {
     size = MediaQuery.of(context).size;
     args = ModalRoute.of(context).settings.arguments;
-    vocabulary = Provider.of<VocabProvider>(context);
+    vocaProvider = Provider.of<VocabProvider>(context);
 
     return Scaffold(
         appBar: BaseAppBar(title: args['name'], back: true, shadow: false),
@@ -33,7 +33,7 @@ class _FolderPageState extends State<FolderPage> {
   }
 
   Widget _list() {
-    List words = vocabulary.getWordsByFolder(args['id']);
+    List words = vocaProvider.getWordsByFolder(args['id']);
     return SingleChildScrollView(
       child: Container(
           padding: EdgeInsets.only(top: size.width * 0.052),
@@ -60,7 +60,7 @@ class _FolderPageState extends State<FolderPage> {
                 color: Color(COLOR.GREY), fontSize: size.width * 0.05),
           ),
           InkWell(
-            onTap: () => vocabulary.likeWord(word['id']),
+            onTap: () => vocaProvider.likeWord(word['id']),
             child: Icon(word['liked'] ? Icons.favorite : LineIcons.heart,
                 color: word['liked']
                     ? Color(COLOR.LIGHT_RED)

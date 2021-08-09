@@ -27,11 +27,11 @@ class QuizPage extends StatefulWidget {
 class _QuizPageState extends State<QuizPage> {
   @override
   void initState() {
-    quiz = Provider.of<QuizProvider>(context, listen: false);
-    quiz.shuffle();
-    vocabulary = Provider.of<VocabProvider>(context, listen: false);
-    vocabulary.load();
-    vocabulary.setQuestionWords();
+    quizProvider = Provider.of<QuizProvider>(context, listen: false);
+    quizProvider.shuffle();
+    vocaProvider = Provider.of<VocabProvider>(context, listen: false);
+    vocaProvider.load();
+    vocaProvider.setQuestionWords();
     SystemChrome.setEnabledSystemUIOverlays([]);
     audioProvider = Provider.of<AudioProvider>(context, listen: false);
     audioProvider.reset();
@@ -43,22 +43,18 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   void dispose() {
-    timer.stop();
+    timerProvider.stop();
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
     super.dispose();
   }
 
-  QuizProvider quiz;
-  TimerProvider timer;
-  bool auto = true;
-  int duration = 300;
+  QuizProvider quizProvider;
+  TimerProvider timerProvider;
   SwiperController swiperCtrl;
   bool isPristine = true;
   Map args;
   Size size;
-  bool offWords = false;
-  VocabProvider vocabulary;
-  List actives = [false, false, false];
+  VocabProvider vocaProvider;
   var scaffoldKey = GlobalKey<ScaffoldState>();
   String drawerType;
   CoinProvider coinProvider;
@@ -66,10 +62,10 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    quiz = Provider.of<QuizProvider>(context);
+    quizProvider = Provider.of<QuizProvider>(context);
     args = ModalRoute.of(context).settings.arguments;
-    quiz.setQuestions(args['question_type']);
-    timer = Provider.of<TimerProvider>(context, listen: false);
+    quizProvider.setQuestions(args['question_type']);
+    timerProvider = Provider.of<TimerProvider>(context, listen: false);
     swiperCtrl = SwiperController();
     size = MediaQuery.of(context).size;
     Provider.of<VocabProvider>(context);
@@ -157,7 +153,6 @@ class _QuizPageState extends State<QuizPage> {
     return InkWell(
       onTap: () {
         drawerType = 'power-word';
-        // setState(() {});
         coinProvider.charge(PaidActions.showPowerWord);
         scaffoldKey.currentState.openEndDrawer();
       },
@@ -176,7 +171,7 @@ class _QuizPageState extends State<QuizPage> {
   Widget _vocabBtn() {
     return InkWell(
       onTap: () {
-        drawerType = 'vocabulary';
+        drawerType = 'vocaProvider';
         setState(() {});
         scaffoldKey.currentState.openEndDrawer();
       },
@@ -244,11 +239,11 @@ class _QuizPageState extends State<QuizPage> {
         onIndexChanged: (i) {
           swiperCtrl.stopAutoplay();
           isPristine = false;
-          vocabulary.shuffle();
+          vocaProvider.shuffle();
           audioProvider.reset();
           // coinProvider.charge(PaidActions.swipeQuiz);
         },
-        itemCount: quiz.allQuestions.length,
+        itemCount: quizProvider.allQuestions.length,
         itemBuilder: (BuildContext context, int index) {
           return _cardbody(index);
         },
@@ -277,7 +272,7 @@ class _QuizPageState extends State<QuizPage> {
 
   Widget _cardContent(index) {
     return Column(children: [
-      SizedBox(height: quiz.showChallengingWords ? 0 : 60),
+      SizedBox(height: quizProvider.showChallengingWords ? 0 : 60),
       ClipRRect(
           borderRadius: BorderRadius.circular(15),
           child: Image.network(
@@ -287,17 +282,17 @@ class _QuizPageState extends State<QuizPage> {
             fit: BoxFit.cover,
           )),
       SizedBox(height: size.height * 0.03),
-      Text(quiz.oneQuestion(index),
+      Text(quizProvider.oneQuestion(index),
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: quiz.oneQuestion(index).length > 60
-                ? quiz.oneQuestion(index).length > 100
+            fontSize: quizProvider.oneQuestion(index).length > 60
+                ? quizProvider.oneQuestion(index).length > 100
                     ? size.width * 0.055
                     : size.width * 0.065
                 : size.width * 0.07,
           )),
       SizedBox(height: size.height * 0.05),
-      Memory(quiz.showChallengingWords)
+      Memory(quizProvider.showChallengingWords)
     ]);
   }
 

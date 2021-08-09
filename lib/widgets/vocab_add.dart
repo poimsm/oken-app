@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
-import 'package:oken/providers/ui_provider.dart';
 import 'package:oken/providers/vocab_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:oken/constants/color.dart' as COLOR;
@@ -11,9 +10,8 @@ class VocabAdd extends StatefulWidget {
 }
 
 class _VocabAddState extends State<VocabAdd> {
-  UIProvider ui;
   Size size;
-  VocabProvider vocabulary;
+  VocabProvider vocabProvider;
   final _wordCtrl = TextEditingController();
   final _meaningCtrl = TextEditingController();
 
@@ -26,9 +24,8 @@ class _VocabAddState extends State<VocabAdd> {
 
   @override
   Widget build(BuildContext context) {
-    ui = Provider.of<UIProvider>(context);
     size = MediaQuery.of(context).size;
-    vocabulary = Provider.of<VocabProvider>(context, listen: false);
+    vocabProvider = Provider.of<VocabProvider>(context, listen: false);
     return Container(
       height: size.height * 0.88,
       decoration: BoxDecoration(
@@ -134,7 +131,7 @@ class _VocabAddState extends State<VocabAdd> {
           if (_wordCtrl.text.length == 0) return;
           String _meaning =
               _meaningCtrl.text.length == 0 ? 'No meaning' : _meaningCtrl.text;
-          vocabulary.addWord(_wordCtrl.text, _meaning);
+          vocabProvider.addWord(_wordCtrl.text, _meaning);
           Navigator.pop(context, true);
         },
         child: Container(

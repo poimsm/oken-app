@@ -19,7 +19,7 @@ class VocabActionSheet extends StatefulWidget {
 class _VocabActionSheetState extends State<VocabActionSheet> {
   UIProvider ui;
   Size size;
-  VocabProvider vocabulary;
+  VocabProvider vocabProvider;
 
   String extractWord(txt) {
     RegExp re = RegExp(r'\w+');
@@ -30,7 +30,7 @@ class _VocabActionSheetState extends State<VocabActionSheet> {
   Widget build(BuildContext context) {
     ui = Provider.of<UIProvider>(context);
     size = MediaQuery.of(context).size;
-    vocabulary = Provider.of<VocabProvider>(context, listen: false);
+    vocabProvider = Provider.of<VocabProvider>(context, listen: false);
     return Container(
       color: Color(COLOR.GREY),
       height: size.width * 0.7,
@@ -62,8 +62,8 @@ class _VocabActionSheetState extends State<VocabActionSheet> {
           ),
           onTap: () {
             Navigator.pop(context);
-            if (knownTab) return vocabulary.markAsRelearn(elem['id']);
-            vocabulary.markAsKnown(elem['id']);
+            if (knownTab) return vocabProvider.markAsRelearn(elem['id']);
+            vocabProvider.markAsKnown(elem['id']);
           }),
       ListTile(
           dense: true,
@@ -82,7 +82,7 @@ class _VocabActionSheetState extends State<VocabActionSheet> {
               style: TextStyle(
                   fontSize: size.width * 0.047, color: Colors.black87)),
           onTap: () {
-            vocabulary.deleteWord(elem);
+            vocabProvider.deleteWord(elem);
             Navigator.pop(context, 'delete');
           }),
     ]);

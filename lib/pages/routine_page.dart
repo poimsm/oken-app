@@ -7,6 +7,7 @@ import 'package:oken/providers/routine_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
 import 'package:oken/widgets/audio_bar.dart';
 import 'package:oken/widgets/header.dart';
+import 'package:oken/widgets/microphone_photo.dart';
 import 'package:oken/widgets/microphone_routine.dart';
 import 'package:provider/provider.dart';
 import 'package:toast/toast.dart';
@@ -22,6 +23,7 @@ class _RoutinePageState extends State<RoutinePage> {
   @override
   void dispose() {
     routineProvider.onDispose();
+    audioProvider.onDispose();
     isPristine = true;
     super.dispose();
   }
@@ -134,7 +136,8 @@ class _RoutinePageState extends State<RoutinePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          MicrophoneRoutine(isBrown: args['isBrown']),
+          MicrophonePhoto(),
+          // MicrophoneRoutine(isBrown: args['isBrown']),
           SizedBox(width: size.width * (args['isBrown'] ? 0.15 : 0.2)),
           _next()
         ],

@@ -5,11 +5,21 @@ import 'package:oken/widgets/keyboard_visibility_builder.dart';
 import 'package:provider/provider.dart';
 
 class AudioBar extends StatefulWidget {
-  AudioBar({Key key, this.small = false, this.shiftDimensions = false})
-      : super(key: key);
+  AudioBar({
+    this.small: false,
+    this.shiftDimensions: false,
+    this.simple: false,
+    this.leftOffset: 50,
+    this.bottomOffset: 250,
+    this.bottomCardOffset: 250,
+  });
 
   final bool small;
   final bool shiftDimensions;
+  final bool simple;
+  final double leftOffset;
+  final double bottomOffset;
+  final double bottomCardOffset;
 
   @override
   _AudioBarState createState() => _AudioBarState();
@@ -68,8 +78,12 @@ class _AudioBarState extends State<AudioBar>
         children: [
           Container(),
           Positioned(
-              left: audioProvider.isSaving ? 0 : 50,
-              bottom: isKeyboardVisible ? 10 : 250,
+              left: audioProvider.isSaving ? 0 : widget.leftOffset,
+              bottom: isKeyboardVisible
+                  ? 10
+                  : audioProvider.isSaving
+                      ? widget.bottomCardOffset
+                      : widget.bottomOffset,
               child: audioProvider.isSaving
                   ? Container(
                       width: MediaQuery.of(context).size.width,

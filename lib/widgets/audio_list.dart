@@ -5,12 +5,12 @@ import 'package:oken/widgets/audio_play.dart';
 import 'package:provider/provider.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 
-class AudioActionSheet extends StatefulWidget {
+class AudioList extends StatefulWidget {
   @override
-  _AudioActionSheetState createState() => _AudioActionSheetState();
+  _AudioListState createState() => _AudioListState();
 }
 
-class _AudioActionSheetState extends State<AudioActionSheet> {
+class _AudioListState extends State<AudioList> {
   Size size;
   VocabProvider vocaProvider;
   AudioProvider audioProvider;
@@ -117,6 +117,7 @@ class _AudioActionSheetState extends State<AudioActionSheet> {
           children: [
             Text(
               title,
+              overflow: TextOverflow.ellipsis,
               style:
                   TextStyle(fontSize: size.width * 0.047, color: Colors.white),
             ),

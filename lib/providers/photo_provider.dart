@@ -6,12 +6,10 @@ class PhotoProvider with ChangeNotifier {
   bool _showButtons = true;
   bool _showHints = false;
   bool _isTalking = false;
-
+  bool _showAudioList = false;
   int _index = 0;
   String _imgUrl;
-
   List<String> _imgs = [];
-
   List<String> _imgsHint = [];
 
   void loadImgs(pack) {
@@ -26,14 +24,16 @@ class PhotoProvider with ChangeNotifier {
   }
 
   get isTalking => _isTalking;
-
   get imgUrl => _imgUrl;
-
   get index => _index;
-
-  get showHints => _showHints;
-  
+  get showHints => _showHints;  
   get showButtons => _showButtons;
+  get showAudioList => _showAudioList;
+
+  set showAudioList(bool val) {
+    _showAudioList = val;
+    notifyListeners();
+  }
 
   void toggleShowButtons() {
     _showButtons = !_showButtons;

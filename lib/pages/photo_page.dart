@@ -4,9 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:oken/providers/audio_provider.dart';
 import 'package:oken/providers/photo_provider.dart';
 import 'package:oken/providers/timer_provider.dart';
-import 'package:oken/widgets/audiobar.dart';
+import 'package:oken/widgets/audio_bar.dart';
+import 'package:oken/widgets/audio_list_photo.dart';
+import 'package:oken/widgets/microphone_photo.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
 
@@ -18,8 +21,8 @@ class ImagePage extends StatefulWidget {
 }
 
 class _ImagePageState extends State<ImagePage> {
-  PhotoProvider imgsProvider;
-  TimerProvider timer;
+  PhotoProvider photoProvider;
+  AudioProvider audioProvider;
 
   void scrollToBottom() {
     if (hasScrolled) return;
@@ -38,9 +41,6 @@ class _ImagePageState extends State<ImagePage> {
     ]);
 
     SystemChrome.setEnabledSystemUIOverlays([]);
-
-    timer = Provider.of<TimerProvider>(context, listen: false);
-    imgsProvider = Provider.of<PhotoProvider>(context, listen: false);
     super.initState();
   }
 
@@ -48,12 +48,12 @@ class _ImagePageState extends State<ImagePage> {
 
   @override
   void dispose() {
-    timer.stop();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
     ]);
     SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    audioProvider.onDispose();
     super.dispose();
   }
 
@@ -65,43 +65,49 @@ class _ImagePageState extends State<ImagePage> {
   @override
   Widget build(BuildContext context) {
     Provider.of<PhotoProvider>(context);
+    photoProvider = Provider.of<PhotoProvider>(context, listen: false);
     size = MediaQuery.of(context).size;
+    audioProvider = Provider.of<AudioProvider>(context);
 
     if (isPristine) {
       args = ModalRoute.of(context).settings.arguments;
-      imgsProvider.loadImgs(args['pack']);
-      imgsProvider.setFistImg();
+      photoProvider.loadImgs(args['pack']);
+      photoProvider.setFistImg();
       isPristine = false;
     }
 
     return SafeArea(
-        child: Scaffold(
-            body: Stack(children: [
-      SingleChildScrollView(
-        controller: _scrollController,
-        child: _background(),
-      ),
-      if (imgsProvider.showButtons)
-        Positioned(child: _back(), top: size.height * 0.04, left: 20),
-      if (imgsProvider.showButtons)
-        Positioned(child: _settings(), top: size.height * 0.04, right: 20),
-      if (imgsProvider.showButtons && !imgsProvider.isTalking)
-        Positioned(child: _bullets(), left: 0, top: size.height * 0.11),
-      if (imgsProvider.showButtons)
-        Positioned(child: _switchers(), left: 0, top: size.height * 0.37),
-      if (imgsProvider.isTalking)
-        Positioned(
-            child: Audiobar(small: true, shiftDimensions: true),
-            left: size.width * 0.38,
-            top: 190),
-      if (imgsProvider.isTalking)
+        child: GestureDetector(
+      onTap: () => audioProvider.reset(setState: true),
+      child: Scaffold(
+          body: Stack(children: [
+        SingleChildScrollView(
+          controller: _scrollController,
+          child: _background(),
+        ),
+        if (photoProvider.showButtons)
+          Positioned(child: _back(), top: size.height * 0.04, left: 20),
+        if (photoProvider.showButtons)
+          Positioned(child: _settings(), top: size.height * 0.04, right: 20),
+        if (photoProvider.showButtons)
+          Positioned(child: _switchers(), left: 0, top: size.height * 0.37),
         Positioned(child: Clock(), left: 0, top: size.height * 0.05),
-      Positioned(child: _menu(), left: 0, bottom: size.height * 0.05)
-    ])));
+        Positioned(child: _menu(), left: 0, bottom: size.height * 0.05),
+        if (photoProvider.showAudioList)
+          Positioned(child: AudioListPhoto(), right: 0, bottom: 0),
+        AudioBar(
+          small: true,
+          shiftDimensions: true,
+          leftOffset: size.width * 0.33,
+          bottomOffset: 150.0,
+          bottomCardOffset: 130.0,
+        ),
+      ])),
+    ));
   }
 
   Widget _background() {
-    String imageURL = imgsProvider.imgUrl;
+    String imageURL = photoProvider.imgUrl;
 
     return Image.network(
       imageURL,
@@ -142,13 +148,27 @@ class _ImagePageState extends State<ImagePage> {
   }
 
   Widget _settings() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(size.height * 0.045),
-      child: Container(
-          padding: EdgeInsets.all(5),
-          color: Colors.black.withOpacity(0.5),
-          child: Icon(Icons.settings,
-              color: Colors.white, size: size.height * 0.085)),
+    return InkWell(
+      onTap: () => photoProvider.showAudioList = true,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(3),
+        child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            color: Colors.black.withOpacity(0.2),
+            child: Row(
+              children: [
+                Icon(Icons.music_note, color: Colors.white),
+                SizedBox(width: 5),
+                Text(
+                  'Records (${audioProvider.userAudios.length})',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                  ),
+                )
+              ],
+            )),
+      ),
     );
   }
 
@@ -156,21 +176,21 @@ class _ImagePageState extends State<ImagePage> {
     return Container(
       width: size.width,
       child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-        _oneBullet(imgsProvider.index < 0),
+        _oneBullet(photoProvider.index < 0),
         SizedBox(width: 0),
-        _oneBullet(imgsProvider.index < 1),
+        _oneBullet(photoProvider.index < 1),
         SizedBox(width: 0),
-        _oneBullet(imgsProvider.index < 2),
+        _oneBullet(photoProvider.index < 2),
         SizedBox(width: 0),
-        _oneBullet(imgsProvider.index < 3),
+        _oneBullet(photoProvider.index < 3),
         SizedBox(width: 0),
-        _oneBullet(imgsProvider.index < 4),
+        _oneBullet(photoProvider.index < 4),
         SizedBox(width: 0),
-        _oneBullet(imgsProvider.index < 5),
+        _oneBullet(photoProvider.index < 5),
         SizedBox(width: 0),
-        _oneBullet(imgsProvider.index < 6),
+        _oneBullet(photoProvider.index < 6),
         SizedBox(width: 0),
-        _oneBullet(imgsProvider.index < 7),
+        _oneBullet(photoProvider.index < 7),
       ]),
     );
   }
@@ -203,7 +223,7 @@ class _ImagePageState extends State<ImagePage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: InkWell(
-                onTap: () => imgsProvider.decreaseIndex(),
+                onTap: () => photoProvider.decreaseIndex(),
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   color: Colors.black.withOpacity(0.5),
@@ -216,7 +236,7 @@ class _ImagePageState extends State<ImagePage> {
             ClipRRect(
               borderRadius: BorderRadius.circular(4),
               child: InkWell(
-                onTap: () => imgsProvider.increaseIndex(),
+                onTap: () => photoProvider.increaseIndex(),
                 child: Container(
                   padding: EdgeInsets.symmetric(vertical: 10),
                   color: Colors.black.withOpacity(0.5),
@@ -235,16 +255,17 @@ class _ImagePageState extends State<ImagePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          if (imgsProvider.showButtons) _mic(),
-          if (!imgsProvider.showButtons) SizedBox(),
+          // if (photoProvider.showButtons) MicrophonePhoto(),
+          MicrophonePhoto(),
+          if (!photoProvider.showButtons) SizedBox(),
           Container(
             width: size.width * 0.3,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _toggle(),
-                if (imgsProvider.showButtons) _labels(),
-                if (!imgsProvider.showButtons) SizedBox()
+                if (photoProvider.showButtons) _labels(),
+                if (!photoProvider.showButtons) SizedBox()
               ],
             ),
           )
@@ -253,39 +274,13 @@ class _ImagePageState extends State<ImagePage> {
     );
   }
 
-  Widget _mic() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(size.height * 0.03),
-      child: InkWell(
-        onTap: () {
-          if (timer.time > 1) {
-            timer.stop();
-            imgsProvider.toggleIsTalking();
-          } else {
-            timer.start();
-            imgsProvider.toggleIsTalking();
-          }
-        },
-        // onLongPress: () {
-        //   timer.start();
-        //   imgsProvider.toggleIsTalking();
-        // },
-        child: Container(
-            color: Colors.black.withOpacity(0.5),
-            padding: EdgeInsets.all(5),
-            child:
-                Icon(Icons.mic, color: Colors.white, size: size.height * 0.12)),
-      ),
-    );
-  }
-
   Widget _toggle() {
     return ClipRRect(
       borderRadius: BorderRadius.circular(size.height * 0.055),
       child: InkWell(
-        onLongPress: () => imgsProvider.toggleShowButtons(),
+        onLongPress: () => photoProvider.toggleShowButtons(),
         child: Listener(
-          onPointerUp: (e) => imgsProvider.toggleShowButtons(),
+          onPointerUp: (e) => photoProvider.toggleShowButtons(),
           child: Container(
               color: Colors.black.withOpacity(0.5),
               padding: EdgeInsets.all(10),
@@ -300,11 +295,11 @@ class _ImagePageState extends State<ImagePage> {
     return ClipRRect(
       borderRadius: BorderRadius.circular(size.height * 0.055),
       child: InkWell(
-        onTap: () => imgsProvider.toggleHints(),
+        onTap: () => photoProvider.toggleHints(),
         child: Container(
             color: Colors.black.withOpacity(0.5),
             padding: EdgeInsets.all(10),
-            child: Icon(Icons.loyalty,
+            child: Icon(Icons.extension_outlined,
                 color: Colors.white, size: size.height * 0.08)),
       ),
     );
@@ -312,28 +307,27 @@ class _ImagePageState extends State<ImagePage> {
 }
 
 class Clock extends StatelessWidget {
-  const Clock({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
-    TimerProvider timer = Provider.of<TimerProvider>(context);
+    TimerProvider timerProvider = Provider.of<TimerProvider>(context);
+    AudioProvider audioProvider = Provider.of<AudioProvider>(context);
     Size size = MediaQuery.of(context).size;
 
-    return Container(
-      width: size.width,
-      alignment: Alignment.center,
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(5),
-        child: Container(
-          padding: EdgeInsets.all(10),
-          color: Colors.black.withOpacity(0.5),
-          child: Text(timer.time.toString(),
-              style:
-                  TextStyle(color: Colors.white, fontSize: size.height * 0.07)),
-        ),
-      ),
-    );
+    return audioProvider.isTalking
+        ? Container(
+            width: size.width,
+            alignment: Alignment.center,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(5),
+              child: Container(
+                padding: EdgeInsets.all(10),
+                color: Colors.black.withOpacity(0.5),
+                child: Text(timerProvider.time.toString(),
+                    style: TextStyle(
+                        color: Colors.white, fontSize: size.height * 0.07)),
+              ),
+            ),
+          )
+        : Container();
   }
 }

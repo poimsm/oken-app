@@ -6,9 +6,7 @@ class TimerProvider with ChangeNotifier {
   Timer timeController;
   int _time = 0;
 
-  get time {
-    return _time;
-  }
+  get time => _time;
 
   void start() {
     if (this.timeController != null) return;
@@ -24,5 +22,4 @@ class TimerProvider with ChangeNotifier {
     timeController.cancel();
     timeController = null;
   }
-
 }

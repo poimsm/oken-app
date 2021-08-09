@@ -9,7 +9,9 @@ import 'package:just_audio/just_audio.dart';
 import 'dart:io';
 
 class AudioProvider with ChangeNotifier {
-  Record _record = Record();
+  // Record _record = Record();
+  Record _record;
+
   AudioPlayer _player;
   bool _hasNewAudioToBeSaved = false;
   bool _isSaving = false;
@@ -17,7 +19,7 @@ class AudioProvider with ChangeNotifier {
   bool _isTalking = false;
   List _temAudioPaths = [];
   List _userAudios = [];
-  Timer _audioLengthController;
+  Timer _audioLengthTimer;
   int _audioLength = 0;
 
   get userAudios => _userAudios;
@@ -41,7 +43,7 @@ class AudioProvider with ChangeNotifier {
     _hasNewAudioToBeSaved = false;
     _isSaving = false;
     _audioLength = 0;
-    if (_audioLengthController != null) _audioLengthController.cancel();
+    if (_audioLengthTimer != null) _audioLengthTimer.cancel();
     if (setState) notifyListeners();
   }
 
@@ -51,14 +53,19 @@ class AudioProvider with ChangeNotifier {
 
     Directory directory = await getTemporaryDirectory();
     String name = Random().nextInt(100000).toString();
-    _audioLengthController = Timer.periodic(Duration(seconds: 1), (timer) {
+    _audioLengthTimer = Timer.periodic(Duration(seconds: 1), (timer) {
       _audioLength += 1;
     });
     _temAudioPaths.add('${directory.path}/$name');
-    _record.start(path: '${directory.path}/$name', encoder: AudioEncoder.AAC);
-    _isTalking = true;
-    notifyListeners();
-    return true;
+
+    try {
+      if (_record == null) _record = Record();
+      _record.start(path: '${directory.path}/$name', encoder: AudioEncoder.AAC);
+      _isTalking = true;
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
 
   bool saveAudio(title, module) {
@@ -101,7 +108,7 @@ class AudioProvider with ChangeNotifier {
     if (_record == null) return;
 
     _hasNewAudioToBeSaved = true;
-    _audioLengthController.cancel();
+    if (_audioLengthTimer != null) _audioLengthTimer.cancel();
     _record.stop();
     _isTalking = false;
 

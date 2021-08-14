@@ -255,8 +255,7 @@ class _ImagePageState extends State<ImagePage> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // if (photoProvider.showButtons) MicrophonePhoto(),
-          MicrophonePhoto(),
+          if (photoProvider.showButtons) MicrophonePhoto(),
           if (!photoProvider.showButtons) SizedBox(),
           Container(
             width: size.width * 0.3,

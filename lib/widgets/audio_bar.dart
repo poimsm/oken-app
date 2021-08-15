@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oken/constants/color.dart' as COLOR;
 import 'package:oken/providers/audio_provider.dart';
+import 'package:oken/widgets/bar_box.dart';
 import 'package:oken/widgets/keyboard_visibility_builder.dart';
 import 'package:provider/provider.dart';
 
@@ -25,26 +26,7 @@ class AudioBar extends StatefulWidget {
   _AudioBarState createState() => _AudioBarState();
 }
 
-class _AudioBarState extends State<AudioBar>
-    with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  Animation<double> opacidad;
-
-  @override
-  void initState() {
-    _controller = new AnimationController(
-        vsync: this, duration: Duration(milliseconds: 1200));
-    opacidad = new Tween(begin: 0.0, end: 0.9).animate(_controller);
-    _controller.repeat(reverse: true);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
+class _AudioBarState extends State<AudioBar> {
   Size size;
   double dimension;
   AudioProvider audioProvider;
@@ -57,10 +39,6 @@ class _AudioBarState extends State<AudioBar>
     audioProvider = Provider.of<AudioProvider>(context);
 
     Widget result = Container();
-
-    if (audioProvider.isTalking) {
-      result = FadeTransition(opacity: opacidad, child: _bar());
-    }
 
     if (audioProvider.hasNewAudioToBeSaved) {
       result = Row(
@@ -140,75 +118,29 @@ class _AudioBarState extends State<AudioBar>
               audioProvider.saveAudio(_titleController.text, 'routine');
               _titleController.clear();
             },
-            child: Icon(Icons.save_alt, color: Colors.black54, size: 28)));
+            child: Container(
+                padding: EdgeInsets.all(5),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(100)),
+                child: Icon(Icons.save_alt, color: Colors.black54, size: 28))));
   }
 
   Widget _barStack() {
     return InkWell(
-      onTap: () => audioProvider.play(),
-      child: Container(
-        width: 210,
-        child: Stack(
-          children: [
-            Container(),
-            Positioned(left: 10, top: 5, child: _bar()),
-            Positioned(left: 160, top: 13, child: _timeText()),
-            _playIcon(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _timeText() {
-    return Text(audioProvider.audioLength,
-        style: TextStyle(fontSize: 16, color: Colors.black54));
-  }
-
-  Widget _playIcon() {
-    return Stack(children: [
-      Container(
-          height: 40,
-          width: 40,
-          decoration: BoxDecoration(
-              color: Color(COLOR.PURPLE),
-              border: Border.all(color: Colors.white),
-              borderRadius: BorderRadius.circular(100))),
-      Container(
-          height: 40,
-          width: 40,
-          child: Icon(Icons.play_arrow, size: 30, color: Colors.white))
-    ]);
-  }
-
-  Widget _bar() {
-    return Container(
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(dimension * 0.03),
-          color: Color(COLOR.ALMOST_WHITE).withOpacity(0.9),
-          border: Border.all(
-              width: widget.small ? 0 : 1, color: Color(COLOR.LIGHT_GREY))),
-      width: 200,
-      height: 32,
-      child: Align(
-        alignment: Alignment.bottomLeft,
-        child: Container(
-          padding: EdgeInsets.symmetric(horizontal: dimension * 0.015),
-          decoration: BoxDecoration(
-            color: Color(COLOR.PURPLE),
-            borderRadius: BorderRadius.circular(9),
-          ),
-          height: 32,
-          child: Image.asset('assets/signal.png',
-              height: widget.small ? dimension * 0.08 : dimension * 0.1),
-        ),
-      ),
-    );
+        onTap: () => audioProvider.play(),
+        child: BarBox(
+            playAnimation: audioProvider.isPlaying,
+            audioLength: audioProvider.audioLength));
   }
 
   Widget _saveBtn() {
     return InkWell(
-        onTap: () => audioProvider.isSaving = true,
-        child: Icon(Icons.save_alt, color: Colors.white, size: 33));
+        onTap: () => audioProvider.onSave(),
+        child: Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(100)),
+            child: Icon(Icons.save_alt, color: Colors.black54, size: 28)));
   }
 }

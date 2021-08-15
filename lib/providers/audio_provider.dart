@@ -70,6 +70,13 @@ class AudioProvider with ChangeNotifier {
     return _isTalking;
   }
 
+  void onSave() {
+    isSaving = true;
+    if (_player != null) {
+      _player.stop();
+    }
+  }
+
   bool saveAudio(title, module) {
     if (_userAudios.length >= 5) {
       reset();

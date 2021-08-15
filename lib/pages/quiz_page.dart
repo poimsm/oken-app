@@ -18,7 +18,10 @@ import 'package:oken/constants/color.dart' as COLOR;
 import 'package:oken/constants/paid_actions.dart';
 
 class QuizPage extends StatefulWidget {
-  QuizPage({Key key}) : super(key: key);
+  // QuizPage({Key key}) : super(key: key);
+  final argument;
+
+  QuizPage({this.argument});
 
   @override
   _QuizPageState createState() => _QuizPageState();
@@ -28,13 +31,14 @@ class _QuizPageState extends State<QuizPage> {
   @override
   void initState() {
     quizProvider = Provider.of<QuizProvider>(context, listen: false);
-    quizProvider.shuffle();
     vocaProvider = Provider.of<VocabProvider>(context, listen: false);
     vocaProvider.load();
     vocaProvider.setQuestionWords();
     SystemChrome.setEnabledSystemUIOverlays([]);
     audioProvider = Provider.of<AudioProvider>(context, listen: false);
     audioProvider.reset();
+    quizProvider.loadQuestions(widget.argument['question_type']);
+    questionText = quizProvider.question;
 
     super.initState();
 
@@ -59,12 +63,12 @@ class _QuizPageState extends State<QuizPage> {
   String drawerType;
   CoinProvider coinProvider;
   AudioProvider audioProvider;
+  String questionText = '';
 
   @override
   Widget build(BuildContext context) {
     quizProvider = Provider.of<QuizProvider>(context);
     args = ModalRoute.of(context).settings.arguments;
-    quizProvider.setQuestions(args['question_type']);
     timerProvider = Provider.of<TimerProvider>(context, listen: false);
     swiperCtrl = SwiperController();
     size = MediaQuery.of(context).size;
@@ -109,7 +113,27 @@ class _QuizPageState extends State<QuizPage> {
                       bottom: size.height * 0.5,
                       right: 2,
                       child: _powerWords()),
-                Positioned(bottom: 0, left: 0, child: MicrophoneQuiz()),
+                Positioned(
+                  bottom: 0,
+                  left: 0,
+                  child: MicrophoneQuiz(),
+                ),
+                Positioned(
+                  bottom: 47,
+                  right: 10,
+                  child: InkWell(
+                    onTap: () => Navigator.pushNamed(context, 'write',
+                        arguments: {'question': questionText}),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color(COLOR.PURPLE),
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      padding: EdgeInsets.all(10),
+                      child: Icon(Icons.edit, color: Colors.white, size: 30),
+                    ),
+                  ),
+                ),
               ],
             )));
   }
@@ -241,18 +265,16 @@ class _QuizPageState extends State<QuizPage> {
           isPristine = false;
           vocaProvider.shuffle();
           audioProvider.reset();
-          // coinProvider.charge(PaidActions.swipeQuiz);
+          questionText = quizProvider.question;
         },
         itemCount: quizProvider.allQuestions.length,
-        itemBuilder: (BuildContext context, int index) {
-          return _cardbody(index);
-        },
+        itemBuilder: (BuildContext context, int index) => _cardbody(),
         viewportFraction: 0.9,
         scale: 0.6,
         controller: swiperCtrl);
   }
 
-  Widget _cardbody(index) {
+  Widget _cardbody() {
     return Card(
       color: Colors.white.withOpacity(0.8),
       elevation: 0,
@@ -260,7 +282,7 @@ class _QuizPageState extends State<QuizPage> {
         Container(
             padding: EdgeInsets.symmetric(
                 vertical: size.height * 0.02, horizontal: size.width * 0.03),
-            child: _cardContent(index)),
+            child: _cardContent()),
       ]),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(
@@ -270,7 +292,7 @@ class _QuizPageState extends State<QuizPage> {
     );
   }
 
-  Widget _cardContent(index) {
+  Widget _cardContent() {
     return Column(children: [
       SizedBox(height: quizProvider.showChallengingWords ? 0 : 60),
       ClipRRect(
@@ -282,11 +304,11 @@ class _QuizPageState extends State<QuizPage> {
             fit: BoxFit.cover,
           )),
       SizedBox(height: size.height * 0.03),
-      Text(quizProvider.oneQuestion(index),
+      Text(questionText,
           textAlign: TextAlign.center,
           style: TextStyle(
-            fontSize: quizProvider.oneQuestion(index).length > 60
-                ? quizProvider.oneQuestion(index).length > 100
+            fontSize: questionText.length > 60
+                ? questionText.length > 100
                     ? size.width * 0.055
                     : size.width * 0.065
                 : size.width * 0.07,

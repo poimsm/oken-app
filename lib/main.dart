@@ -10,6 +10,7 @@ import 'package:oken/pages/tutorial_page.dart';
 import 'package:oken/pages/user_page.dart';
 import 'package:oken/pages/viewer_page.dart';
 import 'package:oken/pages/vocab_page.dart';
+import 'package:oken/pages/write_page.dart';
 import 'package:oken/providers/audio_provider.dart';
 import 'package:oken/providers/coin_provider.dart';
 import 'package:oken/providers/quiz_provider.dart';
@@ -51,7 +52,9 @@ class MyApp extends StatelessWidget {
               '/': (BuildContext context) => HomePage(),
               'user': (BuildContext context) => UserPage(),
               'reading': (BuildContext context) => BookPage(),
-              'quiz': (BuildContext context) => QuizPage(),
+              'quiz': (BuildContext context) => QuizPage(
+                    argument: ModalRoute.of(context).settings.arguments,
+                  ),
               'photos': (BuildContext context) => ImagePage(),
               'routine': (BuildContext context) => RoutinePage(),
               'tutorial': (BuildContext context) => TutorialPage(),
@@ -59,6 +62,7 @@ class MyApp extends StatelessWidget {
               'viewer': (BuildContext context) => ViewerPage(),
               'folder': (BuildContext context) => FolderPage(),
               'coin': (BuildContext context) => CoinPage(),
+              'write': (BuildContext context) => WritePage(),
             }),
       ),
     );

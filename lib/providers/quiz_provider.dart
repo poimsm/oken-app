@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'dummy/questions.dart';
@@ -12,7 +13,7 @@ class QuizProvider with ChangeNotifier {
   bool _isTalking = false;
   bool _showChallengingWords = true;
 
-  void setQuestions(type) {
+  void loadQuestions(type) {
     _questions = Questions().get(type);
   }
 
@@ -42,6 +43,8 @@ class QuizProvider with ChangeNotifier {
   get showActionSheet => _showActionSheet;
 
   get allQuestions => _questions;
+
+  get question => _questions[Random().nextInt(20)];
 
   get loading => _loading;
 

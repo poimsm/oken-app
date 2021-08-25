@@ -7,6 +7,7 @@ import 'package:oken/pages/book_page.dart';
 import 'package:oken/pages/quiz_page.dart';
 import 'package:oken/pages/routine_page.dart';
 import 'package:oken/pages/tutorial_page.dart';
+import 'package:oken/pages/tutorial_photo_page.dart';
 import 'package:oken/pages/user_page.dart';
 import 'package:oken/pages/viewer_page.dart';
 import 'package:oken/pages/vocab_page.dart';
@@ -63,6 +64,7 @@ class MyApp extends StatelessWidget {
               'folder': (BuildContext context) => FolderPage(),
               'coin': (BuildContext context) => CoinPage(),
               'write': (BuildContext context) => WritePage(),
+              'photos-tutorial': (BuildContext context) => TutorialPhotoPage(),
             }),
       ),
     );

@@ -43,7 +43,7 @@ List<Map> _content = [
     'isBlocked': false,
     'isNew': false,
     'price': 200,
-    'nav': 'photos',
+    'nav': 'photos-tutorial',
     'selling_text': '''
     ''',
   },
